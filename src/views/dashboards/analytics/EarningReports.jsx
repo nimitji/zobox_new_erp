@@ -77,15 +77,25 @@ const EarningReports = () => {
     },
     legend: { show: false },
     dataLabels: { enabled: false },
+    // colors: [
+    //   primaryColorWithOpacity,
+    //   primaryColorWithOpacity,
+    //   primaryColorWithOpacity,
+    //   primaryColorWithOpacity,
+    //   'var(--mui-palette-primary-main)',
+    //   primaryColorWithOpacity,
+    //   primaryColorWithOpacity
+    // ],
     colors: [
-      primaryColorWithOpacity,
-      primaryColorWithOpacity,
-      primaryColorWithOpacity,
-      primaryColorWithOpacity,
-      'var(--mui-palette-primary-main)',
-      primaryColorWithOpacity,
-      primaryColorWithOpacity
-    ],
+  '#2B3380',
+  '#2B3380',
+  '#2B3380',
+  '#2B3380',
+  '#2B3380',
+  '#2B3380',
+  '#2B3380'
+],
+
     states: {
       hover: {
         filter: { type: 'none' }

@@ -27,6 +27,7 @@ const TabList = styled(MuiTabList)(({ color, theme, pill, orientation }) => ({
     },
     '& .Mui-selected': {
       backgroundColor: `var(--mui-palette-${color}-main) !important`,
+    
       color: `var(--mui-palette-${color}-contrastText) !important`,
       boxShadow: `var(--mui-customShadows-${color}-sm)`
     },
