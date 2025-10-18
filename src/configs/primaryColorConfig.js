@@ -6,6 +6,7 @@ const primaryColorConfig = [
      main: '#7367F0',
   
    dark: '#675DD8'
+
     
   },
   {

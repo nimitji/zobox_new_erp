@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles'
 
 const StepperWrapper = styled(Box)(({ theme }) => {
   return {
+   
     [theme.breakpoints.down('md')]: {
       '& .MuiStepper-horizontal:not(.MuiStepper-alternativeLabel)': {
         flexDirection: 'column',
