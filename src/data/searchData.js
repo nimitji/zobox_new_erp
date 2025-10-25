@@ -263,6 +263,8 @@ const data = [
     icon: 'tabler-user-shield',
     section: 'Apps'
   },
+ 
+   
   {
     id: '38',
     name: 'Permissions',
@@ -780,7 +782,14 @@ const data = [
     url: `${process.env.NEXT_PUBLIC_DOCS_URL}/docs/user-interface/mui-table`,
     icon: 'tabler-layout-board-split',
     section: 'Forms & Tables'
-  }
+  },
+   {
+    id: '112',
+    name: 'Branches',
+    url: '/apps/hrManagement/branches',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
 ]
 
 export default data

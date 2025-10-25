@@ -1,8 +1,8 @@
 // Component Imports
-import Roles from '@views/apps/roles'
+import BranchList from '@views/apps/hrManagement/branches'
 
 // Data Imports
-import { getUserData } from '@/app/server/actions'
+import { getUserDatas } from '@/app/server/actions'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
@@ -20,12 +20,11 @@ import { getUserData } from '@/app/server/actions'
 
   return res.json()
 } */
-const RolesApp = async () => {
+const BranchListApp = async () => {
   // Vars
-  const data = await getUserData()
-  console.log("DEBUGPOOJA",data)
+  const data = await getUserDatas()
 
-  return <Roles userData={data} />
+  return <BranchList userData={data} />
 }
 
-export default RolesApp
+export default BranchListApp

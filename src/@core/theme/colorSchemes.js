@@ -6,6 +6,7 @@ const colorSchemes = skin => {
           main: '#7367F0',
           light: '#8F85F3',
           dark: '#675DD8',
+ 
           lighterOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.08)',
           lightOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.16)',
           mainOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.24)',
@@ -158,6 +159,8 @@ const colorSchemes = skin => {
 //           main: '#7367F0',
 //           light: '#8F85F3',
 //           dark: '#675DD8',
+        
+      
 //           lighterOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.08)',
 //           lightOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.16)',
 //           mainOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.24)',
@@ -318,7 +321,7 @@ dark: {
       main: '#7367F0',
       light: '#8F85F3',
       dark: '#675DD8',
-  
+    
       lighterOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.08)',
       lightOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.16)',
       mainOpacity: 'rgb(var(--mui-palette-primary-mainChannel) / 0.24)',
@@ -391,6 +394,9 @@ dark: {
     }
   }
 }
+
+
+
 
   }
 }

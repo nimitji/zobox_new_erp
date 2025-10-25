@@ -1,8 +1,8 @@
 // Component Imports
-import Roles from '@views/apps/roles'
+import UserList from '@views/apps/departments'
 
 // Data Imports
-import { getUserData } from '@/app/server/actions'
+import { getUserDatas } from '@/app/server/actions'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
@@ -20,12 +20,11 @@ import { getUserData } from '@/app/server/actions'
 
   return res.json()
 } */
-const RolesApp = async () => {
+const UserListApp = async () => {
   // Vars
-  const data = await getUserData()
-  console.log("DEBUGPOOJA",data)
+  const data = await getUserDatas()
 
-  return <Roles userData={data} />
+  return <UserList userData={data} />
 }
 
-export default RolesApp
+export default UserListApp

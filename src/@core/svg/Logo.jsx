@@ -33,19 +33,33 @@
 
 // export default Logo
 
-const Logo = props => {
+// const Logo = props => {
+//   return (
+//     <video
+//       src="https://storage.googleapis.com/zobizproductphotos/banners/fabyoh/zoboxlogo.mp4"
+//       autoPlay
+//       loop
+//       muted
+//       playsInline   // mobile browsers ke liye
+//       className="w-12 h-12 object-cover" // adjust size as per old SVG
+//       {...props}
+//     />
+//   )
+// }
+
+const Logo = (props) => {
   return (
-    <video
-      src="https://storage.googleapis.com/zobizproductphotos/banners/fabyoh/zoboxlogo.mp4"
-      autoPlay
-      loop
-      muted
-      playsInline   // mobile browsers ke liye
-      className="w-12 h-12 object-cover" // adjust size as per old SVG
+    <img
+      src="https://storage.googleapis.com/zobizproductphotos/banners/zoboxlogo.png"
+      alt="Zobox Logo"
+      width={200}
+      height={50}
+      style={{ objectFit: 'contain' }} // poora image dikhega
       {...props}
     />
   )
 }
+
 
 
 
