@@ -172,9 +172,150 @@ const verticalMenuData = dictionary => [
         icon: 'tabler-hr-management',
         children: [
           {
-            label: dictionary['navigation'].departments,
-            href: '/apps/departments'
+            label: dictionary['navigation'].branches,
+            href: '/apps/hrManagement/branches'
           },
+          {
+            label: dictionary['navigation'].departments,
+            href: '/apps/hrManagement/departments'
+          },
+          {
+            label: dictionary['navigation'].designations,
+            href: '/apps/hrManagement/designations'
+          },
+           {
+            label: dictionary['navigation'].documentTypes,
+            href: '/apps/hrManagement/documentTypes'
+          },
+       
+           {
+            label: dictionary['navigation'].employees,
+            href: '/apps/hrManagement/employees/list'
+          },
+       
+           {
+            label: dictionary['navigation'].awardTypes,
+            href: '/apps/hrManagement/awardTypes'
+          },
+       
+           {
+            label: dictionary['navigation'].awards,
+            href: '/apps/hrManagement/awards'
+          },
+       
+           {
+            label: dictionary['navigation'].promotions,
+            href: '/apps/hrManagement/promotions'
+          },
+            {
+            label: dictionary['navigation'].performance,
+            icon:tabler-circle-dot,
+              children: [
+                {
+            label: dictionary['navigation'].indicatorCategories,
+            href: '/apps/hrManagement/performance/indicatorCategories'
+          },
+              {
+            label: dictionary['navigation'].indicators,
+            href: '/apps/hrManagement/performance/indicators'
+          },
+              {
+            label: dictionary['navigation'].goalTypes,
+            href: '/apps/hrManagement/performance/goalTypes'
+          },
+              {
+            label: dictionary['navigation'].indicatorCategories,
+            href: '/apps/hrManagement/performance/employeeGoals'
+          },
+             {
+            label: dictionary['navigation'].reviewCycles,
+            href: '/apps/hrManagement/performance/reviewCycles'
+          },
+            {
+            label: dictionary['navigation'].reviewCycles,
+            href: '/apps/hrManagement/performance/employeeReviews'
+          }
+        ]
+          },
+
+           {
+            label: dictionary['navigation'].resignations,
+            href: '/apps/hrManagement/resignations'
+          },
+            {
+            label: dictionary['navigation'].terminations,
+            href: '/apps/hrManagement/terminations'
+          },
+            {
+            label: dictionary['navigation'].warnings,
+            href: '/apps/hrManagement/warnings'
+          },
+            {
+            label: dictionary['navigation'].trips,
+            href: '/apps/hrManagement/trips'
+          },
+            {
+            label: dictionary['navigation'].complaints,
+            href: '/apps/hrManagement/complaints'
+          },
+              {
+            label: dictionary['navigation'].transfers,
+            href: '/apps/hrManagement/transfers'
+          },
+            {
+            label: dictionary['navigation'].holidays,
+            href: '/apps/hrManagement/complaints'
+          },
+              {
+            label: dictionary['navigation'].announcements,
+            href: '/apps/hrManagement/announcements'
+          },
+            {
+            label: dictionary['navigation'].assetManagements,
+                icon:tabler-circle-dot,
+              children: [
+                {
+            label: dictionary['navigation'].assetTypes,
+            href: '/apps/hrManagement/assetManagements/assetTypes'
+          },
+              {
+            label: dictionary['navigation'].assets,
+            href: '/apps/hrManagement/assetManagements/assets'
+          },
+              {
+            label: dictionary['navigation'].dashboard,
+            href: '/apps/hrManagement/assetManagements/dashboard'
+          },
+              {
+            label: dictionary['navigation'].depreciation,
+            href: '/apps/hrManagement/assetManagements/depreciation'
+          }
+        ]
+          },
+
+            {
+            label: dictionary['navigation'].trainingManagement,
+                icon:tabler-circle-dot,
+              children: [
+                {
+            label: dictionary['navigation'].trainingTypes,
+            href: '/apps/hrManagement/trainingManagement/trainingTypes'
+          },
+              {
+            label: dictionary['navigation'].trainingPrograms,
+            href: '/apps/hrManagement/trainingManagement/trainingPrograms'
+          },
+              {
+            label: dictionary['navigation'].trainingSessions,
+            href: '/apps/hrManagement/trainingManagement/trainingSessions'
+          },
+              {
+            label: dictionary['navigation'].employeeTraining,
+            href: '/apps/hrManagement/trainingManagement/employeeTraining'
+          }
+        ]
+          }
+       
        
         ]
       },

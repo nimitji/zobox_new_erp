@@ -2,7 +2,9 @@
 import BranchList from '@views/apps/hrManagement/branches'
 
 // Data Imports
-import { getUserDatas } from '@/app/server/actions'
+import { fetchBranches } from '@/app/server/actions'
+//import { getUserDatas } from '@/app/server/actions'
+
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
@@ -22,9 +24,9 @@ import { getUserDatas } from '@/app/server/actions'
 } */
 const BranchListApp = async () => {
   // Vars
-  const data = await getUserDatas()
+  const data = await fetchBranches()
 
-  return <BranchList userData={data} />
+  return <BranchList branchData={data} />
 }
 
 export default BranchListApp

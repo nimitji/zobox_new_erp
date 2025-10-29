@@ -5,14 +5,14 @@ import Grid from '@mui/material/Grid2'
 import BranchListTable from './BranchListTable'
 import BranchListCards from './BranchListCards'
 
-const UserList = ({ userData }) => {
+const UserList = ({ branchData }) => {
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12 }}>
         <BranchListCards />
       </Grid>
       <Grid size={{ xs: 12 }}>
-        <BranchListTable tableData={userData} />
+        <BranchListTable tableData={branchData} />
       </Grid>
     </Grid>
   )

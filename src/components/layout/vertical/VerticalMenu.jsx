@@ -174,42 +174,42 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
 
            <SubMenu label={dictionary['navigation'].hrManagement} icon={<i className='tabler-hr-management' />}>
             <MenuItem href={`/${locale}/apps/hrManagement/branches`}>{dictionary['navigation'].branches}</MenuItem>
-            <MenuItem href={`/${locale}/apps/departments`}>{dictionary['navigation'].departments}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].designations}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].documentTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].employees}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].awardTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].awards}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].promotions}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/departments`}>{dictionary['navigation'].departments}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/designations`}>{dictionary['navigation'].designations}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/documentTypes`}>{dictionary['navigation'].documentTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/employees/list`}>{dictionary['navigation'].employees}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/awardTypes`}>{dictionary['navigation'].awardTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/awards`}>{dictionary['navigation'].awards}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/promotions`}>{dictionary['navigation'].promotions}</MenuItem>
 
               <SubMenu label={dictionary['navigation'].performance} >
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].indicatorCategories}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].indicators}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].goalTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].employeeGoals}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].reviewCycles}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].employeeReviews}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/indicatorCategories`}>{dictionary['navigation'].indicatorCategories}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/indicators`}>{dictionary['navigation'].indicators}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/goalTypes`}>{dictionary['navigation'].goalTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/employeeGoals`}>{dictionary['navigation'].employeeGoals}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/reviewCycles`}>{dictionary['navigation'].reviewCycles}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/performance/employeeReviews`}>{dictionary['navigation'].employeeReviews}</MenuItem>
           
           </SubMenu>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].resignations}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].terminations}</MenuItem>
-             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].warnings}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].trips}</MenuItem>
-             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].complaints}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].transfers}</MenuItem>
-             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].holidays}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].announcements}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/resignations`}>{dictionary['navigation'].resignations}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/terminations`}>{dictionary['navigation'].terminations}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/warnings`}>{dictionary['navigation'].warnings}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/trips`}>{dictionary['navigation'].trips}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/complaints`}>{dictionary['navigation'].complaints}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/transfers`}>{dictionary['navigation'].transfers}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/complaints`}>{dictionary['navigation'].holidays}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/announcements`}>{dictionary['navigation'].announcements}</MenuItem>
               <SubMenu label={dictionary['navigation'].assetManagements} >
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].assetTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].assets}</MenuItem>
-             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].dashboard}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].depreciation}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/assetTypes`}>{dictionary['navigation'].assetTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/assets`}>{dictionary['navigation'].assets}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/dashboard`}>{dictionary['navigation'].dashboard}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/depreciation`}>{dictionary['navigation'].depreciation}</MenuItem>
             </SubMenu>
              <SubMenu label={dictionary['navigation'].trainingManagement} >
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].trainingTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].trainingPrograms}</MenuItem>
-             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].trainingSessions}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].employeeTraining}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/trainingTypes`}>{dictionary['navigation'].trainingTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/trainingPrograms`}>{dictionary['navigation'].trainingPrograms}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/trainingSessions`}>{dictionary['navigation'].trainingSessions}</MenuItem>
+            <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/employeeTraining`}>{dictionary['navigation'].employeeTraining}</MenuItem>
             </SubMenu>
           </SubMenu>
            <SubMenu label={dictionary['navigation'].contractManagement} icon={<i className='tabler-contract-management' />}>

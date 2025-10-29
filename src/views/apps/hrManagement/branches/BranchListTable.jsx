@@ -18,6 +18,11 @@ import IconButton from '@mui/material/IconButton'
 import { styled } from '@mui/material/styles'
 import TablePagination from '@mui/material/TablePagination'
 import MenuItem from '@mui/material/MenuItem'
+import ViewBranch from './ViewBranch'
+import EditBranch from './EditBranch'
+import ExportButton from '../../../../@menu/components/tables/ExportButton'
+
+
 
 // Third-party Imports
 import classnames from 'classnames'
@@ -46,6 +51,7 @@ import CustomAvatar from '@core/components/mui/Avatar'
 // Util Imports
 import { getInitials } from '@/utils/getInitials'
 import { getLocalizedUrl } from '@/utils/i18n'
+import {editBranch,fetchBranches} from "../../../../app/server/actions"
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
@@ -103,13 +109,54 @@ const userStatusObj = {
 // Column Definitions
 const columnHelper = createColumnHelper()
 
-const UserListTable = ({ tableData }) => {
+const BranchListTable = ({ tableData }) => {
+  console.log("AAJKADEBUG",tableData)
+    const [data, setData] = useState(tableData)
   // States
   const [addUserOpen, setAddUserOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[tableData])
+  // const [data, setData] = useState(...[tableData])
   const [filteredData, setFilteredData] = useState(data)
   const [globalFilter, setGlobalFilter] = useState('')
+
+  //changes pooja
+  const [selectedUser, setSelectedUser] = useState(null)
+const [viewOpen, setViewOpen] = useState(false)
+
+
+
+
+
+const [isEditOpen, setIsEditOpen] = useState(false)
+const [selectedBranch, setSelectedBranch] = useState(null)
+
+const handleEditClick = branch => {
+  setSelectedBranch(branch)
+  setIsEditOpen(true)
+}
+
+// const handleUpdateBranch = updatedData => {
+//   console.log('Updated branch:', updatedData)
+//   editBranch(updatedData)
+// }
+
+  const refreshBranches = async () => {
+    const res = await fetchBranches()
+    setData(res)
+    setFilteredData(res)
+  }
+
+const handleUpdateBranch = async updatedData => {
+  try {
+    console.log('Updated branch:', updatedData)
+    const response = await editBranch(updatedData)
+    await refreshBranches()
+    return response
+  } catch (error) {
+    console.error('Error updating branch:', error)
+  }
+}
+
 
   // Hooks
   const { lang: locale } = useParams()
@@ -138,46 +185,43 @@ const UserListTable = ({ tableData }) => {
           />
         )
       },
-      columnHelper.accessor('fullName', {
-        header: 'User',
+      columnHelper.accessor('branchName', {
+        header: 'Name',
         cell: ({ row }) => (
           <div className='flex items-center gap-4'>
-            {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })}
+            {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
             <div className='flex flex-col'>
               <Typography color='text.primary' className='font-medium'>
-                {row.original.fullName}
+                {row.original.branchName}
               </Typography>
-              <Typography variant='body2'>{row.original.username}</Typography>
+              {/* <Typography variant='body2'>{row.original.username}</Typography> */}
             </div>
           </div>
         )
       }),
-      columnHelper.accessor('role', {
-        header: 'Role',
+      columnHelper.accessor('address', {
+        header: 'Address',
         cell: ({ row }) => (
           <div className='flex items-center gap-2'>
-            <Icon
+            {/* <Icon
               className={userRoleObj[row.original.role].icon}
               sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-            />
+            /> */}
             <Typography className='capitalize' color='text.primary'>
-              {row.original.role}
+              {row.original.address}
             </Typography>
           </div>
         )
       }),
-      columnHelper.accessor('currentPlan', {
-        header: 'Plan',
+      columnHelper.accessor('contact', {
+        header: 'Contact',
         cell: ({ row }) => (
           <Typography className='capitalize' color='text.primary'>
-            {row.original.currentPlan}
+            {row.original.contact}
           </Typography>
         )
       }),
-      columnHelper.accessor('billing', {
-        header: 'Billing',
-        cell: ({ row }) => <Typography>{row.original.billing}</Typography>
-      }),
+     
       columnHelper.accessor('status', {
         header: 'Status',
         cell: ({ row }) => (
@@ -192,34 +236,47 @@ const UserListTable = ({ tableData }) => {
           </div>
         )
       }),
+   
+
+      columnHelper.accessor('createdAt', {
+  header: 'Created At',
+  enableSorting: true, // ✅ sorting enable
+  cell: ({ row }) => {
+    const formattedDate = new Date(row.original.createdAt).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    })
+    return (
+      <Typography color="text.primary" className="capitalize">
+        {formattedDate}
+      </Typography>
+    )
+  }
+}),
+
       columnHelper.accessor('action', {
         header: 'Action',
         cell: ({ row }) => (
           <div className='flex items-center'>
-            <IconButton onClick={() => setData(data?.filter(product => product.id !== row.original.id))}>
-              <i className='tabler-trash text-textSecondary' />
-            </IconButton>
-            <IconButton>
-              <Link href={getLocalizedUrl('/apps/user/view', locale)} className='flex'>
-                <i className='tabler-eye text-textSecondary' />
-              </Link>
-            </IconButton>
-            <OptionMenu
-              iconButtonProps={{ size: 'medium' }}
-              iconClassName='text-textSecondary'
-              options={[
-                {
-                  text: 'Download',
-                  icon: 'tabler-download',
-                  menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-                },
-                {
-                  text: 'Edit',
-                  icon: 'tabler-edit',
-                  menuItemProps: { className: 'flex items-center gap-2 text-textSecondary' }
-                }
-              ]}
-            />
+        
+
+<IconButton
+  onClick={() => {
+    setSelectedBranch(row.original)  // 👈 branch ka data store karega
+    setViewOpen(true)                // 👈 drawer open karega
+  }}
+>
+  <i className='tabler-eye text-textSecondary' />
+</IconButton>
+
+<IconButton onClick={() => handleEditClick(row.original)}>
+  <i className='tabler-edit text-textSecondary' />
+</IconButton>
+
+
+         
+
           </div>
         ),
         enableSorting: false
@@ -230,7 +287,8 @@ const UserListTable = ({ tableData }) => {
   )
 
   const table = useReactTable({
-    data: filteredData,
+    data,
+    // data: filteredData,
     columns,
     filterFns: {
       fuzzy: fuzzyFilter
@@ -257,7 +315,7 @@ const UserListTable = ({ tableData }) => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues()
   })
-
+  const filteredDatas = table.getFilteredRowModel().rows.map(row => row.original)
   const getAvatar = params => {
     const { avatar, fullName } = params
 
@@ -271,8 +329,7 @@ const UserListTable = ({ tableData }) => {
   return (
     <>
       <Card>
-        <CardHeader title='Filters' className='pbe-4' />
-        <TableFilters setData={setFilteredData} tableData={data} />
+    
         <div className='flex justify-between flex-col items-start md:flex-row md:items-center p-6 border-bs gap-4'>
           <CustomTextField
             select
@@ -288,17 +345,11 @@ const UserListTable = ({ tableData }) => {
             <DebouncedInput
               value={globalFilter ?? ''}
               onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search User'
+              placeholder='Search Branch'
               className='max-sm:is-full'
             />
-            <Button
-              color='secondary'
-              variant='tonal'
-              startIcon={<i className='tabler-upload' />}
-              className='max-sm:is-full'
-            >
-              Export
-            </Button>
+          
+             <ExportButton filteredData={filteredDatas} />
             <Button
               variant='contained'
               startIcon={<i className='tabler-plus' />}
@@ -380,8 +431,25 @@ const UserListTable = ({ tableData }) => {
         userData={data}
         setData={setData}
       />
+
+
+<ViewBranch
+  open={viewOpen}
+  handleClose={() => setViewOpen(false)}
+  branchData={selectedBranch}
+/>
+
+<EditBranch
+  open={isEditOpen}
+  handleClose={() => setIsEditOpen(false)}
+  selectedBranch={selectedBranch}
+  onSave={handleUpdateBranch}
+/>
+
     </>
   )
 }
 
-export default UserListTable
+export default BranchListTable
+
+

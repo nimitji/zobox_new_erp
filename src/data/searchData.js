@@ -790,6 +790,209 @@ const data = [
     icon: 'tabler-circle-dot',
     section: 'HR Managements'
   },
+    {
+    id: '113',
+    name: 'Departments',
+    url: '/apps/hrManagement/departments',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '114',
+    name: 'Designations',
+    url: '/apps/hrManagement/designations',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '115',
+    name: 'Document Types',
+    url: '/apps/hrManagement/documentTypes',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '116',
+    name: 'Employees',
+    url: '/apps/hrManagement/employees/list',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '117',
+    name: 'Award Types',
+    url: '/apps/hrManagement/awardTypes',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '118',
+    name: 'Awards',
+    url: '/apps/hrManagement/awards',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '119',
+    name: 'Promotions',
+    url: '/apps/hrManagement/promotions',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '120',
+    name: 'Indicator Categories',
+    url: '/apps/hrManagement/performance/indicatorCategories',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '121',
+    name: 'Indicators',
+    url: '/apps/hrManagement/performance/indicators',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '122',
+    name: 'Goal Types',
+    url: '/apps/hrManagement/performance/goalTypes',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '123',
+    name: 'Employee Goals',
+    url: '/apps/hrManagement/performance/employeeGoals',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '124',
+    name: 'Review Cycles',
+    url: '/apps/hrManagement/performance/reviewCycles',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '125',
+    name: 'Employee Reviews',
+    url: '/apps/hrManagement/performance/employeeReviews',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '126',
+    name: 'Resignations',
+    url: '/apps/hrManagement/resignations',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '127',
+    name: 'Terminations',
+    url: '/apps/hrManagement/terminations',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '128',
+    name: 'Warnings',
+    url: '/apps/hrManagement/warnings',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '129',
+    name: 'Trips',
+    url: '/apps/hrManagement/trips',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '130',
+    name: 'complaints',
+    url: '/apps/hrManagement/complaints',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '131',
+    name: 'Transfers',
+    url: '/apps/hrManagement/transfers',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '132',
+    name: 'Holidays',
+    url: '/apps/hrManagement/holidays',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '133',
+    name: 'Announcements',
+    url: '/apps/hrManagement/announcements',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '134',
+    name: 'Asset Types',
+    url: '/apps/hrManagement/assetManagements/assetTypes',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '135',
+    name: 'Assets',
+    url: '/apps/hrManagement/assetManagements/assets',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '136',
+    name: 'Dashboard',
+    url: '/apps/hrManagement/assetManagements/dashboard',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '137',
+    name: 'Depreciation',
+    url: '/apps/hrManagement/assetManagements/depreciation',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: '138',
+    name: 'Training Types',
+    url: '/apps/hrManagement/trainingManagement/trainingTypes',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '139',
+    name: 'Training Programs',
+    url: '/apps/hrManagement/trainingManagement/trainingPrograms',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+  {
+    id: '140',
+    name: 'Training Sessions',
+    url: '/apps/hrManagement/trainingManagement/trainingSessions',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  },
+   {
+    id: 'Employee Training',
+    name: '',
+    url: '/apps/hrManagement/trainingManagement/employeeTraining',
+    icon: 'tabler-circle-dot',
+    section: 'HR Managements'
+  }
 ]
 
 export default data
