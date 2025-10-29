@@ -48,6 +48,8 @@ const shortcuts = [
     title: 'Role Management',
     subtitle: 'Permissions'
   },
+  //changes here pooja
+ 
   {
     url: '/',
     icon: 'tabler-device-desktop-analytics',

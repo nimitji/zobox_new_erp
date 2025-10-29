@@ -106,8 +106,8 @@ const horizontalMenuData = dictionary => [
         ]
       },
       {
-        label: dictionary['navigation'].academy,
-        icon: 'tabler-school',
+        label: dictionary['navigation'].purchase,
+        icon: 'tabler-purchase',
         children: [
           {
             label: dictionary['navigation'].dashboard,
@@ -123,6 +123,24 @@ const horizontalMenuData = dictionary => [
           }
         ]
       },
+      //    {
+      //   label: dictionary['navigation'].academy,
+      //   icon: 'tabler-school',
+      //   children: [
+      //     {
+      //       label: dictionary['navigation'].dashboard,
+      //       href: '/apps/academy/dashboard'
+      //     },
+      //     {
+      //       label: dictionary['navigation'].myCourses,
+      //       href: '/apps/academy/my-courses'
+      //     },
+      //     {
+      //       label: dictionary['navigation'].courseDetails,
+      //       href: '/apps/academy/course-details'
+      //     }
+      //   ]
+      // },
       {
         label: dictionary['navigation'].logistics,
         icon: 'tabler-truck',
@@ -189,20 +207,36 @@ const horizontalMenuData = dictionary => [
           }
         ]
       },
-      {
-        label: dictionary['navigation'].user,
+      // {
+      //   label: dictionary['navigation'].user,
+      //   icon: 'tabler-user',
+      //   children: [
+      //     {
+      //       label: dictionary['navigation'].list,
+      //       icon: 'tabler-circle',
+      //       href: '/apps/user/list'
+      //     },
+      //     {
+      //       label: dictionary['navigation'].view,
+      //       icon: 'tabler-circle',
+      //       href: '/apps/user/view'
+      //     }
+      //   ]
+      // },
+        {
+        label: dictionary['navigation'].hrManagement,
         icon: 'tabler-user',
         children: [
           {
-            label: dictionary['navigation'].list,
+            label: dictionary['navigation'].branches,
             icon: 'tabler-circle',
-            href: '/apps/user/list'
+            href: '/apps/hrManagement/branches'
           },
-          {
-            label: dictionary['navigation'].view,
-            icon: 'tabler-circle',
-            href: '/apps/user/view'
-          }
+          // {
+          //   label: dictionary['navigation'].view,
+          //   icon: 'tabler-circle',
+          //   href: '/apps/user/view'
+          // }
         ]
       },
       {

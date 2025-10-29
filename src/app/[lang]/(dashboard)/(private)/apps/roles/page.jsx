@@ -23,6 +23,7 @@ import { getUserData } from '@/app/server/actions'
 const RolesApp = async () => {
   // Vars
   const data = await getUserData()
+  console.log("DEBUGPOOJA",data)
 
   return <Roles userData={data} />
 }

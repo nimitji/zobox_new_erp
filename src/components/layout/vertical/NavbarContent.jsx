@@ -39,6 +39,7 @@ const shortcuts = [
     title: 'Role Management',
     subtitle: 'Permissions'
   },
+ 
   {
     url: '/',
     icon: 'tabler-device-desktop-analytics',

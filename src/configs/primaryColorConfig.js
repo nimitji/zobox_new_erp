@@ -4,8 +4,9 @@ const primaryColorConfig = [
     name: 'primary-1',
     light: '#8F85F3',
      main: '#7367F0',
-  
-   dark: '#675DD8'
+     dark: '#675DD8'
+ 
+   
 
     
   },
@@ -32,7 +33,14 @@ const primaryColorConfig = [
     light: '#5CAFF1',
     main: '#2092EC',
     dark: '#176BAC'
-  }
+  },
+    {
+    name: 'primary-6',
+    light: '#2B3380',
+    main: '#2B3380',
+    dark: '#2B3380'
+  },
+    
 ]
 
 export default primaryColorConfig

@@ -64,7 +64,8 @@ const TotalEarning = () => {
       width: 5,
       colors: ['var(--mui-palette-background-paper)']
     },
-    colors: ['var(--mui-palette-primary-main)', 'var(--mui-palette-secondary-main)'],
+    //colors: ['var(--mui-palette-primary-main)', 'var(--mui-palette-secondary-main)'],
+     colors: ["#2B3380", 'var(--mui-palette-secondary-main)'],
     states: {
       hover: {
         filter: { type: 'none' }

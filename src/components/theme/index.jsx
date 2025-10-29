@@ -54,18 +54,20 @@ const CustomThemeProvider = props => {
         light: {
           palette: {
             primary: {
-              main: settings.primaryColor,
-              light: lighten(settings.primaryColor, 0.2),
-              dark: darken(settings.primaryColor, 0.1)
+              main: settings.primaryColor.trim(),
+             light: lighten(settings.primaryColor, 0.2),
+             dark: darken(settings.primaryColor, 0.1)
+             
             }
           }
         },
         dark: {
           palette: {
             primary: {
-              main: settings.primaryColor,
+              main: settings.primaryColor.trim(),
               light: lighten(settings.primaryColor, 0.2),
               dark: darken(settings.primaryColor, 0.1)
+             
             }
           }
         }
@@ -80,6 +82,7 @@ const CustomThemeProvider = props => {
     return createTheme(coreTheme)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [settings.primaryColor, settings.skin, currentMode])
+  
 
   return (
     <AppRouterCacheProvider

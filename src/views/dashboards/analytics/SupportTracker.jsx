@@ -52,7 +52,7 @@ const SupportTracker = () => {
   const options = {
     stroke: { dashArray: 10 },
     labels: ['Completed Task'],
-    colors: ['var(--mui-palette-primary-main)'],
+    colors: [ "#2B3380",'var(--mui-palette-primary-main)'],
     states: {
       hover: {
         filter: { type: 'none' }
