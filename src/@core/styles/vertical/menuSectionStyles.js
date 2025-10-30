@@ -116,6 +116,7 @@ const menuSectionStyles = (verticalNavOptions, theme) => {
             display: 'none'
           })
         },
+
         // icons ke liye
         [`& .${menuClasses.menuItemIcon}`]: {
           color: '#6B7280'

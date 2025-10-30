@@ -7,6 +7,7 @@ import copy from 'copy-to-clipboard'
 export const exportCSV = (data, filename = 'data.csv') => {
   const ws = XLSX.utils.json_to_sheet(data)
   const wb = XLSX.utils.book_new()
+
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1')
   XLSX.writeFile(wb, filename)
 }
@@ -14,12 +15,14 @@ export const exportCSV = (data, filename = 'data.csv') => {
 export const exportExcel = (data, filename = 'data.xlsx') => {
   const ws = XLSX.utils.json_to_sheet(data)
   const wb = XLSX.utils.book_new()
+
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1')
   XLSX.writeFile(wb, filename)
 }
 
 export const exportPDF = (data, columns, filename = 'data.pdf') => {
   const doc = new jsPDF()
+
   doc.autoTable({
     head: [columns],
     body: data.map(row => columns.map(col => row[col])),
@@ -34,6 +37,7 @@ export const copyToClipboard = (data) => {
 
 export const printTable = (data, columns) => {
   const printWindow = window.open('', '_blank')
+
   const tableHTML = `
     <html>
       <head>
@@ -57,6 +61,7 @@ export const printTable = (data, columns) => {
       </body>
     </html>
   `
+
   printWindow.document.write(tableHTML)
   printWindow.document.close()
   printWindow.print()

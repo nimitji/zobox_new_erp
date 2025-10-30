@@ -1,203 +1,253 @@
+
+
 'use client'
 
-// React Imports
-import { useState } from 'react'
-
-// MUI Imports
+import { useEffect, useState, useRef } from 'react'
 import Grid from '@mui/material/Grid2'
 import Dialog from '@mui/material/Dialog'
 import Button from '@mui/material/Button'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
-import Chip from '@mui/material/Chip'
+import Divider from '@mui/material/Divider'
+import LinearProgress from '@mui/material/LinearProgress'
 import MenuItem from '@mui/material/MenuItem'
-import Typography from '@mui/material/Typography'
-import Switch from '@mui/material/Switch'
-import { FormControlLabel } from '@mui/material'
+import TextField from '@mui/material/TextField'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import dayjs from 'dayjs'
 
-// Component Imports
+import CustomAvatar from '@core/components/mui/Avatar'
 import DialogCloseButton from '../DialogCloseButton'
-import CustomTextField from '@core/components/mui/TextField'
 
-const initialData = {
-  firstName: 'Oliver',
-  lastName: 'Queen',
-  userName: 'oliverQueen',
-  billingEmail: 'oliverQueen@gmail.com',
-  status: 'active',
-  taxId: 'Tax-8894',
-  contact: '+ 1 609 933 4422',
-  language: ['English'],
-  country: 'US',
-  useAsBillingAddress: true
-}
+const EditUserInfo = ({ open, setOpen }) => {
+  const [userData, setUserData] = useState(null)
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
+  const [uploading, setUploading] = useState(false)
 
-const status = ['Status', 'Active', 'Inactive', 'Suspended']
-const languages = ['English', 'Spanish', 'French', 'German', 'Hindi']
-const countries = ['Select Country', 'France', 'Russia', 'China', 'UK', 'US']
+  const fileInputRef = useRef(null)
 
-const EditUserInfo = ({ open, setOpen, data }) => {
-  // States
-  const [userData, setUserData] = useState(data || initialData)
+  useEffect(() => {
+    const stored = localStorage.getItem('selectedUser')
+    if (stored) setUserData(JSON.parse(stored))
+  }, [open])
 
-  const handleClose = () => {
-    setOpen(false)
-    setUserData(data || initialData)
+  useEffect(() => {
+    if (!file) return
+    const url = URL.createObjectURL(file)
+    setPreview(url)
+    return () => URL.revokeObjectURL(url)
+  }, [file])
+
+  const handleFileSelect = e => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    setFile(f)
   }
 
+  const handleSave = async () => {
+    if (!userData?._id) return alert('User ID missing!')
+
+    try {
+      const formData = new FormData()
+
+      if (file) formData.append('avatar', file)
+      Object.entries(userData).forEach(([key, value]) => {
+        if (value === null || value === undefined) return
+        if (typeof value === 'object') formData.append(key, JSON.stringify(value))
+        else formData.append(key, value)
+      })
+
+      setUploading(true)
+
+      const res = await fetch(`http://localhost:3001/zobiz/update-user/${userData._id}`, {
+        method: 'PUT',
+        body: formData
+      })
+
+      const text = await res.text()
+      let result
+      try {
+        result = JSON.parse(text)
+      } catch {
+        console.error('Invalid JSON:', text)
+        alert('Invalid response from server')
+        setUploading(false)
+        return
+      }
+
+      if (result.success) {
+        localStorage.setItem('selectedUser', JSON.stringify(result.data))
+        alert('✅ User details & image updated successfully!')
+        setOpen(false)
+      } else {
+        alert(result.message || 'Update failed')
+      }
+    } catch (err) {
+      console.error('❌ Error updating user:', err)
+      alert('Error updating user details')
+    } finally {
+      setUploading(false)
+    }
+  }
+
+  if (!userData) return null
+
   return (
-    <Dialog
-      fullWidth
-      open={open}
-      onClose={handleClose}
-      maxWidth='md'
-      scroll='body'
-      closeAfterTransition={false}
-      sx={{ '& .MuiDialog-paper': { overflow: 'visible' } }}
-    >
+    <Dialog fullWidth open={open} onClose={() => setOpen(false)} maxWidth='md'>
       <DialogCloseButton onClick={() => setOpen(false)} disableRipple>
         <i className='tabler-x' />
       </DialogCloseButton>
-      <DialogTitle variant='h4' className='flex gap-2 flex-col text-center sm:pbs-16 sm:pbe-6 sm:pli-16'>
+      <DialogTitle variant='h4' align='center'>
         Edit User Information
-        <Typography component='span' className='flex flex-col text-center'>
-          Updating user details will receive a privacy audit.
-        </Typography>
       </DialogTitle>
-      <form onSubmit={e => e.preventDefault()}>
-        <DialogContent className='overflow-visible pbs-0 sm:pli-16'>
-          <Grid container spacing={5}>
+      <Divider />
+
+      {/* ✅ Wrap your content with LocalizationProvider */}
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DialogContent>
+          {/* ==== Avatar Section ==== */}
+          <div className='flex flex-col items-center mb-6'>
+            <CustomAvatar
+              src={preview || userData.Photo?.[0] || '/images/avatars/1.png'}
+              size={120}
+              variant='rounded'
+              sx={{ border: '3px solid #2B3380' }}
+            />
+            <div className='flex gap-2 mt-2'>
+              <Button variant='outlined' size='small' onClick={() => fileInputRef.current.click()}>
+                Choose Photo
+              </Button>
+              <input
+                type='file'
+                ref={fileInputRef}
+                hidden
+                accept='image/*'
+                onChange={handleFileSelect}
+              />
+            </div>
+          </div>
+
+          {/* ==== Editable Fields ==== */}
+          <Grid container spacing={4}>
             <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
+              <TextField
                 fullWidth
-                label='First Name'
-                placeholder='John'
-                value={userData?.firstName}
-                onChange={e => setUserData({ ...userData, firstName: e.target.value })}
+                label='Employee Name'
+                value={userData.EMPLOYEENAME || ''}
+                onChange={e => setUserData({ ...userData, EMPLOYEENAME: e.target.value })}
               />
             </Grid>
+
             <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
+              <TextField
                 fullWidth
-                label='Last Name'
-                placeholder='Doe'
-                value={userData?.lastName}
-                onChange={e => setUserData({ ...userData, lastName: e.target.value })}
+                label='Email ID'
+                value={userData.EMAILID || ''}
+                onChange={e => setUserData({ ...userData, EMAILID: e.target.value })}
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
-              <CustomTextField
+
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <TextField
                 fullWidth
-                label='User Name'
-                placeholder='JohnDoe'
-                value={userData?.userName}
-                onChange={e => setUserData({ ...userData, userName: e.target.value })}
+                label='Mobile Number'
+                value={userData.MOBILENUMBER || ''}
+                onChange={e => setUserData({ ...userData, MOBILENUMBER: e.target.value })}
               />
             </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
-                fullWidth
-                label='Billing Email'
-                placeholder='johnDoe@email.com'
-                value={userData?.billingEmail}
-                onChange={e => setUserData({ ...userData, billingEmail: e.target.value })}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
-                select
-                fullWidth
-                label='Status'
-                value={userData?.status}
-                onChange={e => setUserData({ ...userData, status: e.target.value })}
-              >
-                {status.map((status, index) => (
-                  <MenuItem key={index} value={index === 0 ? '' : status.toLowerCase().replace(/\s+/g, '-')}>
-                    {status}
-                  </MenuItem>
-                ))}
-              </CustomTextField>
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
-                fullWidth
-                label='Tax ID'
-                placeholder='Tax-7490'
-                value={userData?.taxId}
-                onChange={e => setUserData({ ...userData, taxId: e.target.value })}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
-                fullWidth
-                label='Contact'
-                placeholder='+ 123 456 7890'
-                value={userData?.contact}
-                onChange={e => setUserData({ ...userData, contact: e.target.value })}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
-                select
-                fullWidth
-                label='Language'
-                value={userData?.language?.map(lang => lang.toLowerCase().replace(/\s+/g, '-')) || []}
-                slotProps={{
-                  select: {
-                    multiple: true,
-                    onChange: e => setUserData({ ...userData, language: e.target.value }),
-                    renderValue: selected => (
-                      <div className='flex items-center gap-2'>
-                        {selected.map(value => (
-                          <Chip key={value} label={value} className='capitalize' size='small' />
-                        ))}
-                      </div>
-                    )
-                  }
+
+            {/* ✅ DatePicker now works safely inside LocalizationProvider */}
+            {/* <Grid size={{ xs: 12, sm: 6 }}>
+              <DatePicker
+                label='Date of Birth'
+                value={
+                  userData.DATEOFBIRTH
+                    ? dayjs(userData.DATEOFBIRTH, 'DD-MM-YYYY')
+                    : null
+                }
+                format='DD-MM-YYYY'
+                onChange={newValue => {
+                  const formatted = newValue
+                    ? dayjs(newValue).format('DD-MM-YYYY')
+                    : ''
+                  setUserData({ ...userData, DATEOFBIRTH: formatted })
                 }}
-              >
-                {languages.map((language, index) => (
-                  <MenuItem key={index} value={language.toLowerCase().replace(/\s+/g, '-')}>
-                    {language}
-                  </MenuItem>
-                ))}
-              </CustomTextField>
-            </Grid>
+                slotProps={{ textField: { fullWidth: true } }}
+              />
+            </Grid> */}
+
+       <Grid size={{ xs: 12, sm: 6 }}>
+  <DatePicker
+    label='Date of Birth'
+    value={userData.DATEOFBIRTH ? dayjs(userData.DATEOFBIRTH, 'DD-MM-YYYY') : null}
+    format='DD-MM-YYYY'
+    onChange={newValue => {
+      const formatted = newValue ? dayjs(newValue).format('DD-MM-YYYY') : ''
+      setUserData({ ...userData, DATEOFBIRTH: formatted })
+    }}
+    slotProps={{
+      textField: {
+        fullWidth: true,
+        variant: 'outlined', // ✅ Force outlined variant so borders appear
+        sx: {
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              borderColor: '#2B3380' // ✅ Default border
+            },
+            '&:hover fieldset': {
+              borderColor: '#2B3380' // ✅ On hover
+            },
+            '&.Mui-focused fieldset': {
+              borderColor: '#2B3380', // ✅ On focus
+              borderWidth: '2px'
+            }
+          },
+          '& .MuiInputLabel-root.Mui-focused': {
+            color: '#2B3380' // ✅ Focused label color
+          }
+        }
+      }
+    }}
+  />
+</Grid>
+
+
+
             <Grid size={{ xs: 12, sm: 6 }}>
-              <CustomTextField
+              <TextField
                 select
                 fullWidth
-                label='Country'
-                value={userData?.country?.toLowerCase().replace(/\s+/g, '-')}
-                onChange={e => setUserData({ ...userData, country: e.target.value })}
+                label='Gender'
+                value={userData.GENDER || ''}
+                onChange={e => setUserData({ ...userData, GENDER: e.target.value })}
               >
-                {countries.map((country, index) => (
-                  <MenuItem key={index} value={index === 0 ? '' : country.toLowerCase().replace(/\s+/g, '-')}>
-                    {country}
-                  </MenuItem>
-                ))}
-              </CustomTextField>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <FormControlLabel
-                control={<Switch defaultChecked={userData?.useAsBillingAddress} />}
-                label='Use as a billing address?'
-              />
+                <MenuItem value='Male'>Male</MenuItem>
+                <MenuItem value='Female'>Female</MenuItem>
+              </TextField>
             </Grid>
           </Grid>
+
+          {uploading && <LinearProgress sx={{ mt: 2 }} />}
         </DialogContent>
-        <DialogActions className='justify-center pbs-0 sm:pbe-16 sm:pli-16'>
-          <Button variant='contained' onClick={handleClose} type='submit'>
-            Submit
-          </Button>
-          <Button variant='tonal' color='secondary' type='reset' onClick={handleClose}>
-            Cancel
-          </Button>
-        </DialogActions>
-      </form>
+      </LocalizationProvider>
+
+      <DialogActions sx={{ justifyContent: 'center', mb: 2 }}>
+        <Button variant='contained' onClick={handleSave}>
+          Save Changes
+        </Button>
+        <Button variant='outlined' color='secondary' onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+      </DialogActions>
     </Dialog>
   )
 }
 
 export default EditUserInfo
+
+
+
+

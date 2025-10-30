@@ -136,6 +136,7 @@ export const authOptions = {
       credentials: {},
       async authorize(credentials) {
         const { email, password } = credentials
+
         console.log("PIHU",credentials)
 
         try {
@@ -150,6 +151,7 @@ export const authOptions = {
           })
 
           const data = await res.json()
+
           console.log("DATA",data)
 
           if (res.status === 401) {
@@ -158,6 +160,7 @@ export const authOptions = {
 
           if (res.status === 200) {
             console.log("poojaenter",data)
+
             // 🔹 Return user object including Bearer token
             return {
               id: data._id,
@@ -195,17 +198,21 @@ export const authOptions = {
       if (user?.token) token.accessToken = user.token
       if (user?.name) token.name = user.name
       console.log("PATANHI",token)
-      return token
+      
+return token
     },
 
     // 🔹 Expose JWT token in session object
     async session({ session, token }) {
        console.log("POOJATOKENSESSION",token,session)
+
       if (session.user) {
         session.user.name = token.name
         session.user.accessToken = token.accessToken // <- Bearer token here
       }
-      return session
+
+      
+return session
     }
   }
 }

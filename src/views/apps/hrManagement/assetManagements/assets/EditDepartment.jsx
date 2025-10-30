@@ -1,9 +1,11 @@
 
 
-
 'use client'
 
 import { useEffect, useState } from 'react'
+
+// External
+import { description } from 'valibot'
 
 // MUI Imports
 import Drawer from '@mui/material/Drawer'
@@ -16,8 +18,9 @@ import MenuItem from '@mui/material/MenuItem'
 import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
-import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+
+// Internal Imports
+import { fetchListOfBranch } from '@/app/server/actions'
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   const [formData, setFormData] = useState({
@@ -27,8 +30,10 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
     description: '',
     status: 'Active'
   })
-console.log("POOJA456",formData)
-    // ✅ Branch dropdown data
+
+  console.log('POOJA456', formData)
+
+  // ✅ Branch dropdown data
   const [branches, setBranches] = useState([])
   const [loadingBranches, setLoadingBranches] = useState(true)
 
@@ -40,13 +45,15 @@ console.log("POOJA456",formData)
   })
 
   const handleSnackbarClose = () => {
-    setSnackbar({ ...snackbar, open: false })
+    setSnackbar(prev => ({ ...prev, open: false }))
   }
 
-    useEffect(() => {
+  // ✅ Fetch Branch List
+  useEffect(() => {
     const loadBranches = async () => {
       try {
         const res = await fetchListOfBranch()
+
         if (res?.success && Array.isArray(res.data)) {
           setBranches(res.data)
         } else if (Array.isArray(res)) {
@@ -65,46 +72,33 @@ console.log("POOJA456",formData)
   }, [])
 
   // ✅ Auto-fill fields when drawer opens
-  // useEffect(() => {
-  //   if (selectedDepartment) {
-  //     setFormData({
-  //       _id: selectedDepartment._id || '',
-  //       name: selectedDepartment.name || '',
-  //       branch: selectedDepartment.branch || '',
-  //       description: selectedDepartment.description || '',
-  //       status: selectedDepartment.status || 'Active'
-  //     })
-  //   }
-  // }, [selectedDepartment])
+  useEffect(() => {
+    if (selectedDepartment && branches.length > 0) {
+      const matchedBranch = branches.find(
+        b => b.branchName.trim() === selectedDepartment.branch.trim()
+      )
 
-/
-
-useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
-
-    setFormData({
-      _id: selectedDepartment._id || '',
-      name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
-      description: selectedDepartment.description || '',
-      status: selectedDepartment.status || 'Active'
-    })
-  }
-}, [selectedDepartment, branches.length])
-
+      setFormData({
+        _id: selectedDepartment._id || '',
+        name: selectedDepartment.name || '',
+        branch: matchedBranch?._id || '',
+        description: selectedDepartment.description || '',
+        status: selectedDepartment.status || 'Active'
+      })
+    }
+  }, [selectedDepartment, branches]) // ✅ fixed dependency warning
 
   // ✅ Handle save with snackbar feedback
   const handleSave = async () => {
     try {
       const res = await onSave(formData) // backend call in parent component
+
       setSnackbar({
         open: true,
         message: res?.message || 'Department updated successfully!',
         severity: res?.success ? 'success' : 'error'
       })
+
       if (res?.success) handleClose()
     } catch (error) {
       setSnackbar({
@@ -132,6 +126,7 @@ useEffect(() => {
           <Typography variant='h5' sx={{ fontWeight: 600 }}>
             Edit Department
           </Typography>
+
           <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
@@ -149,19 +144,14 @@ useEffect(() => {
               onChange={e => setFormData({ ...formData, name: e.target.value })}
             />
 
-            {/* <TextField
-              label='Branch'
-              fullWidth
-              value={formData.Plot}
-              onChange={e => setFormData({ ...formData, Plot: e.target.value })}
-            /> */}
-
-             <TextField
+            <TextField
               select
               label='Branch'
               fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
+              value={formData.branch || ''}
+              onChange={e =>
+                setFormData({ ...formData, branch: e.target.value })
+              }
             >
               {loadingBranches ? (
                 <MenuItem disabled>Loading branches...</MenuItem>
@@ -180,26 +170,30 @@ useEffect(() => {
               label='Description'
               fullWidth
               value={formData.description}
-              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              onChange={e =>
+                setFormData({ ...formData, description: e.target.value })
+              }
             />
-
 
             <TextField
               select
               label='Status'
               fullWidth
               value={formData.status}
-              onChange={e => setFormData({ ...formData, status: e.target.value })}
+              onChange={e =>
+                setFormData({ ...formData, status: e.target.value })
+              }
             >
               <MenuItem value='Active'>Active</MenuItem>
               <MenuItem value='Inactive'>Inactive</MenuItem>
             </TextField>
 
-            {/* ✅ Action Buttons same style as Add Drawer */}
+            {/* ✅ Action Buttons */}
             <div className='flex items-center gap-4 mt-4'>
               <Button variant='contained' onClick={handleSave}>
                 Save Changes
               </Button>
+
               <Button variant='tonal' color='error' onClick={handleClose}>
                 Cancel
               </Button>
@@ -220,7 +214,8 @@ useEffect(() => {
           severity={snackbar.severity}
           variant='filled'
           sx={{
-            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
+            backgroundColor:
+              snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
             color: 'white',
             fontWeight: 500
           }}
@@ -233,5 +228,6 @@ useEffect(() => {
 }
 
 export default EditDepartment
+
 
 
