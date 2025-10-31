@@ -631,7 +631,6 @@ return branchData
 }
 
 
-
 export const fetchListOfRole = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-role-list`, {
@@ -945,6 +944,7 @@ return data.data // return only branch array
     throw error
   }
 }
+
 export const getPermissionsData = async () => {
   return permissionData
 }
