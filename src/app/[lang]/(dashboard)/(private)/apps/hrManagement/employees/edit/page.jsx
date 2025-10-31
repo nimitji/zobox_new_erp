@@ -5,22 +5,22 @@ import dynamic from 'next/dynamic'
 import Grid from '@mui/material/Grid2'
 
 // Component Imports
-import UserLeftOverview from '@views/apps/hrManagement/employees/view/user-left-overview'
-import UserRight from '@views/apps/hrManagement/employees/view/user-right'
+import UserLeftOverview from '@views/apps/hrManagement/employees/edit/user-left-overview'
+import UserRight from '@views/apps/hrManagement/employees/edit/user-right'
 
 // Data Imports
 import { getPricingData } from '@/app/server/actions'
 
-// const OverViewTab = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/overview'))
-const SecurityTab = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/security'))
-const BillingPlans = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/billing-plans'))
-const PresentAddress = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/permanent-address'))
-const NotificationsTab = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/notifications'))
-const ConnectionsTab = dynamic(() => import('@views/apps/hrManagement/employees/view/user-right/connections'))
+ const OverViewTab = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/overview'))
+const SecurityTab = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/security'))
+const BillingPlans = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/billing-plans'))
+const PresentAddress = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/permanent-address'))
+const NotificationsTab = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/notifications'))
+const ConnectionsTab = dynamic(() => import('@views/apps/hrManagement/employees/edit/user-right/connections'))
 
 // Vars
 const tabContentList = data => ({
-  // overview: <OverViewTab />,
+  overview: <OverViewTab />,
   security: <SecurityTab />,
   'billing-plans': <BillingPlans data={data} />,
    'permanent-address': <PresentAddress  data={data} />,

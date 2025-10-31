@@ -630,6 +630,202 @@ return branchData
   }
 }
 
+
+export const fetchListOfRole = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-role-list`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch roles: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' DataPOOJA:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const fetchListOfDesignation = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-designation`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch designation: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment) => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designations-by-department/${selectedDepartment}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch designation: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const fetchListOfUser= async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-users`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch user: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const createEmployee = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create department: ${errorText}`)
+    }
+
+    const employeeData = await res.json()
+
+    console.log("DEBUG createDepartment:", employeeData)
+    
+return employeeData
+  } catch (err) {
+    console.error('Failed to create department:', err)
+    throw err
+  }
+}
+
+export const fetchEmployeeData = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-details`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch users: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Users Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching users:', error)
+    throw error
+  }
+}
+
+export const fetchCountUser = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Employee Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Employee:', error)
+    throw error
+  }
+}
+
 export const getPermissionsData = async () => {
   return permissionData
 }

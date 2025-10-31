@@ -6,6 +6,7 @@ import UserListTable from './UserListTable'
 import UserListCards from './UserListCards'
 
 const UserList = ({ userData }) => {
+  console.log("POOJA",userData)
   return (
     <Grid container spacing={6}>
       <Grid size={{ xs: 12 }}>

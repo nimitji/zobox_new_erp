@@ -36,19 +36,6 @@ const UserDetails = () => {
 
   const {
     EMPLOYEENAME,
-    EMPLOYEEID,
-    companyNameStatus,
-    JOBLOCATION,
-    REPORTINGMANAGER,
-    PANNUMBER,
-    AADHARCARD,
-    DATEOFBIRTH,
-    AGE,
-    ZOBOXEXPERIENCE,
-    EMERGENCYNUMBER,
-    MARITALSTATUS,
-    GENDER,
-    BLOODGROUP,
     DESIGNATION,
     DEPARTMENT,
     EMAILID,
@@ -88,7 +75,27 @@ const UserDetails = () => {
             />
           </div>
 
-        
+          {/* ===== Quick Stats (Optional Static) ===== */}
+        {/* <div className='flex items-center justify-around flex-wrap gap-4'>
+            <div className='flex items-center gap-4'>
+              <CustomAvatar variant='rounded' color='primary' skin='light'>
+                <i className='tabler-checkbox' />
+              </CustomAvatar>
+              <div>
+                <Typography variant='h5'>1.23k</Typography>
+                <Typography>Task Done</Typography>
+              </div>
+            </div>
+            <div className='flex items-center gap-4'>
+              <CustomAvatar variant='rounded' color='primary' skin='light'>
+                <i className='tabler-briefcase' />
+              </CustomAvatar>
+              <div>
+                <Typography variant='h5'>568</Typography>
+                <Typography>Project Done</Typography>
+              </div>
+            </div>
+          </div> */}
             </div>
       
        
@@ -98,29 +105,30 @@ const UserDetails = () => {
           <Typography variant='h5'>Details</Typography>
           <Divider className='mlb-4' />
           <div className='flex flex-col gap-2'>
-            <DetailRow label='EmployeeId' value={EMPLOYEEID} />
-            <DetailRow label='Company Status' value={companyNameStatus} />
-             <DetailRow label='Job Location' value={JOBLOCATION} />
             <DetailRow label='Department' value={DEPARTMENT} />
             <DetailRow label='Designation' value={DESIGNATION} />
             <DetailRow label='Email' value={EMAILID} />
             <DetailRow label='Mobile Number' value={MOBILENUMBER} />
             <DetailRow label='Date of Joining' value={DATEOFJOINING} />
-            <DetailRow label='Reporting Manager' value={REPORTINGMANAGER} />
-            <DetailRow label='Pan Number' value={PANNUMBER} />
-            <DetailRow label='Aadhar Number' value={AADHARCARD} />
-            <DetailRow label='Date Of Birth' value={DATEOFBIRTH} />
-            <DetailRow label='Age' value={AGE} />
-            <DetailRow label='Zobox Experience' value={ZOBOXEXPERIENCE} />
-            <DetailRow label='Emergency' value={EMERGENCYNUMBER} />
-            <DetailRow label='Martial Status' value={MARITALSTATUS} />
-            <DetailRow label='Gender' value={GENDER} />
-            <DetailRow label='Blood Group' value={BLOODGROUP} />
             <DetailRow label='Status' value={status} />
           </div>
         </div>
 
-     
+        {/* ===== Action Buttons ===== */}
+        <div className='flex gap-4 justify-center'>
+          <OpenDialogOnElementClick
+            element={Button}
+            elementProps={buttonProps('Edit', 'primary', 'contained')}
+            dialog={EditUserInfo}
+            dialogProps={{ data: userData }}
+          />
+          <OpenDialogOnElementClick
+            element={Button}
+            elementProps={buttonProps('Suspend', 'error', 'tonal')}
+            dialog={ConfirmationDialog}
+            dialogProps={{ type: 'suspend-account' }}
+          />
+        </div>
       </CardContent>
     </Card>
   )

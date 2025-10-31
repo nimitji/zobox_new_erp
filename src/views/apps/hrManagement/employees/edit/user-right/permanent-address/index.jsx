@@ -9,12 +9,12 @@ import BillingAddress from './BillingAddress'
 const BillingPlans = ({ data }) => {
   return (
     <Grid container spacing={6}>
-      {/* <Grid size={{ xs: 12 }}>
+      <Grid size={{ xs: 12 }}>
         <CurrentPlan data={data} />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <PaymentMethod />
-      </Grid> */}
+      </Grid>
       <Grid size={{ xs: 12 }}>
         <BillingAddress />
       </Grid>

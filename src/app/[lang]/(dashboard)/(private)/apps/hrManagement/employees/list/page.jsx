@@ -2,7 +2,7 @@
 import UserList from '@views/apps/hrManagement/employees/list'
 
 // Data Imports
-import { getUserDatas } from '@/app/server/actions'
+import { fetchEmployeeData } from '@/app/server/actions'
 
 /**
  * ! If you need data using an API call, uncomment the below API code, update the `process.env.API_URL` variable in the
@@ -22,7 +22,7 @@ import { getUserDatas } from '@/app/server/actions'
 } */
 const UserListApp = async () => {
   // Vars
-  const data = await getUserDatas()
+  const data = await fetchEmployeeData()
 
   return <UserList userData={data} />
 }

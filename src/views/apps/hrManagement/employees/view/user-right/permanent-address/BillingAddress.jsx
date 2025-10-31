@@ -182,7 +182,6 @@
 
 // export default BillingAddress
 
-
 'use client'
 
 // React Imports
@@ -212,7 +211,7 @@ const BillingAddress = () => {
   }
 
   // 🏠 Extract address data — prefer permanentAddress, fallback to address[0]
-  const addressData = userData?.address?.[0] || (userData?.address?.[0] ?? {})
+  const addressData = userData?.permanentAddress || (userData?.permanentAddress ?? {})
 
   const {
     Plot,
@@ -274,4 +273,5 @@ const TableRow = ({ label, value }) => (
 )
 
 export default BillingAddress
+
 
