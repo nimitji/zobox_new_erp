@@ -799,6 +799,125 @@ return data.data // return only branch array
   }
 }
 
+// app/api/user.js
+
+export const changeUserPassword = async (_id, passworddata ) => {
+  try {
+   let payload ={password:passworddata}
+    console.log('POOJA',`${process.env.API_URL}`, payload)
+    const res = await fetch(`${process.env.API_URL}/zobiz/change-password/${_id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body:JSON.stringify( payload)
+    })
+console.log("pooja",res)
+    // If server sends invalid JSON or fails
+    if (!res.ok) {
+      throw new Error(`Request failed with status ${res.status}`)
+    }
+
+    const result = await res.json()
+    return result
+  } catch (error) {
+    console.error('❌ changeUserPassword error:', error)
+    return {
+      success: false,
+      message: 'Server error while changing password.'
+    }
+  }
+}
+
+
+export const updateUserAddress = async (userId, addressData) => {
+  try {
+    console.log("PIHU",userId, addressData)
+   
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-address/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(addressData)
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    console.error('❌ updateUserAddress error:', err)
+    return { success: false, message: 'Network or server error' }
+  }
+}
+
+export const updateUserPermanentAddress = async (userId, addressData) => {
+  try {
+    console.log("PIHU",userId, addressData)
+   
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-permanent-address/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(addressData)
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    console.error('❌ updateUserAddress error:', err)
+    return { success: false, message: 'Network or server error' }
+  }
+}
+
+export const updateUserBankDetails = async (userId, bank) => {
+  try {
+    console.log("PIHU")
+   
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-user-bank/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bank)
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    console.error('❌ updateUserAddress error:', err)
+    return { success: false, message: 'Network or server error' }
+  }
+}
+
+export const updateUserFamilyDetails = async (userId, family) => {
+  try {
+    console.log("PIHU")
+   
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-user-family-details/${userId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(family)
+    })
+
+    const result = await res.json()
+    return result
+  } catch (err) {
+    console.error('❌ updateUserAddress error:', err)
+    return { success: false, message: 'Network or server error' }
+  }
+}
+
+// export const updateUserDetails = async (userId, formData) => {
+//   try {
+//     console.log("PIHU")
+   
+//     const res = await fetch(`${process.env.API_URL}/zobiz/update-user/${userId}`, {
+//       method: 'PUT',
+//       // headers: { 'Content-Type': 'application/json' },
+//       body: formData
+//     })
+
+//     // const result = await res.json()
+//     return res
+//   } catch (err) {
+//     console.error('❌ updateUserAddress error:', err)
+//     return { success: false, message: 'Network or server error' }
+//   }
+// }
+
 export const fetchCountUser = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee`, {
