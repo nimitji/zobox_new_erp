@@ -31,16 +31,22 @@ const UserRight = ({ tabContentList }) => {
               <Tab
                 icon={<i className='tabler-bookmark' />}
                 value='billing-plans'
-                label='Billing & Plans'
+                label='Present Address'
+                iconPosition='start'
+              />
+                 <Tab
+                icon={<i className='tabler-bookmark' />}
+                value='permanent-address'
+                label='Permanent Address'
                 iconPosition='start'
               />
               <Tab
-                icon={<i className='tabler-bell' />}
+                icon={<i className='tabler-bookmark' />}
                 value='notifications'
-                label='Notifications'
+                label='Bank Details'
                 iconPosition='start'
               />
-              <Tab icon={<i className='tabler-link' />} value='connections' label='Connections' iconPosition='start' />
+            <Tab icon={<i className='tabler-users' />} value='connections' label='Family Details' iconPosition='start' />
             </CustomTabList>
           </Grid>
           <Grid size={{ xs: 12 }}>
