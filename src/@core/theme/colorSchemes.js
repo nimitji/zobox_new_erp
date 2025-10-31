@@ -153,6 +153,7 @@ const colorSchemes = skin => {
         }
       }
     },
+
 //     dark: {
 //       palette: {
 //         primary: {
@@ -364,6 +365,7 @@ dark: {
       activeChannel: '0 0 0',
       selectedChannel: '0 0 0'
     },
+
     // baaki components jaise Alert, Avatar, Chip, FilledInput, Tooltip etc.
     // unka background white ke saath match ho jayega automatically
     Alert: {
