@@ -739,6 +739,34 @@ return data.data // return only branch array
   }
 }
 
+
+export const fetchListOfAwardTypes= async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-award-types`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch user: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
 export const createEmployee = async (formData) => {
   try {
     // Map form fields to backend expected structure
@@ -900,6 +928,282 @@ export const updateUserFamilyDetails = async (userId, family) => {
   }
 }
 
+
+
+export const createAwardTypes = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+     console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-award-types`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create award types: ${errorText}`)
+    }
+
+    const awardTypesData = await res.json()
+
+    console.log("DEBUG createDepartment:", awardTypesData)
+    
+return awardTypesData
+  } catch (err) {
+    console.error('Failed to create department:', err)
+    throw err
+  }
+}
+
+export const fetchCountAwardTypes = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-award-types`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Award Types Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Award Types:', error)
+    throw error
+  }
+}
+
+export const fetchAwardTypes = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-types`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch award types: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Award Types Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching award types:', error)
+    throw error
+  }
+}
+
+export const editAwardTypes = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-award-types`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create award types: ${errorText}`)
+    }
+
+    const awardTypesData = await res.json()
+
+    console.log("DEBUG update Award Types:", awardTypesData)
+    
+return awardTypesData
+  } catch (err) {
+    console.error('Failed to update awad types:', err)
+    throw err
+  }
+}
+
+
+
+export const createAward = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,payload)
+  for (let pair of formData.entries()) {
+      console.log(pair[0] + ':', pair[1])
+    }
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-award`, {
+      method: 'POST',
+      // headers: {
+      //   'Content-Type': 'application/json'
+      // },
+      body: payload,
+      // cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create department: ${errorText}`)
+    }
+
+    const awardData = await res.json()
+
+    console.log("DEBUG createAward:", awardData)
+    
+return awardData
+  } catch (err) {
+    console.error('Failed to create award:', err)
+    throw err
+  }
+}
+
+
+
+export const fetchCountAward = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-award`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Award ', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Award:',error)
+    throw error
+  }
+}
+
+export const fetchAward = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-details`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch award types: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Award  Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching award ', error)
+    throw error
+  }
+}
+
+
+export const fetchUserDesignation = async (id) => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designation-of-user/${id}`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch award types: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched user designation  Data:', data)
+    
+return data// return only branch array
+  } catch (error) {
+    console.error('Error fetching user designation ', error)
+    throw error
+  }
+}
+
+export const fetchListOfNewDesignation= async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-new-designation`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch user: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+
+
 // export const updateUserDetails = async (userId, formData) => {
 //   try {
 //     console.log("PIHU")
@@ -941,6 +1245,131 @@ export const fetchCountUser = async () => {
 return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Employee:', error)
+    throw error
+  }
+}
+
+// export const createPromotions = async (formData) => {
+//   try {
+//     // Map form fields to backend expected structure
+//     const payload = formData
+
+// console.log("TODAYDEBUG",formData,payload)
+
+//     const res = await fetch(`${process.env.API_URL}/zobiz/create-promotions`, {
+//       method: 'POST',
+//       body: payload
+      
+//     })
+
+//     if (!res.ok) {
+//       const errorText = await res.text()
+
+//       throw new Error(`Failed to create department: ${errorText}`)
+//     }
+
+//     const departmentData = await res.json()
+
+//     console.log("DEBUG createDepartment:", departmentData)
+    
+// return departmentData
+//   } catch (err) {
+//     console.error('Failed to create department:', err)
+//     throw err
+//   }
+// }
+
+export const createPromotions = async (formData) => {
+  try {
+    // 🧠 Create a FormData object (for file + text upload)
+    const form = new FormData()
+
+    // Append all fields from formData
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        // If it's an object (like FileList), handle accordingly
+        if (Array.isArray(value)) {
+          value.forEach((v) => form.append(key, v))
+        } else {
+          form.append(key, value)
+        }
+      }
+    })
+
+    console.log("📤 Sending Promotion Data:", Object.fromEntries(form.entries()))
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-promotions`, {
+      method: 'POST',
+      body: form // ✅ send FormData (no need for Content-Type header)
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create promotion: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log("✅ Promotion Created:", data)
+    return data
+
+  } catch (err) {
+    console.error('❌ Failed to create promotion:', err)
+    throw err
+  }
+}
+
+
+export const fetchCountPromotion = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-promotions`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Promotion Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Promotion:', error)
+    throw error
+  }
+}
+
+export const fetchPromotions = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/get-promotions`,{
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch award types: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Award  Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching award ', error)
     throw error
   }
 }

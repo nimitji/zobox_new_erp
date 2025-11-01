@@ -162,130 +162,356 @@ const handleUpdateDepartment = async updatedData => {
   // Hooks
   const { lang: locale } = useParams()
 
-  const columns = useMemo(
-    () => [
-      {
-        id: 'select',
-        header: ({ table }) => (
-          <Checkbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler()
-            }}
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            {...{
-              checked: row.getIsSelected(),
-              disabled: !row.getCanSelect(),
-              indeterminate: row.getIsSomeSelected(),
-              onChange: row.getToggleSelectedHandler()
-            }}
-          />
-        )
-      },
-      columnHelper.accessor('name', {
-        header: 'Name',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-4'>
-            {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
-            <div className='flex flex-col'>
-              <Typography color='text.primary' className='font-medium'>
-                {row.original.name}
-              </Typography>
-              {/* <Typography variant='body2'>{row.original.username}</Typography> */}
-            </div>
-          </div>
-        )
-      }),
-      columnHelper.accessor('branch', {
-        header: 'Branch',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-2'>
-            {/* <Icon
-              className={userRoleObj[row.original.role].icon}
-              sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-            /> */}
-            <Typography className='capitalize' color='text.primary'>
-              {row.original.branch}
-            </Typography>
-          </div>
-        )
-      }),
-      columnHelper.accessor('description', {
-        header: 'Description',
-        cell: ({ row }) => (
-          <Typography className='capitalize' color='text.primary'>
-            {row.original.description}
-          </Typography>
-        )
-      }),
+//   const columns = useMemo(
+//     () => [
+//       {
+//         id: 'select',
+//         header: ({ table }) => (
+//           <Checkbox
+//             {...{
+//               checked: table.getIsAllRowsSelected(),
+//               indeterminate: table.getIsSomeRowsSelected(),
+//               onChange: table.getToggleAllRowsSelectedHandler()
+//             }}
+//           />
+//         ),
+//         cell: ({ row }) => (
+//           <Checkbox
+//             {...{
+//               checked: row.getIsSelected(),
+//               disabled: !row.getCanSelect(),
+//               indeterminate: row.getIsSomeSelected(),
+//               onChange: row.getToggleSelectedHandler()
+//             }}
+//           />
+//         )
+//       },
+//       columnHelper.accessor('name', {
+//         header: 'Name',
+//         cell: ({ row }) => (
+//           <div className='flex items-center gap-4'>
+//             {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
+//             <div className='flex flex-col'>
+//               <Typography color='text.primary' className='font-medium'>
+//                 {row.original.name}
+//               </Typography>
+//               {/* <Typography variant='body2'>{row.original.username}</Typography> */}
+//             </div>
+//           </div>
+//         )
+//       }),
+//       columnHelper.accessor('branch', {
+//         header: 'Branch',
+//         cell: ({ row }) => (
+//           <div className='flex items-center gap-2'>
+//             {/* <Icon
+//               className={userRoleObj[row.original.role].icon}
+//               sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
+//             /> */}
+//             <Typography className='capitalize' color='text.primary'>
+//               {row.original.branch}
+//             </Typography>
+//           </div>
+//         )
+//       }),
+//       columnHelper.accessor('description', {
+//         header: 'Description',
+//         cell: ({ row }) => (
+//           <Typography className='capitalize' color='text.primary'>
+//             {row.original.description}
+//           </Typography>
+//         )
+//       }),
      
-      columnHelper.accessor('status', {
-        header: 'Status',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-3'>
-            <Chip
-              variant='tonal'
-              label={row.original.status}
-              size='small'
-              color={userStatusObj[row.original.status]}
-              className='capitalize'
-            />
-          </div>
-        )
-      }),
+//       columnHelper.accessor('status', {
+//         header: 'Status',
+//         cell: ({ row }) => (
+//           <div className='flex items-center gap-3'>
+//             <Chip
+//               variant='tonal'
+//               label={row.original.status}
+//               size='small'
+//               color={userStatusObj[row.original.status]}
+//               className='capitalize'
+//             />
+//           </div>
+//         )
+//       }),
    
 
-      columnHelper.accessor('createdAt', {
-  header: 'Created At',
-  enableSorting: true, // ✅ sorting enable
-  cell: ({ row }) => {
-    const formattedDate = new Date(row.original.createdAt).toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric'
-    })
-    return (
-      <Typography color="text.primary" className="capitalize">
-        {formattedDate}
-      </Typography>
-    )
-  }
-}),
+//       columnHelper.accessor('createdAt', {
+//   header: 'Created At',
+//   enableSorting: true, // ✅ sorting enable
+//   cell: ({ row }) => {
+//     const formattedDate = new Date(row.original.createdAt).toLocaleDateString('en-GB', {
+//       day: '2-digit',
+//       month: 'short',
+//       year: 'numeric'
+//     })
+//     return (
+//       <Typography color="text.primary" className="capitalize">
+//         {formattedDate}
+//       </Typography>
+//     )
+//   }
+// }),
 
-      columnHelper.accessor('action', {
-        header: 'Action',
-        cell: ({ row }) => (
-          <div className='flex items-center'>
+//       columnHelper.accessor('action', {
+//         header: 'Action',
+//         cell: ({ row }) => (
+//           <div className='flex items-center'>
         
 
-<IconButton
-  onClick={() => {
-    setSelectedDepartment(row.original)  // 👈 branch ka data store karega
-    setViewOpen(true)                // 👈 drawer open karega
-  }}
->
-  <i className='tabler-eye text-textSecondary' />
-</IconButton>
+// <IconButton
+//   onClick={() => {
+//     setSelectedDepartment(row.original)  // 👈 branch ka data store karega
+//     setViewOpen(true)                // 👈 drawer open karega
+//   }}
+// >
+//   <i className='tabler-eye text-textSecondary' />
+// </IconButton>
 
-<IconButton onClick={() => handleEditClick(row.original)}>
-  <i className='tabler-edit text-textSecondary' />
-</IconButton>
+// {/* <IconButton onClick={() => handleEditClick(row.original)}>
+//   <i className='tabler-edit text-textSecondary' />
+// </IconButton> */}
 
 
          
 
+//           </div>
+//         ),
+//         enableSorting: false
+//       })
+//     ],
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     [data, filteredData]
+//   )
+
+const columns = useMemo(
+  () => [
+    // ✅ Selection checkbox
+    {
+      id: 'select',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          indeterminate={row.getIsSomeSelected()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      )
+    },
+
+    // 🧍 Employee (username + userId)
+    columnHelper.accessor('username', {
+      header: 'Employee',
+      cell: ({ row }) => {
+        const username = row.original.username || '—'
+        const userId = row.original.userId || ''
+
+        return (
+          <div className='flex flex-col'>
+            <Typography color='text.primary' className='font-medium'>
+              {username}
+            </Typography>
+            <Typography variant='body2' color='text.secondary'>
+              {userId}
+            </Typography>
           </div>
-        ),
-        enableSorting: false
-      })
-    ],
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data, filteredData]
-  )
+        )
+      }
+    }),
+
+    // 🏆 Award Type
+    columnHelper.accessor('awardName', {
+      header: 'Award Type',
+      enableSorting: true,
+      cell: ({ row }) => (
+        <Typography color='text.primary' className='capitalize'>
+          {row.original.awardName}
+        </Typography>
+      )
+    }),
+
+    // 📅 Award Date
+    columnHelper.accessor('awardDate', {
+      header: 'Award Date',
+      enableSorting: true,
+      cell: ({ row }) => {
+        const formattedDate = new Date(row.original.awardDate).toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        })
+        return (
+          <Typography color='text.primary'>
+            {formattedDate}
+          </Typography>
+        )
+      }
+    }),
+
+    // 🎁 Gift
+    columnHelper.accessor('gift', {
+      header: 'Gift',
+      cell: ({ row }) => (
+        <Typography color='text.primary'>
+          {row.original.gift}
+        </Typography>
+      )
+    }),
+
+    // 💰 Monetary Value
+    columnHelper.accessor('monetaryValue', {
+      header: 'Value',
+      cell: ({ row }) => (
+        <Typography color='text.primary'>
+          ₹ {row.original.monetaryValue || '0'}
+        </Typography>
+      )
+    }),
+
+    // 📂 Files (Photo + Certificate buttons)
+    // columnHelper.accessor('files', {
+    //   header: 'Files',
+    //   cell: ({ row }) => {
+    //     const { photo, certificate } = row.original
+
+    //     const handleDownload = (url) => {
+    //       if (!url) return
+    //       const link = document.createElement('a')
+    //       link.href = url
+    //       link.setAttribute('download', '')
+    //       document.body.appendChild(link)
+    //       link.click()
+    //       document.body.removeChild(link)
+    //     }
+
+   
+
+    //     return (
+    //       <div className='flex gap-2'>
+    //         <Button
+    //           variant='outlined'
+    //           size='small'
+    //           onClick={() => handleDownload(photo)}
+    //           sx={{ textTransform: 'none', borderRadius: '8px', px: 1, minWidth: 0 }}
+    //         >
+    //           📸
+    //         </Button>
+    //         <Button
+    //           variant='outlined'
+    //           size='small'
+    //           onClick={() => handleDownload(certificate)}
+    //           sx={{ textTransform: 'none', borderRadius: '8px', px: 1, minWidth: 0 }}
+    //         >
+    //           📄
+    //         </Button>
+    //       </div>
+    //     )
+    //   }
+    // }),
+
+    columnHelper.accessor('files', {
+  header: 'Files',
+  cell: ({ row }) => {
+    const { photo, certificate } = row.original
+
+    const handleDownload = (url, filename = 'file') => {
+      if (!url) return
+
+      try {
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        link.target = '_blank' // ✅ works even for GCS public URLs
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      } catch (error) {
+        console.error('Download failed:', error)
+        alert('Failed to download file.')
+      }
+    }
+
+    return (
+      <div className='flex gap-2'>
+        {/* 📸 Photo Button */}
+        <Button
+          variant='outlined'
+          size='small'
+          onClick={() => handleDownload(photo, 'photo')}
+          sx={{
+            textTransform: 'none',
+            borderRadius: '8px',
+            px: 2,
+            minWidth: '80px',
+            color: '#111',
+            borderColor: '#111',
+            fontWeight: 500
+          }}
+        >
+          Photo
+        </Button>
+
+        {/* 📄 Certificate Button */}
+        <Button
+          variant='outlined'
+          size='small'
+          onClick={() => handleDownload(certificate, 'certificate')}
+          sx={{
+            textTransform: 'none',
+            borderRadius: '8px',
+            px: 2,
+            minWidth: '110px',
+            color: '#111',
+            borderColor: '#111',
+            fontWeight: 500
+          }}
+        >
+          Certificate
+        </Button>
+      </div>
+    )
+  }
+}),
+
+
+
+
+
+    // ⚙️ Action (eye icon)
+    columnHelper.accessor('action', {
+      header: 'Action',
+      enableSorting: false,
+      cell: ({ row }) => (
+        <div className='flex items-center'>
+          <IconButton
+            onClick={() => {
+              setSelectedDepartment(row.original)
+              setViewOpen(true)
+            }}
+          >
+            <i className='tabler-eye text-textSecondary' />
+          </IconButton>
+          {/* <IconButton onClick={() => handleEditClick(row.original)}>
+   <i className='tabler-edit text-textSecondary' />
+ </IconButton> */}
+        </div>
+      )
+    })
+  ],
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [data, filteredData]
+)
+
 
   const table = useReactTable({
     data,
@@ -346,7 +572,7 @@ const handleUpdateDepartment = async updatedData => {
             <DebouncedInput
               value={globalFilter ?? ''}
               onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search Department'
+              placeholder='Search Award'
               className='max-sm:is-full'
             />
           
@@ -357,7 +583,7 @@ const handleUpdateDepartment = async updatedData => {
               onClick={() => setAddUserOpen(!addUserOpen)}
               className='max-sm:is-full'
             >
-              Add Department
+              Add Award
             </Button>
           </div>
         </div>
@@ -441,12 +667,12 @@ const handleUpdateDepartment = async updatedData => {
   departmentData={selectedDepartment}
 />
 
-<EditDepartment
+{/* <EditDepartment
   open={isEditOpen}
   handleClose={() => setIsEditOpen(false)}
   selectedDepartment={selectedDepartment}
   onSave={handleUpdateDepartment}
-/>
+/> */}
 
     </>
   )

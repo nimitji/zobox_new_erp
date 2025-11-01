@@ -18,7 +18,7 @@ import MuiAlert from '@mui/material/Alert'
 import { useForm, Controller } from 'react-hook-form'
 
 // 🧠 Server Action
-import { createDepartment,fetchListOfBranch } from '../../../../app/server/actions.js'
+import { createAwardTypes,fetchAwardTypes } from '../../../../app/server/actions.js'
 
 // 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
@@ -46,7 +46,6 @@ const AddDepartmentDrawer = props => {
   } = useForm({
     defaultValues: {
       name: '',
-      branch: '',
       description: '',
       status: 'Active'
     }
@@ -56,7 +55,7 @@ const AddDepartmentDrawer = props => {
     useEffect(() => {
     const loadBranches = async () => {
       try {
-        const response = await fetchListOfBranch() // server action call
+        const response = await fetchAwardTypes() // server action call
         // Expected response: { success: true, data: [ { _id, branchName } ] }
         if (response?.success && Array.isArray(response.data)) {
           setBranches(response.data)
@@ -81,12 +80,11 @@ const AddDepartmentDrawer = props => {
     try {
       const payload = {
         name: data.name,
-        branch: data.branch,
         description: data.description,
         status: data.status
       }
 
-      const response = await createDepartment(payload)
+      const response = await createAwardTypes(payload)
 
       if (response?.success) {
         setSnackbar({ open: true, message: response.message || 'Branch created successfully', severity: 'success' })
@@ -125,7 +123,7 @@ const AddDepartmentDrawer = props => {
         sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
       >
         <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5'>Add Department</Typography>
+          <Typography variant='h5'>Add Award Types</Typography>
           <IconButton size='small' onClick={handleReset}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
@@ -143,8 +141,8 @@ const AddDepartmentDrawer = props => {
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label='Department Name'
-                  placeholder='Human Resources'
+                  label='Award Type Name'
+                  placeholder='Employee of the Year'
                   error={!!errors.name}
                   helperText={errors.name && 'This field is required.'}
                 />
@@ -152,33 +150,7 @@ const AddDepartmentDrawer = props => {
             />
 
             {/* //Dynamic dropdown  */}
-                    <Controller
-              name='branch'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  select
-                  fullWidth
-                  label='Branch'
-                  {...field}
-                  error={!!errors.branch}
-                  helperText={errors.branch && 'Branch is required.'}
-                >
-                  {loadingBranches ? (
-                    <MenuItem disabled>Loading branches...</MenuItem>
-                  ) : branches.length > 0 ? (
-                    branches.map(branch => (
-                      <MenuItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>No branches found</MenuItem>
-                  )}
-                </CustomTextField>
-              )}
-            />
+            
 
             <Controller
               name='description'
@@ -189,7 +161,7 @@ const AddDepartmentDrawer = props => {
                   {...field}
                   fullWidth
                   label='Description'
-                  placeholder=''
+                  placeholder='Annual recognition for exceptional contribution '
                   error={!!errors.description}
                   helperText={errors.description && 'This field is required.'}
                 />

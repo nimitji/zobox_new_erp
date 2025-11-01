@@ -51,7 +51,7 @@ import CustomAvatar from '@core/components/mui/Avatar'
 // Util Imports
 import { getInitials } from '@/utils/getInitials'
 import { getLocalizedUrl } from '@/utils/i18n'
-import {editDepartment,fetchDepartments} from "../../../../app/server/actions"
+import {editAwardTypes,fetchAwardTypes} from "../../../../app/server/actions"
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
@@ -141,7 +141,7 @@ const handleEditClick = department => {
 // }
 
   const refreshDepartments = async () => {
-    const res = await fetchDepartments()
+    const res = await fetchAwardTypes()
     setData(res)
     setFilteredData(res)
   }
@@ -149,8 +149,8 @@ const handleEditClick = department => {
 const handleUpdateDepartment = async updatedData => {
   try {
     console.log('Updated branch:', updatedData)
-    //editDepartment
-    const response = await editDepartment(updatedData)
+    //editAwardTypes
+    const response = await editAwardTypes(updatedData)
     await refreshDepartments()
     return response
   } catch (error) {
@@ -200,20 +200,7 @@ const handleUpdateDepartment = async updatedData => {
           </div>
         )
       }),
-      columnHelper.accessor('branch', {
-        header: 'Branch',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-2'>
-            {/* <Icon
-              className={userRoleObj[row.original.role].icon}
-              sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-            /> */}
-            <Typography className='capitalize' color='text.primary'>
-              {row.original.branch}
-            </Typography>
-          </div>
-        )
-      }),
+    
       columnHelper.accessor('description', {
         header: 'Description',
         cell: ({ row }) => (
@@ -346,7 +333,7 @@ const handleUpdateDepartment = async updatedData => {
             <DebouncedInput
               value={globalFilter ?? ''}
               onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search Department'
+              placeholder='Search Award Types'
               className='max-sm:is-full'
             />
           
@@ -357,7 +344,7 @@ const handleUpdateDepartment = async updatedData => {
               onClick={() => setAddUserOpen(!addUserOpen)}
               className='max-sm:is-full'
             >
-              Add Department
+              Add Award Types
             </Button>
           </div>
         </div>

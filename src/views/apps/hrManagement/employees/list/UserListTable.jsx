@@ -42,6 +42,8 @@ import OptionMenu from '@core/components/option-menu'
 import TablePaginationComponent from '@components/TablePaginationComponent'
 import CustomTextField from '@core/components/mui/TextField'
 import CustomAvatar from '@core/components/mui/Avatar'
+import ExportButton from '../../../../../@menu/components/tables/ExportButton'
+
 
 // Utils
 import { getInitials } from '@/utils/getInitials'
@@ -279,7 +281,7 @@ const UserListTable = ({ tableData = [] }) => {
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues()
   })
-
+  const filteredDatas = table.getFilteredRowModel().rows.map(row => row.original)
   // ====== Render ======
   return (
     <>
@@ -303,9 +305,10 @@ const UserListTable = ({ tableData = [] }) => {
               placeholder='Search User'
               className='max-sm:is-full'
             />
-            <Button color='secondary' variant='tonal' startIcon={<i className='tabler-upload' />}>
+            {/* <Button color='secondary' variant='tonal' startIcon={<i className='tabler-upload' />}>
               Export
-            </Button>
+            </Button> */}
+            <ExportButton filteredData={filteredDatas} />
             <Button
               variant='contained'
               startIcon={<i className='tabler-plus' />}
