@@ -17,14 +17,14 @@ import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+import {fetchListOfBranch} from "../../../../app/server/actions"
+
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   const [formData, setFormData] = useState({
     _id: '',
     name: '',
-    branch: '',
-    description: '',
+   description: '',
     status: 'Active'
   })
 console.log("POOJA456",formData)
@@ -80,20 +80,19 @@ console.log("POOJA456",formData)
 /
 
 useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
+  if (selectedDepartment ) {
+    // const matchedBranch = branches.find(
+    //   b => b.branchName.trim() === selectedDepartment.branch.trim()
+    // )
 
     setFormData({
       _id: selectedDepartment._id || '',
       name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
       description: selectedDepartment.description || '',
       status: selectedDepartment.status || 'Active'
     })
   }
-}, [selectedDepartment, branches.length])
+}, [selectedDepartment, branches])
 
 
   // ✅ Handle save with snackbar feedback
@@ -130,7 +129,7 @@ useEffect(() => {
         {/* ✅ Header same as AddBranchDrawer */}
         <div className='flex items-center justify-between plb-5 pli-6'>
           <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Edit Department
+            Edit Award Types
           </Typography>
           <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
@@ -143,7 +142,7 @@ useEffect(() => {
         <Box sx={{ p: 6 }}>
           <form className='flex flex-col gap-5'>
             <TextField
-              label='Department Name'
+              label='Award Types Name'
               fullWidth
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
@@ -156,25 +155,7 @@ useEffect(() => {
               onChange={e => setFormData({ ...formData, Plot: e.target.value })}
             /> */}
 
-             <TextField
-              select
-              label='Branch'
-              fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
-            >
-              {loadingBranches ? (
-                <MenuItem disabled>Loading branches...</MenuItem>
-              ) : branches.length > 0 ? (
-                branches.map(branch => (
-                  <MenuItem key={branch._id} value={branch._id}>
-                    {branch.branchName}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No branches found</MenuItem>
-              )}
-            </TextField>
+             
 
             <TextField
               label='Description'

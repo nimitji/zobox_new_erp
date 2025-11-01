@@ -1,10 +1,10 @@
 
 
+
+
 'use client'
 
-import { useState,useEffect } from 'react'
-
-// 📦 MUI Imports
+import { useState, useEffect } from 'react'
 import Button from '@mui/material/Button'
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
@@ -13,105 +13,161 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 
-// 🧩 Third-party Imports
+import FileUploadController from '../../../../components/fileUploadController'
 import { useForm, Controller } from 'react-hook-form'
 
-// 🧠 Server Action
-import { createDepartment,fetchListOfBranch } from '../../../../app/server/actions.js'
+// ✅ server actions
+import {
+  createPromotions,
+  fetchListOfUser,
+  fetchUserDesignation,
+  fetchListOfNewDesignation
+} from '../../../../app/server/actions.js'
 
-// 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
-import { description } from 'valibot'
-
-const initialData = {
-  country: '',
-  contact: ''
-}
 
 const AddDepartmentDrawer = props => {
-  const { open, handleClose, userData, setData, refreshDepartments } = props
+  const { open, handleClose, refreshDepartments } = props
 
-  const [formData, setFormData] = useState(initialData)
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
-   const [branches, setBranches] = useState([]) // 🔹 Dynamic dropdown data
-  const [loadingBranches, setLoadingBranches] = useState(true)
+  const [users, setUsers] = useState([])
+  const [loadingUsers, setLoadingUsers] = useState(true)
 
-  // 🔧 react-hook-form setup
+  const [designations, setDesignations] = useState([])
+  const [loadingDesignations, setLoadingDesignations] = useState(true)
+
+  // 💡 maintain both displayName and id of designation
+  const [designationName, setDesignationName] = useState('')
+  const [designationId, setDesignationId] = useState('')
+
   const {
     control,
-    reset: resetForm,
     handleSubmit,
+    reset,
+    setValue,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      name: '',
-      branch: '',
-      description: '',
-      status: 'Active'
+      employee: '',
+      previousDesignation: '',
+      newDesignation: '',
+      promotionDate: '',
+      effectiveDate: '',
+      salaryAdjustment: '',
+      remark: '',
+      status: 'Pending',
+      document: ''
     }
   })
 
-  // 🧠 Fetch Branch List from backend
-    useEffect(() => {
-    const loadBranches = async () => {
+  // 🔹 Load employees
+  useEffect(() => {
+    const loadUsers = async () => {
       try {
-        const response = await fetchListOfBranch() // server action call
-        // Expected response: { success: true, data: [ { _id, branchName } ] }
+        const response = await fetchListOfUser()
         if (response?.success && Array.isArray(response.data)) {
-          setBranches(response.data)
-        } else if (Array.isArray(response)) {
-          // handle array return directly
-          setBranches(response)
-        } else {
-          console.warn('Invalid branch data format:', response)
-        }
+          setUsers(response.data)
+        } else if (Array.isArray(response)) setUsers(response)
       } catch (err) {
-        console.error('Error fetching branches:', err)
+        console.error('Error fetching users:', err)
       } finally {
-        setLoadingBranches(false)
+        setLoadingUsers(false)
       }
     }
-
-    loadBranches()
+    loadUsers()
   }, [])
 
-  // ✅ Form submit
-  const onSubmit = async data => {
+  // 🔹 Load new designation list
+  useEffect(() => {
+    const loadDesignations = async () => {
+      try {
+        const response = await fetchListOfNewDesignation()
+        if (response?.success && Array.isArray(response.data)) {
+          setDesignations(response.data)
+        } else if (Array.isArray(response)) setDesignations(response)
+      } catch (err) {
+        console.error('Error fetching designations:', err)
+      } finally {
+        setLoadingDesignations(false)
+      }
+    }
+    loadDesignations()
+  }, [])
+
+  // 🔹 When employee changes, fetch their current designation
+  const handleEmployeeChange = async userId => {
     try {
-      const payload = {
-        name: data.name,
-        branch: data.branch,
-        description: data.description,
-        status: data.status
-      }
+      const res = await fetchUserDesignation(userId)
+      if (res?.success && res.data?.designation) {
+        const { _id, name, department } = res.data.designation
 
-      const response = await createDepartment(payload)
+        // Format name: designationName - departmentName (branchName)
+        const dept = department?.name || ''
+        const branch = department?.branch?.branchName || ''
+        const displayName = `${name}${dept ? ` - ${dept}` : ''}${branch ? ` (${branch})` : ''}`
 
-      if (response?.success) {
-        setSnackbar({ open: true, message: response.message || 'Branch created successfully', severity: 'success' })
-
-        // Refresh list (parent function)
-        if (typeof refreshDepartments === 'function') {
-          await refreshDepartments()
-        }
-
-        handleClose()
-        setFormData(initialData)
-        resetForm()
+        setDesignationName(displayName)
+        setDesignationId(_id)
+        setValue('previousDesignation', _id)
       } else {
-        setSnackbar({ open: true, message: response.message || 'Failed to create branch', severity: 'error' })
+        setDesignationName('')
+        setDesignationId('')
+        setValue('previousDesignation', '')
       }
-    } catch (error) {
-      console.error('Error creating branch:', error)
-      setSnackbar({ open: true, message: 'Error creating branch', severity: 'error' })
+    } catch (err) {
+      console.error('Error fetching user details:', err)
     }
   }
 
-  const handleReset = () => {
-    handleClose()
-    setFormData(initialData)
-    resetForm()
+  // ✅ Submit form
+  const onSubmit = async data => {
+    try {
+      const payload = {
+        employee: data.employee,
+        previousDesignation: data.previousDesignation,
+        newDesignation: data.newDesignation,
+        promotionDate: data.promotionDate,
+        effectiveDate: data.effectiveDate,
+        salaryAdjustment: data.salaryAdjustment,
+        remark: data.remark,
+        status: data.status,
+        document: data.document
+      }
+
+      console.log('📤 Promotion Payload:', payload)
+      const response = await createPromotions(payload)
+
+      if (response?.success) {
+        setSnackbar({
+          open: true,
+          message: 'Promotion created successfully!',
+          severity: 'success'
+        })
+        await refreshDepartments?.()
+        handleClose()
+        reset()
+        setDesignationName('')
+        setDesignationId('')
+      } else {
+        setSnackbar({
+          open: true,
+          message: response.message || 'Failed to create promotion',
+          severity: 'error'
+        })
+      }
+    } catch (err) {
+      console.error(err)
+      setSnackbar({
+        open: true,
+        message: 'Error creating promotion',
+        severity: 'error'
+      })
+    }
   }
 
   return (
@@ -119,111 +175,226 @@ const AddDepartmentDrawer = props => {
       <Drawer
         open={open}
         anchor='right'
-        variant='temporary'
-        onClose={handleReset}
-        ModalProps={{ keepMounted: true }}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
+        onClose={() => {
+          handleClose()
+          reset()
+          setDesignationName('')
+          setDesignationId('')
+        }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } } }}
       >
         <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5'>Add Department</Typography>
-          <IconButton size='small' onClick={handleReset}>
+          <Typography variant='h5'>Add Promotion</Typography>
+          <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
         </div>
         <Divider />
 
-        {/* 🧾 Form Section */}
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
-            <Controller
-              name='name'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Department Name'
-                  placeholder='Human Resources'
-                  error={!!errors.name}
-                  helperText={errors.name && 'This field is required.'}
-                />
-              )}
-            />
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
 
-            {/* //Dynamic dropdown  */}
-                    <Controller
-              name='branch'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  select
-                  fullWidth
-                  label='Branch'
-                  {...field}
-                  error={!!errors.branch}
-                  helperText={errors.branch && 'Branch is required.'}
-                >
-                  {loadingBranches ? (
-                    <MenuItem disabled>Loading branches...</MenuItem>
-                  ) : branches.length > 0 ? (
-                    branches.map(branch => (
-                      <MenuItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>No branches found</MenuItem>
-                  )}
-                </CustomTextField>
-              )}
-            />
+          {/* Employee Dropdown */}
+          <Controller
+            name='employee'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Employee'
+                {...field}
+                onChange={e => {
+                  field.onChange(e)
+                  handleEmployeeChange(e.target.value)
+                }}
+                error={!!errors.employee}
+                helperText={errors.employee && 'Employee is required.'}
+              >
+                {loadingUsers ? (
+                  <MenuItem disabled>Loading employees...</MenuItem>
+                ) : users.length > 0 ? (
+                  users.map(user => (
+                    <MenuItem key={user._id} value={user._id}>
+                      {user.username}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No employees found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
 
-            <Controller
-              name='description'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Description'
-                  placeholder=''
-                  error={!!errors.description}
-                  helperText={errors.description && 'This field is required.'}
-                />
-              )}
-            />
+          {/* Previous Designation */}
+          <CustomTextField
+            fullWidth
+            label='Previous Designation'
+            value={designationName || ''}
+            InputProps={{
+              readOnly: true,
+              sx: {
+                fontWeight: 'bold',
+                color: '#000000',
+                WebkitTextFillColor: '#000000',
+                cursor: 'default'
+              }
+            }}
+          />
+          <Controller
+            name='previousDesignation'
+            control={control}
+            render={({ field }) => (
+              <input type='hidden' {...field} value={designationId} />
+            )}
+          />
 
-   
+          {/* New Designation */}
+          <Controller
+            name='newDesignation'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='New Designation'
+                {...field}
+                error={!!errors.newDesignation}
+                helperText={errors.newDesignation && 'New Designation is required.'}
+              >
+                {loadingDesignations ? (
+                  <MenuItem disabled>Loading designations...</MenuItem>
+                ) : designations.length > 0 ? (
+                  designations.map(d => (
+                    <MenuItem key={d._id} value={d._id}>
+                      {d.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No designations found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
 
-            <Controller
-              name='status'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField select fullWidth label='Select Status' {...field}>
-                  <MenuItem value='Active'>Active</MenuItem>
-                  <MenuItem value='Inactive'>Inactive</MenuItem>
-                </CustomTextField>
-              )}
-            />
+          {/* Promotion Date */}
+     
+ <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <Controller
+    name='promotionDate'
+    control={control}
+    rules={{ required: 'promotionDate is required' }}
+    render={({ field }) => (
+      <DatePicker
+        label='Promotion Date'
+        value={field.value ? dayjs(field.value) : null}
+        onChange={newValue => field.onChange(newValue ? newValue.toISOString() : null)}
+        enableAccessibleFieldDOMStructure={false} // ✅ Fix for MUI v7+
+        slots={{ textField: CustomTextField }}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            error: !!errors.promotionDate,
+            helperText: errors.promotionDate?.message
+          }
+        }}
+      />
+    )}
+  />
+</LocalizationProvider>
+ <LocalizationProvider dateAdapter={AdapterDayjs}>
+  <Controller
+    name='effectiveDate'
+    control={control}
+    rules={{ required: 'Effective DateS is required' }}
+    render={({ field }) => (
+      <DatePicker
+        label='Effective Date'
+        value={field.value ? dayjs(field.value) : null}
+        onChange={newValue => field.onChange(newValue ? newValue.toISOString() : null)}
+        enableAccessibleFieldDOMStructure={false} // ✅ Fix for MUI v7+
+        slots={{ textField: CustomTextField }}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            error: !!errors.effectiveDate,
+            helperText: errors.effectiveDate?.message
+          }
+        }}
+      />
+    )}
+  />
+</LocalizationProvider>
 
-            {/* ✅ Action Buttons */}
-            <div className='flex items-center gap-4'>
-              <Button variant='contained' type='submit'>
-                Submit
-              </Button>
-              <Button variant='tonal' color='error' onClick={handleReset}>
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
+          {/* Salary Adjustment */}
+          <Controller
+            name='salaryAdjustment'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <CustomTextField
+                {...field}
+                fullWidth
+                label='Salary Adjustment'
+                error={!!errors.salaryAdjustment}
+                helperText={errors.salaryAdjustment && 'Salary adjustment is required.'}
+              />
+            )}
+          />
+
+          {/* Reason for Promotion */}
+          <Controller
+            name='remark'
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <CustomTextField
+                {...field}
+                fullWidth
+                label='Reason for Promotion'
+                error={!!errors.remark}
+                helperText={errors.remark && 'This field is required.'}
+              />
+            )}
+          />
+
+          {/* Status */}
+          <Controller
+            name='status'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField select fullWidth label='Status' {...field}>
+                <MenuItem value='Approved'>Approved</MenuItem>
+                <MenuItem value='Pending'>Pending</MenuItem>
+                <MenuItem value='Rejected'>Rejected</MenuItem>
+              </CustomTextField>
+            )}
+          />
+
+          {/* Document Upload */}
+          <FileUploadController
+            control={control}
+            errors={errors}
+            name='document'
+            label='Upload Document'
+            required
+            accept='image/*,application/pdf'
+          />
+
+          {/* Buttons */}
+          <div className='flex items-center gap-4'>
+            <Button variant='contained' type='submit'>
+              Submit
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleClose}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       </Drawer>
 
-      {/* ✅ Snackbar for Success/Error */}
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -231,14 +402,11 @@ const AddDepartmentDrawer = props => {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
         <MuiAlert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           variant='filled'
           sx={{
-            width: '100%',
             backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
-            color: 'white',
-            fontWeight: 500
+            color: 'white'
           }}
         >
           {snackbar.message}
@@ -249,5 +417,8 @@ const AddDepartmentDrawer = props => {
 }
 
 export default AddDepartmentDrawer
+
+
+
 
 
