@@ -20,7 +20,7 @@ import TablePagination from '@mui/material/TablePagination'
 import MenuItem from '@mui/material/MenuItem'
 import ViewDepartment from './ViewDepartment'
 import EditDepartment from './EditDepartment'
-import ExportButton from '../../../../@menu/components/tables/ExportButton'
+import ExportButton from '../../../../../@menu/components/tables/ExportButton'
 
 
 
@@ -51,7 +51,7 @@ import CustomAvatar from '@core/components/mui/Avatar'
 // Util Imports
 import { getInitials } from '@/utils/getInitials'
 import { getLocalizedUrl } from '@/utils/i18n'
-import {editDepartment,fetchDepartments} from "../../../../app/server/actions"
+import {editGoalType,fetchGoalType} from "../../../../../app/server/actions"
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
@@ -141,20 +141,20 @@ const handleEditClick = department => {
 // }
 
   const refreshDepartments = async () => {
-    const res = await fetchDepartments()
+    const res = await fetchGoalType()
     setData(res)
     setFilteredData(res)
   }
 
 const handleUpdateDepartment = async updatedData => {
   try {
-    console.log('Updated branch:', updatedData)
+    console.log('Updated goal type:', updatedData)
     //editDepartment
-    const response = await editDepartment(updatedData)
+    const response = await editGoalType(updatedData)
     await refreshDepartments()
     return response
   } catch (error) {
-    console.error('Error updating department:', error)
+    console.error('Error updating goal type:', error)
   }
 }
 
@@ -186,36 +186,25 @@ const handleUpdateDepartment = async updatedData => {
           />
         )
       },
-      columnHelper.accessor('name', {
+      columnHelper.accessor('goalTypeName', {
         header: 'Name',
+         enableSorting: true,
         cell: ({ row }) => (
           <div className='flex items-center gap-4'>
             {/* {getAvatar({ avatar: row.original.avatar, fullName: row.original.fullName })} */}
             <div className='flex flex-col'>
               <Typography color='text.primary' className='font-medium'>
-                {row.original.name}
+                {row.original.goalTypeName}
               </Typography>
               {/* <Typography variant='body2'>{row.original.username}</Typography> */}
             </div>
           </div>
         )
       }),
-      columnHelper.accessor('branch', {
-        header: 'Branch',
-        cell: ({ row }) => (
-          <div className='flex items-center gap-2'>
-            {/* <Icon
-              className={userRoleObj[row.original.role].icon}
-              sx={{ color: `var(--mui-palette-${userRoleObj[row.original.role].color}-main)` }}
-            /> */}
-            <Typography className='capitalize' color='text.primary'>
-              {row.original.branch}
-            </Typography>
-          </div>
-        )
-      }),
+    
       columnHelper.accessor('description', {
         header: 'Description',
+         enableSorting: true,
         cell: ({ row }) => (
           <Typography className='capitalize' color='text.primary'>
             {row.original.description}
@@ -225,6 +214,7 @@ const handleUpdateDepartment = async updatedData => {
      
       columnHelper.accessor('status', {
         header: 'Status',
+         enableSorting: true,
         cell: ({ row }) => (
           <div className='flex items-center gap-3'>
             <Chip
@@ -346,7 +336,7 @@ const handleUpdateDepartment = async updatedData => {
             <DebouncedInput
               value={globalFilter ?? ''}
               onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search Department'
+              placeholder='Search Goal Type'
               className='max-sm:is-full'
             />
           
@@ -357,7 +347,7 @@ const handleUpdateDepartment = async updatedData => {
               onClick={() => setAddUserOpen(!addUserOpen)}
               className='max-sm:is-full'
             >
-              Add Department
+              Add Goal Type
             </Button>
           </div>
         </div>

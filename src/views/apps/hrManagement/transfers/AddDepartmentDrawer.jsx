@@ -1,117 +1,191 @@
 
 
+
 'use client'
 
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 // 📦 MUI Imports
-import Button from '@mui/material/Button'
-import Drawer from '@mui/material/Drawer'
-import IconButton from '@mui/material/IconButton'
-import MenuItem from '@mui/material/MenuItem'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import Snackbar from '@mui/material/Snackbar'
-import MuiAlert from '@mui/material/Alert'
+import {
+  Button,
+  Drawer,
+  IconButton,
+  MenuItem,
+  Typography,
+  Divider,
+  Snackbar,
+  Alert as MuiAlert
+} from '@mui/material'
+
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 
 // 🧩 Third-party Imports
 import { useForm, Controller } from 'react-hook-form'
+import FileUploadController from '../../../../components/fileUploadController'
 
-// 🧠 Server Action
-import { createDepartment,fetchListOfBranch } from '../../../../app/server/actions.js'
+// 🧠 Server Actions
+import {
+  createTransfer,
+  fetchListOfUser,
+  fetchListOfBranch,
+  fetchDepartmentsByBranch,
+  fetchDesignationsByDepartment
+} from '../../../../app/server/actions.js'
 
 // 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
-import { description } from 'valibot'
 
-const initialData = {
-  country: '',
-  contact: ''
-}
-
-const AddDepartmentDrawer = props => {
-  const { open, handleClose, userData, setData, refreshDepartments } = props
-
-  const [formData, setFormData] = useState(initialData)
+const AddDepartmentDrawer = ({ open, handleClose, refreshDepartments }) => {
+  // 🧠 Local State
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
-   const [branches, setBranches] = useState([]) // 🔹 Dynamic dropdown data
+  const [employees, setEmployees] = useState([])
+  const [branches, setBranches] = useState([])
+  const [departments, setDepartments] = useState([])
+  const [designations, setDesignations] = useState([])
   const [loadingBranches, setLoadingBranches] = useState(true)
+  const [loadingDepartments, setLoadingDepartments] = useState(false)
+  const [loadingDesignations, setLoadingDesignations] = useState(false)
 
-  // 🔧 react-hook-form setup
+  // ✅ React Hook Form setup — ensure every field has a default value
   const {
     control,
-    reset: resetForm,
+    reset,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      name: '',
+      employee: '',
       branch: '',
-      description: '',
-      status: 'Active'
+      department: '',
+      designation: '',
+      transferDate: null,
+      effectiveDate: null,
+      reason: '',
+      document: null,
+      status: 'Pending'
     }
   })
 
-  // 🧠 Fetch Branch List from backend
-    useEffect(() => {
-    const loadBranches = async () => {
-      try {
-        const response = await fetchListOfBranch() // server action call
-        // Expected response: { success: true, data: [ { _id, branchName } ] }
-        if (response?.success && Array.isArray(response.data)) {
-          setBranches(response.data)
-        } else if (Array.isArray(response)) {
-          // handle array return directly
-          setBranches(response)
-        } else {
-          console.warn('Invalid branch data format:', response)
-        }
-      } catch (err) {
-        console.error('Error fetching branches:', err)
-      } finally {
-        setLoadingBranches(false)
+  // 🧠 Helper to safely fetch JSON
+  const safeFetchJSON = async (fetchFn, fallback = []) => {
+    try {
+      const response = await fetchFn()
+      if (response && typeof response === 'object') {
+        if (Array.isArray(response?.data)) return response.data
+        if (Array.isArray(response)) return response
       }
+      return fallback
+    } catch (error) {
+      console.error('Fetch JSON Error:', error)
+      return fallback
+    }
+  }
+
+  // 🧠 Load employees and branches
+  useEffect(() => {
+    const loadInitialData = async () => {
+      setLoadingBranches(true)
+      const [empList, branchList] = await Promise.all([
+        safeFetchJSON(fetchListOfUser),
+        safeFetchJSON(fetchListOfBranch)
+      ])
+      setEmployees(empList)
+      setBranches(branchList)
+      setLoadingBranches(false)
     }
 
-    loadBranches()
+    loadInitialData()
   }, [])
 
-  // ✅ Form submit
+  // 🔍 Watch branch and department for dependent dropdowns
+  const selectedBranch = watch('branch')
+  const selectedDepartment = watch('department')
+
+  // 🏢 Load departments when branch changes
+  useEffect(() => {
+    const loadDepartments = async () => {
+      if (!selectedBranch) {
+        setDepartments([])
+        setDesignations([])
+        return
+      }
+
+      setLoadingDepartments(true)
+      const list = await safeFetchJSON(() => fetchDepartmentsByBranch(selectedBranch))
+      setDepartments(list)
+      setLoadingDepartments(false)
+    }
+
+    loadDepartments()
+  }, [selectedBranch])
+
+  // 💼 Load designations when department changes
+  useEffect(() => {
+    const loadDesignations = async () => {
+      if (!selectedDepartment) {
+        setDesignations([])
+        return
+      }
+
+      setLoadingDesignations(true)
+      const list = await safeFetchJSON(() => fetchDesignationsByDepartment(selectedDepartment))
+      setDesignations(list)
+      setLoadingDesignations(false)
+    }
+
+    loadDesignations()
+  }, [selectedDepartment])
+
+  // ✅ Submit Form — correct FormData
   const onSubmit = async data => {
     try {
-      const payload = {
-        name: data.name,
-        branch: data.branch,
-        description: data.description,
-        status: data.status
-      }
+      const formData = new FormData()
 
-      const response = await createDepartment(payload)
+      formData.append('employee', data.employee || '')
+      formData.append('branch', data.branch || '')
+      formData.append('department', data.department || '')
+      formData.append('designation', data.designation || '')
+      if (data.transferDate) formData.append('transferDate', data.transferDate)
+      if (data.effectiveDate) formData.append('effectiveDate', data.effectiveDate) // backend key
+      formData.append('reason', data.reason || '')
+      formData.append('status', data.status || 'Pending')
+      if (data.document) formData.append('document', data.document)
+
+      const response = await createTransfer(formData)
 
       if (response?.success) {
-        setSnackbar({ open: true, message: response.message || 'Branch created successfully', severity: 'success' })
-
-        // Refresh list (parent function)
-        if (typeof refreshDepartments === 'function') {
-          await refreshDepartments()
-        }
-
+        setSnackbar({
+          open: true,
+          message: response.message || 'Transfer created successfully',
+          severity: 'success'
+        })
+        await refreshDepartments?.()
         handleClose()
-        setFormData(initialData)
-        resetForm()
+        reset()
       } else {
-        setSnackbar({ open: true, message: response.message || 'Failed to create branch', severity: 'error' })
+        setSnackbar({
+          open: true,
+          message: response?.message || 'Failed to create transfer',
+          severity: 'error'
+        })
       }
-    } catch (error) {
-      console.error('Error creating branch:', error)
-      setSnackbar({ open: true, message: 'Error creating branch', severity: 'error' })
+    } catch (err) {
+      console.error('Error creating transfer:', err)
+      setSnackbar({
+        open: true,
+        message: 'Error creating transfer',
+        severity: 'error'
+      })
     }
   }
 
   const handleReset = () => {
     handleClose()
-    setFormData(initialData)
-    resetForm()
+    reset()
   }
 
   return (
@@ -122,108 +196,230 @@ const AddDepartmentDrawer = props => {
         variant='temporary'
         onClose={handleReset}
         ModalProps={{ keepMounted: true }}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } } }}
       >
-        <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5'>Add Department</Typography>
+        {/* Header */}
+        <div className='flex items-center justify-between p-5'>
+          <Typography variant='h5' fontWeight='bold'>
+            Add New Transfer
+          </Typography>
           <IconButton size='small' onClick={handleReset}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
         </div>
         <Divider />
 
-        {/* 🧾 Form Section */}
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
+        {/* 🧾 Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
+          {/* 👤 Employee */}
+          <Controller
+            name='employee'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Employee'
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.employee}
+                helperText={errors.employee?.message}
+              >
+                {employees.length > 0 ? (
+                  employees.map(emp => (
+                    <MenuItem key={emp._id} value={emp._id}>
+                      {emp.username || emp.name || 'Unnamed Employee'}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No employees found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 🏢 Branch */}
+          <Controller
+            name='branch'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='To Branch'
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.branch}
+                helperText={errors.branch?.message}
+              >
+                {loadingBranches ? (
+                  <MenuItem disabled>Loading branches...</MenuItem>
+                ) : branches.length > 0 ? (
+                  branches.map(branch => (
+                    <MenuItem key={branch._id} value={branch._id}>
+                      {branch.branchName || 'Unnamed Branch'}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No branches found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 🏬 Department */}
+          <Controller
+            name='department'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='To Department'
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.department}
+                helperText={errors.department?.message}
+                disabled={!selectedBranch}
+              >
+                {!selectedBranch ? (
+                  <MenuItem disabled>Select a branch first</MenuItem>
+                ) : loadingDepartments ? (
+                  <MenuItem disabled>Loading departments...</MenuItem>
+                ) : departments.length > 0 ? (
+                  departments.map(dept => (
+                    <MenuItem key={dept._id} value={dept._id}>
+                      {dept.departmentName || dept.name || 'Unnamed Department'}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No departments found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 💼 Designation */}
+          <Controller
+            name='designation'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='To Designation'
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.designation}
+                helperText={errors.designation?.message}
+                disabled={!selectedDepartment}
+              >
+                {!selectedDepartment ? (
+                  <MenuItem disabled>Select a department first</MenuItem>
+                ) : loadingDesignations ? (
+                  <MenuItem disabled>Loading designations...</MenuItem>
+                ) : designations.length > 0 ? (
+                  designations.map(des => (
+                    <MenuItem key={des._id} value={des._id}>
+                      {des.name || 'Unnamed Designation'}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No designations found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 📅 Transfer Date */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Controller
-              name='name'
+              name='transferDate'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Department Name'
-                  placeholder='Human Resources'
-                  error={!!errors.name}
-                  helperText={errors.name && 'This field is required.'}
+                <DatePicker
+                  label='Transfer Date'
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={val => field.onChange(val ? val.toISOString() : null)}
+                  enableAccessibleFieldDOMStructure={false}
+                  slots={{ textField: CustomTextField }}
+                  slotProps={{ textField: { fullWidth: true } }}
                 />
               )}
             />
+          </LocalizationProvider>
 
-            {/* //Dynamic dropdown  */}
-                    <Controller
-              name='branch'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  select
-                  fullWidth
-                  label='Branch'
-                  {...field}
-                  error={!!errors.branch}
-                  helperText={errors.branch && 'Branch is required.'}
-                >
-                  {loadingBranches ? (
-                    <MenuItem disabled>Loading branches...</MenuItem>
-                  ) : branches.length > 0 ? (
-                    branches.map(branch => (
-                      <MenuItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>No branches found</MenuItem>
-                  )}
-                </CustomTextField>
-              )}
-            />
-
+          {/* 📅 Effective Date */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Controller
-              name='description'
+              name='effectiveDate'
               control={control}
-              rules={{ required: true }}
               render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Description'
-                  placeholder=''
-                  error={!!errors.description}
-                  helperText={errors.description && 'This field is required.'}
+                <DatePicker
+                  label='Effective Date'
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={val => field.onChange(val ? val.toISOString() : null)}
+                  enableAccessibleFieldDOMStructure={false}
+                  slots={{ textField: CustomTextField }}
+                  slotProps={{ textField: { fullWidth: true } }}
                 />
               )}
             />
+          </LocalizationProvider>
 
-   
+          {/* 🗒 Reason */}
+          <Controller
+            name='reason'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                {...field}
+                fullWidth
+                value={field.value || ''}
+                multiline
+                minRows={2}
+                label='Reason'
+                error={!!errors.reason}
+                helperText={errors.reason?.message}
+              />
+            )}
+          />
 
-            <Controller
-              name='status'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField select fullWidth label='Select Status' {...field}>
-                  <MenuItem value='Active'>Active</MenuItem>
-                  <MenuItem value='Inactive'>Inactive</MenuItem>
-                </CustomTextField>
-              )}
-            />
+          {/* 📎 Document Upload */}
+          <FileUploadController
+            control={control}
+            errors={errors}
+            name='document'
+            label='Supporting Document'
+            accept='image/*'
+          />
 
-            {/* ✅ Action Buttons */}
-            <div className='flex items-center gap-4'>
-              <Button variant='contained' type='submit'>
-                Submit
-              </Button>
-              <Button variant='tonal' color='error' onClick={handleReset}>
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
+          {/* 🔘 Status Dropdown */}
+          <Controller
+            name='status'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField select fullWidth label='Select Status' value={field.value || ''} onChange={field.onChange}>
+                <MenuItem value='Pending'>Pending</MenuItem>
+                <MenuItem value='Approved'>Approved</MenuItem>
+                <MenuItem value='Rejected'>Rejected</MenuItem>
+              </CustomTextField>
+            )}
+          />
+
+          {/* ✅ Buttons */}
+          <div className='flex items-center gap-4'>
+            <Button variant='contained' type='submit'>
+              Submit
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleReset}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       </Drawer>
 
-      {/* ✅ Snackbar for Success/Error */}
+      {/* ✅ Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -249,5 +445,7 @@ const AddDepartmentDrawer = props => {
 }
 
 export default AddDepartmentDrawer
+
+
 
 

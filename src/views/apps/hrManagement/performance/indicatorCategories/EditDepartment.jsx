@@ -1,11 +1,10 @@
 
 
-
 'use client'
 
 import { useEffect, useState } from 'react'
 
-// MUI Imports
+// 📦 MUI Imports
 import Drawer from '@mui/material/Drawer'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
@@ -16,23 +15,24 @@ import MenuItem from '@mui/material/MenuItem'
 import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
-import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+
+// 🧠 Server Action
+import { fetchListOfBranch } from '../../../../../app/server/actions'
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
+  // ✅ Form Data
   const [formData, setFormData] = useState({
     _id: '',
-    name: '',
-    branch: '',
+    category: '',
     description: '',
     status: 'Active'
   })
-console.log("POOJA456",formData)
-    // ✅ Branch dropdown data
+
+  // ✅ Branch Dropdown Data
   const [branches, setBranches] = useState([])
   const [loadingBranches, setLoadingBranches] = useState(true)
 
-  // ✅ Snackbar state
+  // ✅ Snackbar State
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
@@ -43,7 +43,8 @@ console.log("POOJA456",formData)
     setSnackbar({ ...snackbar, open: false })
   }
 
-    useEffect(() => {
+  // ✅ Fetch Branch List
+  useEffect(() => {
     const loadBranches = async () => {
       try {
         const res = await fetchListOfBranch()
@@ -65,48 +66,31 @@ console.log("POOJA456",formData)
   }, [])
 
   // ✅ Auto-fill fields when drawer opens
-  // useEffect(() => {
-  //   if (selectedDepartment) {
-  //     setFormData({
-  //       _id: selectedDepartment._id || '',
-  //       name: selectedDepartment.name || '',
-  //       branch: selectedDepartment.branch || '',
-  //       description: selectedDepartment.description || '',
-  //       status: selectedDepartment.status || 'Active'
-  //     })
-  //   }
-  // }, [selectedDepartment])
+  useEffect(() => {
+    if (selectedDepartment) {
+      setFormData({
+        _id: selectedDepartment._id ?? '',
+        category: selectedDepartment.category ?? '',
+        description: selectedDepartment.description ?? '',
+        status: selectedDepartment.status ?? 'Active'
+      })
+    }
+  }, [selectedDepartment])
 
-/
-
-useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
-
-    setFormData({
-      _id: selectedDepartment._id || '',
-      name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
-      description: selectedDepartment.description || '',
-      status: selectedDepartment.status || 'Active'
-    })
-  }
-}, [selectedDepartment, branches.length])
-
-
-  // ✅ Handle save with snackbar feedback
+  // ✅ Handle Save
   const handleSave = async () => {
     try {
-      const res = await onSave(formData) // backend call in parent component
+      const res = await onSave(formData) // parent handles backend call
+
       setSnackbar({
         open: true,
-        message: res?.message || 'Department updated successfully!',
+        message: res?.message || 'Category updated successfully!',
         severity: res?.success ? 'success' : 'error'
       })
+
       if (res?.success) handleClose()
     } catch (error) {
+      console.error('Save Error:', error)
       setSnackbar({
         open: true,
         message: 'Something went wrong!',
@@ -117,6 +101,7 @@ useEffect(() => {
 
   return (
     <>
+      {/* 🪟 Drawer */}
       <Drawer
         open={open}
         anchor='right'
@@ -127,10 +112,10 @@ useEffect(() => {
           '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } }
         }}
       >
-        {/* ✅ Header same as AddBranchDrawer */}
+        {/* ✅ Header */}
         <div className='flex items-center justify-between plb-5 pli-6'>
           <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Edit Department
+            Edit Category Indicator
           </Typography>
           <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
@@ -142,60 +127,37 @@ useEffect(() => {
         {/* ✅ Form Section */}
         <Box sx={{ p: 6 }}>
           <form className='flex flex-col gap-5'>
+            {/* Category Name */}
             <TextField
-              label='Department Name'
+              label='Category Name'
               fullWidth
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
+              value={formData.category ?? ''}
+              onChange={e => setFormData({ ...formData, category: e.target.value })}
             />
 
-            {/* <TextField
-              label='Branch'
-              fullWidth
-              value={formData.Plot}
-              onChange={e => setFormData({ ...formData, Plot: e.target.value })}
-            /> */}
-
-             <TextField
-              select
-              label='Branch'
-              fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
-            >
-              {loadingBranches ? (
-                <MenuItem disabled>Loading branches...</MenuItem>
-              ) : branches.length > 0 ? (
-                branches.map(branch => (
-                  <MenuItem key={branch._id} value={branch._id}>
-                    {branch.branchName}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No branches found</MenuItem>
-              )}
-            </TextField>
-
+            {/* Description */}
             <TextField
               label='Description'
               fullWidth
-              value={formData.description}
+              multiline
+              minRows={2}
+              value={formData.description ?? ''}
               onChange={e => setFormData({ ...formData, description: e.target.value })}
             />
 
-
+            {/* Status */}
             <TextField
               select
               label='Status'
               fullWidth
-              value={formData.status}
+              value={formData.status ?? 'Active'}
               onChange={e => setFormData({ ...formData, status: e.target.value })}
             >
               <MenuItem value='Active'>Active</MenuItem>
               <MenuItem value='Inactive'>Inactive</MenuItem>
             </TextField>
 
-            {/* ✅ Action Buttons same style as Add Drawer */}
+            {/* ✅ Action Buttons */}
             <div className='flex items-center gap-4 mt-4'>
               <Button variant='contained' onClick={handleSave}>
                 Save Changes
@@ -208,7 +170,7 @@ useEffect(() => {
         </Box>
       </Drawer>
 
-      {/* ✅ Snackbar for backend message */}
+      {/* ✅ Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -233,5 +195,6 @@ useEffect(() => {
 }
 
 export default EditDepartment
+
 
 

@@ -1,13 +1,12 @@
-// Component Imports
-import DepartmentList from '@views/apps/hrManagement/trips'
+import DepartmentList from '@views/apps/hrManagement/performance/employeeReviews/view'
 // import { fetchBranches } from '@/app/server/actions'
 
 // Data Imports
-import { fetchDepartments } from '@/app/server/actions'
+import { fetchEmployeeReviewCycle } from '@/app/server/actions'
 
 const DepartmentListApp = async () => {
   // Vars
-  const data = await fetchDepartments()
+  const data = await fetchEmployeeReviewCycle()
     // const data = await fetchBranches()
 
   return <DepartmentList departmentData={data} />

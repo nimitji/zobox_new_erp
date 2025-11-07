@@ -1,7 +1,10 @@
-// React Imports
+
+
+'use client'
+
 import React from 'react'
 
-// MUI Imports
+// 📦 MUI Imports
 import Drawer from '@mui/material/Drawer'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
@@ -10,11 +13,12 @@ import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 
-// Component Imports
+// 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
+import dayjs from 'dayjs'
 
-const ViewDepartment = ({ open, handleClose, departmentData }) => {
-  if (!departmentData) return null
+const ViewDepartment = ({ open, handleClose, goalData }) => {
+  if (!goalData) return null
 
   return (
     <Drawer
@@ -27,7 +31,9 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Department Details</Typography>
+        <Typography variant='h5' fontWeight='bold'>
+          View Employee Review Cycle
+        </Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -40,36 +46,61 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Employee'
               fullWidth
-              value={departmentData.name || ''}
+              value={goalData.employeeName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Branch'
+              label='Reviewer'
               fullWidth
-              value={departmentData.branch || ''}
+              value={goalData.reviewerName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Description'
+              label='Review Cycle'
               fullWidth
-              value={departmentData.description || ''}
+              value={goalData.reviewCycleName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
-     <Grid item xs={12}>
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Rating'
+              fullWidth
+              multiline
+              value={goalData.rating || '-'}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+     
+
+     
+
+        
+
+          <Grid item xs={12}>
             <CustomTextField
               label='Status'
               fullWidth
-              value={departmentData.status || ''}
+              value={goalData.status || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomTextField
+              label='Created At'
+              fullWidth
+              value={goalData.createdAt ? dayjs(goalData.createdAt).format('DD MMM YYYY') : ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
@@ -86,7 +117,6 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
 }
 
 export default ViewDepartment
-
 
 
 

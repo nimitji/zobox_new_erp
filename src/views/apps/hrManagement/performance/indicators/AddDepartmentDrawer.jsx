@@ -18,7 +18,7 @@ import MuiAlert from '@mui/material/Alert'
 import { useForm, Controller } from 'react-hook-form'
 
 // 🧠 Server Action
-import { createDepartment,fetchListOfBranch } from '../../../../app/server/actions.js'
+import { createIndicator,fetchListOfCategoryIndicator } from '../../../../../app/server/actions'
 
 // 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
@@ -45,9 +45,11 @@ const AddDepartmentDrawer = props => {
     formState: { errors }
   } = useForm({
     defaultValues: {
-      name: '',
-      branch: '',
+      indicatorName: '',
+      category: '',
       description: '',
+      measurementUnit:'',
+      targetValue:'',
       status: 'Active'
     }
   })
@@ -56,7 +58,7 @@ const AddDepartmentDrawer = props => {
     useEffect(() => {
     const loadBranches = async () => {
       try {
-        const response = await fetchListOfBranch() // server action call
+        const response = await fetchListOfCategoryIndicator() // server action call
         // Expected response: { success: true, data: [ { _id, branchName } ] }
         if (response?.success && Array.isArray(response.data)) {
           setBranches(response.data)
@@ -80,16 +82,18 @@ const AddDepartmentDrawer = props => {
   const onSubmit = async data => {
     try {
       const payload = {
-        name: data.name,
-        branch: data.branch,
-        description: data.description,
+        indicatorName: data.indicatorName?.trim() ?? '',
+        category: data.category,
+        description: data.description?.trim() ?? '',
+        measurementUnit: data.measurementUnit,
+        targetValue: data.targetValue?.trim() ?? '',
         status: data.status
       }
 
-      const response = await createDepartment(payload)
+      const response = await createIndicator(payload)
 
       if (response?.success) {
-        setSnackbar({ open: true, message: response.message || 'Branch created successfully', severity: 'success' })
+        setSnackbar({ open: true, message: response.message || 'Indicator created successfully', severity: 'success' })
 
         // Refresh list (parent function)
         if (typeof refreshDepartments === 'function') {
@@ -100,11 +104,11 @@ const AddDepartmentDrawer = props => {
         setFormData(initialData)
         resetForm()
       } else {
-        setSnackbar({ open: true, message: response.message || 'Failed to create branch', severity: 'error' })
+        setSnackbar({ open: true, message: response.message || 'Failed to create Indicator', severity: 'error' })
       }
     } catch (error) {
       console.error('Error creating branch:', error)
-      setSnackbar({ open: true, message: 'Error creating branch', severity: 'error' })
+      setSnackbar({ open: true, message: 'Error creating indicator', severity: 'error' })
     }
   }
 
@@ -125,7 +129,7 @@ const AddDepartmentDrawer = props => {
         sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
       >
         <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5'>Add Department</Typography>
+          <Typography variant='h5'>Add Indicator</Typography>
           <IconButton size='small' onClick={handleReset}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
@@ -136,45 +140,45 @@ const AddDepartmentDrawer = props => {
         <div>
           <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
             <Controller
-              name='name'
+              name='indicatorName'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label='Department Name'
-                  placeholder='Human Resources'
-                  error={!!errors.name}
-                  helperText={errors.name && 'This field is required.'}
+                  label='Indicator Name'
+                  placeholder='Skill Proficiency'
+                  error={!!errors.indicatorName}
+                  helperText={errors.indicatorName && 'This field is required.'}
                 />
               )}
             />
 
             {/* //Dynamic dropdown  */}
                     <Controller
-              name='branch'
+              name='category'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   select
                   fullWidth
-                  label='Branch'
+                  label='Category'
                   {...field}
-                  error={!!errors.branch}
-                  helperText={errors.branch && 'Branch is required.'}
+                  error={!!errors.category}
+                  helperText={errors.category && 'Indicator Category is required.'}
                 >
                   {loadingBranches ? (
-                    <MenuItem disabled>Loading branches...</MenuItem>
+                    <MenuItem disabled>Loading category...</MenuItem>
                   ) : branches.length > 0 ? (
                     branches.map(branch => (
                       <MenuItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
+                        {branch.category}
                       </MenuItem>
                     ))
                   ) : (
-                    <MenuItem disabled>No branches found</MenuItem>
+                    <MenuItem disabled>No indicator categories found</MenuItem>
                   )}
                 </CustomTextField>
               )}
@@ -192,6 +196,38 @@ const AddDepartmentDrawer = props => {
                   placeholder=''
                   error={!!errors.description}
                   helperText={errors.description && 'This field is required.'}
+                />
+              )}
+            />
+
+
+            <Controller
+              name='measurementUnit'
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomTextField select fullWidth label='Measurement Units' {...field}>
+                  <MenuItem value='Rating'>Rating</MenuItem>
+                  <MenuItem value='Percentage'>Percentage</MenuItem>
+                   <MenuItem value='Hours'>Hours</MenuItem>
+                    <MenuItem value='Count'>Count</MenuItem>
+                </CustomTextField>
+              )}
+            />
+        
+
+              <Controller
+              name='targetValue'
+              control={control}
+              rules={{ required: true }}
+              render={({ field }) => (
+                <CustomTextField
+                  {...field}
+                  fullWidth
+                  label='Target Value'
+                  placeholder='e.g., 4, 95% etc.'
+                  error={!!errors.targetValue}
+                  helperText={errors.targetValue && 'This field is required.'}
                 />
               )}
             />

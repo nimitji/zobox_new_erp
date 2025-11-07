@@ -2,7 +2,7 @@
 
 'use client'
 
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 
 // 📦 MUI Imports
 import Button from '@mui/material/Button'
@@ -14,104 +14,131 @@ import Divider from '@mui/material/Divider'
 import Snackbar from '@mui/material/Snackbar'
 import MuiAlert from '@mui/material/Alert'
 
-// 🧩 Third-party Imports
+// 🗓 Date Picker
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
+
+// 🧩 Form
 import { useForm, Controller } from 'react-hook-form'
 
 // 🧠 Server Action
-import { createDepartment,fetchListOfBranch } from '../../../../app/server/actions.js'
+import {
+  createEmployeeReviewCycle,
+  fetchListOfUser,
+  fetchListOfEmployeeReviewCycle
+} from '../../../../../app/server/actions.js'
 
 // 🧱 Component Imports
 import CustomTextField from '@core/components/mui/TextField'
-import { description } from 'valibot'
-
-const initialData = {
-  country: '',
-  contact: ''
-}
 
 const AddDepartmentDrawer = props => {
-  const { open, handleClose, userData, setData, refreshDepartments } = props
+  const { open, handleClose, refreshDepartments } = props
 
-  const [formData, setFormData] = useState(initialData)
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
-   const [branches, setBranches] = useState([]) // 🔹 Dynamic dropdown data
-  const [loadingBranches, setLoadingBranches] = useState(true)
+  const [employees, setEmployees] = useState([])
+  const [goalTypes, setGoalTypes] = useState([])
 
   // 🔧 react-hook-form setup
   const {
     control,
-    reset: resetForm,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm({
     defaultValues: {
-      name: '',
-      branch: '',
-      description: '',
-      status: 'Active'
+      employee: '',
+      reviewer: '',
+      reviewCycle: '',
+      reviewDate: '',
+      status: 'Scheduled'
     }
   })
 
-  // 🧠 Fetch Branch List from backend
-    useEffect(() => {
-    const loadBranches = async () => {
+  // 🧠 Fetch Employees
+  useEffect(() => {
+    const loadEmployees = async () => {
       try {
-        const response = await fetchListOfBranch() // server action call
-        // Expected response: { success: true, data: [ { _id, branchName } ] }
-        if (response?.success && Array.isArray(response.data)) {
-          setBranches(response.data)
-        } else if (Array.isArray(response)) {
-          // handle array return directly
-          setBranches(response)
-        } else {
-          console.warn('Invalid branch data format:', response)
-        }
+        const res = await fetchListOfUser()
+        if (res?.success && Array.isArray(res.data)) setEmployees(res.data)
+        else if (Array.isArray(res)) setEmployees(res)
       } catch (err) {
-        console.error('Error fetching branches:', err)
-      } finally {
-        setLoadingBranches(false)
+        console.error('Error fetching employees:', err)
       }
     }
-
-    loadBranches()
+    loadEmployees()
   }, [])
 
-  // ✅ Form submit
+  // 🧠 Fetch Review Cycles
+  useEffect(() => {
+    const loadGoalTypes = async () => {
+      try {
+        const res = await fetchListOfEmployeeReviewCycle()
+        if (res?.success && Array.isArray(res.data)) setGoalTypes(res.data)
+        else if (Array.isArray(res)) setGoalTypes(res)
+      } catch (err) {
+        console.error('Error fetching review cycles:', err)
+      }
+    }
+    loadGoalTypes()
+  }, [])
+
+  // ✅ Submit Form
   const onSubmit = async data => {
     try {
       const payload = {
-        name: data.name,
-        branch: data.branch,
-        description: data.description,
+        employee: data.employee,
+        reviewer: data.reviewer,
+        reviewCycle: data.reviewCycle,
+        reviewDate: data.reviewDate,
         status: data.status
       }
 
-      const response = await createDepartment(payload)
+      console.log('🚀 Sending JSON Payload:', payload)
+      const response = await createEmployeeReviewCycle(payload)
 
       if (response?.success) {
-        setSnackbar({ open: true, message: response.message || 'Branch created successfully', severity: 'success' })
-
-        // Refresh list (parent function)
-        if (typeof refreshDepartments === 'function') {
-          await refreshDepartments()
-        }
-
+        setSnackbar({
+          open: true,
+          message: response.message || 'Review cycle created successfully!',
+          severity: 'success'
+        })
+        if (typeof refreshDepartments === 'function') await refreshDepartments()
         handleClose()
-        setFormData(initialData)
-        resetForm()
+        reset({
+          employee: '',
+          reviewer: '',
+          reviewCycle: '',
+          reviewDate: '',
+          status: 'Scheduled'
+        })
       } else {
-        setSnackbar({ open: true, message: response.message || 'Failed to create branch', severity: 'error' })
+        setSnackbar({
+          open: true,
+          message: response.message || 'Failed to create review cycle',
+          severity: 'error'
+        })
       }
     } catch (error) {
-      console.error('Error creating branch:', error)
-      setSnackbar({ open: true, message: 'Error creating branch', severity: 'error' })
+      console.error('Error creating review cycle:', error)
+      setSnackbar({
+        open: true,
+        message: 'Error creating review cycle',
+        severity: 'error'
+      })
     }
   }
 
   const handleReset = () => {
     handleClose()
-    setFormData(initialData)
-    resetForm()
+    reset({
+      employee: '',
+      reviewer: '',
+      reviewCycle: '',
+      reviewDate: '',
+      status: 'Scheduled'
+    })
   }
 
   return (
@@ -122,108 +149,162 @@ const AddDepartmentDrawer = props => {
         variant='temporary'
         onClose={handleReset}
         ModalProps={{ keepMounted: true }}
-        sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } } }}
       >
-        <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5'>Add Department</Typography>
+        <div className='flex items-center justify-between p-5'>
+          <Typography variant='h5' fontWeight='bold'>
+            Add New Employee Review Cycle
+          </Typography>
           <IconButton size='small' onClick={handleReset}>
             <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
         </div>
         <Divider />
 
-        {/* 🧾 Form Section */}
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
+          {/* 🧑 Employee */}
+          <Controller
+            name='employee'
+            control={control}
+            rules={{ required: 'Employee is required' }}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Employee'
+                {...field}
+                value={field.value || ''} // ✅ Fix uncontrolled input
+                error={!!errors.employee}
+                helperText={errors.employee?.message}
+              >
+                {employees.length > 0 ? (
+                  employees.map(emp => (
+                    <MenuItem key={emp._id} value={emp._id}>
+                      {emp.username}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Employees found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 🧑 Reviewer */}
+          <Controller
+            name='reviewer'
+            control={control}
+            rules={{ required: 'Reviewer is required' }}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Reviewer'
+                {...field}
+                value={field.value || ''} // ✅ Fix uncontrolled input
+                error={!!errors.reviewer}
+                helperText={errors.reviewer?.message}
+              >
+                {employees.length > 0 ? (
+                  employees.map(emp => (
+                    <MenuItem key={emp._id} value={emp._id}>
+                      {emp.username}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Reviewer found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 🔁 Review Cycle */}
+          <Controller
+            name='reviewCycle'
+            control={control}
+            rules={{ required: 'Review Cycle Type is required' }}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Review Cycle'
+                {...field}
+                value={field.value || ''} // ✅ Fix uncontrolled input
+                error={!!errors.reviewCycle}
+                helperText={errors.reviewCycle?.message}
+              >
+                {goalTypes.length > 0 ? (
+                  goalTypes.map(type => (
+                    <MenuItem key={type._id} value={type._id}>
+                      {type.reviewCycleName}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem disabled>No Review Cycles found</MenuItem>
+                )}
+              </CustomTextField>
+            )}
+          />
+
+          {/* 📅 Review Date */}
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Controller
-              name='name'
+              name='reviewDate'
               control={control}
-              rules={{ required: true }}
+              rules={{ required: 'Review date is required' }}
               render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Department Name'
-                  placeholder='Human Resources'
-                  error={!!errors.name}
-                  helperText={errors.name && 'This field is required.'}
+                <DatePicker
+                  label='Review Date'
+                  value={field.value ? dayjs(field.value) : null}
+                  onChange={newValue =>
+                    field.onChange(newValue ? newValue.toISOString() : '')
+                  }
+                  enableAccessibleFieldDOMStructure={false}
+                  slots={{ textField: CustomTextField }}
+                  slotProps={{
+                    textField: {
+                      fullWidth: true,
+                      error: !!errors.reviewDate,
+                      helperText: errors.reviewDate?.message
+                    }
+                  }}
                 />
               )}
             />
+          </LocalizationProvider>
 
-            {/* //Dynamic dropdown  */}
-                    <Controller
-              name='branch'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  select
-                  fullWidth
-                  label='Branch'
-                  {...field}
-                  error={!!errors.branch}
-                  helperText={errors.branch && 'Branch is required.'}
-                >
-                  {loadingBranches ? (
-                    <MenuItem disabled>Loading branches...</MenuItem>
-                  ) : branches.length > 0 ? (
-                    branches.map(branch => (
-                      <MenuItem key={branch._id} value={branch._id}>
-                        {branch.branchName}
-                      </MenuItem>
-                    ))
-                  ) : (
-                    <MenuItem disabled>No branches found</MenuItem>
-                  )}
-                </CustomTextField>
-              )}
-            />
+          {/* 🔘 Status */}
+          <Controller
+            name='status'
+            control={control}
+            render={({ field }) => (
+              <CustomTextField
+                select
+                fullWidth
+                label='Status'
+                {...field}
+                value={field.value || 'Scheduled'} // ✅ Fix uncontrolled input
+              >
+                <MenuItem value='Scheduled'>Scheduled</MenuItem>
+                <MenuItem value='In Progress'>In Progress</MenuItem>
+              
+              </CustomTextField>
+            )}
+          />
 
-            <Controller
-              name='description'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField
-                  {...field}
-                  fullWidth
-                  label='Description'
-                  placeholder=''
-                  error={!!errors.description}
-                  helperText={errors.description && 'This field is required.'}
-                />
-              )}
-            />
-
-   
-
-            <Controller
-              name='status'
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <CustomTextField select fullWidth label='Select Status' {...field}>
-                  <MenuItem value='Active'>Active</MenuItem>
-                  <MenuItem value='Inactive'>Inactive</MenuItem>
-                </CustomTextField>
-              )}
-            />
-
-            {/* ✅ Action Buttons */}
-            <div className='flex items-center gap-4'>
-              <Button variant='contained' type='submit'>
-                Submit
-              </Button>
-              <Button variant='tonal' color='error' onClick={handleReset}>
-                Cancel
-              </Button>
-            </div>
-          </form>
-        </div>
+          {/* ✅ Buttons */}
+          <div className='flex items-center gap-4'>
+            <Button variant='contained' type='submit'>
+              Submit
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleReset}>
+              Cancel
+            </Button>
+          </div>
+        </form>
       </Drawer>
 
-      {/* ✅ Snackbar for Success/Error */}
+      {/* ✅ Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -249,5 +330,9 @@ const AddDepartmentDrawer = props => {
 }
 
 export default AddDepartmentDrawer
+
+
+
+
 
 

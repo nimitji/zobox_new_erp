@@ -5,32 +5,133 @@
 
 import { useEffect, useState } from 'react'
 
-// MUI Imports
-import Drawer from '@mui/material/Drawer'
-import Typography from '@mui/material/Typography'
-import Divider from '@mui/material/Divider'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import TextField from '@mui/material/TextField'
-import MenuItem from '@mui/material/MenuItem'
-import Box from '@mui/material/Box'
-import Snackbar from '@mui/material/Snackbar'
-import Alert from '@mui/material/Alert'
-import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+// 📦 MUI Imports
+import {
+  Button,
+  Drawer,
+  IconButton,
+  MenuItem,
+  Typography,
+  Divider,
+  Snackbar,
+  TextField,
+  Alert as MuiAlert,
+  Box
+} from '@mui/material'
 
-const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
+
+// 🧩 React Hook Form (not used directly but imported)
+import { Controller } from 'react-hook-form'
+
+// 🧠 Server Actions
+import { fetchListOfUser, fetchResignation} from '../../../../app/server/actions.js'
+
+/* ------------------------ 📁 File Upload Controller ------------------------ */
+const FileUploadController = ({ formData, setFormData, label }) => {
+  return (
+    <Box>
+      <Typography
+        variant='body2'
+        sx={{ mb: 1, color: 'text.secondary', fontWeight: 500 }}
+      >
+        {label}
+      </Typography>
+
+      {/* 📤 File Input */}
+      <TextField
+        type='file'
+        fullWidth
+        inputProps={{ accept: 'image/*,.pdf' }}
+        onChange={e =>
+          setFormData({
+            ...formData,
+            document: e.target.files?.[0] || null
+          })
+        }
+        sx={{
+          '& input[type="file"]': {
+            cursor: 'pointer',
+            padding: '8px',
+            borderRadius: '4px',
+            border: '1px solid #bdbdbd'
+          },
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': { borderColor: '#bdbdbdbd' },
+            '&:hover fieldset': { borderColor: '#2B3380' },
+            '&.Mui-focused fieldset': {
+              borderColor: '#2B3380',
+              borderWidth: 2
+            }
+          }
+        }}
+      />
+
+      {/* 📎 Preview or Existing Document */}
+      {formData.document && (
+        <Box sx={{ mt: 2 }}>
+          {typeof formData.document === 'string' ? (
+            <Box>
+              <Typography variant='body2' sx={{ mb: 1 }}>
+                Current Document:
+              </Typography>
+              {formData.document.endsWith('.pdf') ? (
+                <a
+                  href={formData.document}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  style={{ color: '#2B3380', textDecoration: 'underline' }}
+                >
+                  View PDF Document
+                </a>
+              ) : (
+                <img
+                  src={formData.document}
+                  alt='Uploaded Document'
+                  style={{
+                    width: '100%',
+                    maxHeight: 200,
+                    objectFit: 'contain',
+                    borderRadius: 8,
+                    border: '1px solid #ddd'
+                  }}
+                />
+              )}
+            </Box>
+          ) : (
+            <Typography variant='body2' sx={{ mt: 1, color: 'text.secondary' }}>
+              Selected file: {formData.document.name}
+            </Typography>
+          )}
+        </Box>
+      )}
+    </Box>
+  )
+}
+
+/* ------------------------------ ✏️ Edit Drawer ------------------------------ */
+const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refreshList}) => {
+  // ✅ Form Data
   const [formData, setFormData] = useState({
     _id: '',
     name: '',
-    branch: '',
+    employeeId: '',
+    employeeName: '',
     description: '',
-    status: 'Active'
+    status: 'Active',
+    resignationDate:'',
+    lastWorkingDay:'',
+    noticePeriod:'',
+    reason:'',
+    document: null
   })
-console.log("POOJA456",formData)
-    // ✅ Branch dropdown data
-  const [branches, setBranches] = useState([])
-  const [loadingBranches, setLoadingBranches] = useState(true)
+
+  // ✅ Employee dropdown data
+  const [employees, setEmployees] = useState([])
+  const [loadingEmployees, setLoadingEmployees] = useState(true)
 
   // ✅ Snackbar state
   const [snackbar, setSnackbar] = useState({
@@ -43,78 +144,151 @@ console.log("POOJA456",formData)
     setSnackbar({ ...snackbar, open: false })
   }
 
-    useEffect(() => {
-    const loadBranches = async () => {
+  /* ---------------------------- 🧠 Fetch Employees ---------------------------- */
+  useEffect(() => {
+    const loadEmployees = async () => {
       try {
-        const res = await fetchListOfBranch()
+        const res = await fetchListOfUser()
         if (res?.success && Array.isArray(res.data)) {
-          setBranches(res.data)
+          setEmployees(res.data)
         } else if (Array.isArray(res)) {
-          setBranches(res)
+          setEmployees(res)
         } else {
-          console.warn('Invalid branch data format:', res)
+          console.warn('Invalid employee data format:', res)
         }
       } catch (err) {
-        console.error('Error fetching branches:', err)
+        console.error('Error fetching employees:', err)
       } finally {
-        setLoadingBranches(false)
+        setLoadingEmployees(false)
       }
     }
 
-    loadBranches()
+    loadEmployees()
   }, [])
 
-  // ✅ Auto-fill fields when drawer opens
-  // useEffect(() => {
-  //   if (selectedDepartment) {
-  //     setFormData({
-  //       _id: selectedDepartment._id || '',
-  //       name: selectedDepartment.name || '',
-  //       branch: selectedDepartment.branch || '',
-  //       description: selectedDepartment.description || '',
-  //       status: selectedDepartment.status || 'Active'
-  //     })
-  //   }
-  // }, [selectedDepartment])
-
-/
-
-useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
-
-    setFormData({
-      _id: selectedDepartment._id || '',
-      name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
-      description: selectedDepartment.description || '',
-      status: selectedDepartment.status || 'Active'
-    })
-  }
-}, [selectedDepartment, branches.length])
-
-
-  // ✅ Handle save with snackbar feedback
-  const handleSave = async () => {
-    try {
-      const res = await onSave(formData) // backend call in parent component
-      setSnackbar({
-        open: true,
-        message: res?.message || 'Department updated successfully!',
-        severity: res?.success ? 'success' : 'error'
-      })
-      if (res?.success) handleClose()
-    } catch (error) {
-      setSnackbar({
-        open: true,
-        message: 'Something went wrong!',
-        severity: 'error'
+  /* ---------------------------- ✏️ Prefill on Edit ---------------------------- */
+  useEffect(() => {
+    if (selectedDepartment) {
+      setFormData({
+        _id: selectedDepartment._id || '',
+        name: selectedDepartment.name || '',
+        employeeId: selectedDepartment.employeeId || '',
+        employeeName: selectedDepartment.employeeName || '',
+        description: selectedDepartment.description || '',
+        status: selectedDepartment.status || 'Active',
+        resignationDate: selectedDepartment.resignationDate || '',
+        lastWorkingDay: selectedDepartment.lastWorkingDay || '',
+        noticePeriod: selectedDepartment.noticePeriod || '',
+        reason: selectedDepartment.reason || '',
+        document: selectedDepartment.document || '',
+        status: selectedDepartment.status || ''
       })
     }
+  }, [selectedDepartment])
+
+  /* ---------------------------- 🧭 Handle Employee ---------------------------- */
+  const handleEmployeeChange = e => {
+    const selectedId = e.target.value
+    const selectedEmp = employees.find(emp => emp._id === selectedId)
+    setFormData({
+      ...formData,
+      employeeId: selectedId,
+      employeeName: selectedEmp?.username || ''
+    })
   }
 
+  /* ----------------------------- 💾 Handle Save ----------------------------- */
+  // const handleSave = async () => {
+  //   try {
+  //     const res = await onSave(formData)
+  //     setSnackbar({
+  //       open: true,
+  //       message: res?.message || 'Department updated successfully!',
+  //       severity: res?.success ? 'success' : 'error'
+  //     })
+  //     if (res?.success) handleClose()
+  //   } catch (error) {
+  //     console.error('Error saving:', error)
+  //     setSnackbar({
+  //       open: true,
+  //       message: 'Something went wrong!',
+  //       severity: 'error'
+  //     })
+  //   }
+  // }
+
+
+ const handleSave = async () => {
+  try {
+    let payload
+
+    // 🧩 Check if document is a File (user uploaded a new file)
+    const hasFile = formData.document instanceof File
+
+    if (hasFile) {
+      // 🟣 If user uploaded a new file → send multipart/form-data
+      const fd = new FormData()
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (value !== null && value !== undefined) {
+          if (key === 'document' && value instanceof File) {
+            fd.append(key, value)
+          } else {
+            fd.append(key, value)
+          }
+        }
+      })
+
+      payload = fd
+
+      console.log('📦 Sending multipart/form-data:')
+      for (const [key, val] of fd.entries()) {
+        console.log(`  ${key}:`, val)
+      }
+    } else {
+      // 🟢 If no file uploaded → send as JSON object
+      const jsonBody = { ...formData }
+      payload = JSON.stringify(jsonBody)
+
+      console.log('📩 Sending JSON body:', jsonBody)
+    }
+
+    // ✅ Send API request
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/zobiz/update-resignation`, {
+      method: 'PUT',
+      body: payload,
+      ...(formData.document instanceof File
+        ? {} // fetch automatically sets headers for FormData
+        : { headers: { 'Content-Type': 'application/json' } })
+    })
+
+    const data = await res.json()
+
+    setSnackbar({
+      open: true,
+      message: data?.message || 'Resignation updated successfully!',
+      severity: data?.success ? 'success' : 'error'
+    })
+
+    // if (data?.success) handleClose()
+    if (data?.success) {
+  if (typeof refreshList === 'function') {
+    await refreshList()   // 🔁 Refresh table automatically
+  }
+  handleClose()
+}
+  } catch (error) {
+    console.error('❌ Error saving resignation:', error)
+    setSnackbar({
+      open: true,
+      message: 'Something went wrong!',
+      severity: 'error'
+    })
+  }
+}
+
+
+  /* ------------------------------ 🧱 UI Layout ------------------------------ */
   return (
     <>
       <Drawer
@@ -127,10 +301,10 @@ useEffect(() => {
           '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } }
         }}
       >
-        {/* ✅ Header same as AddBranchDrawer */}
-        <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Edit Department
+        {/* 🧩 Header */}
+        <div className='flex items-center justify-between p-5'>
+          <Typography variant='h5' fontWeight='bold'>
+            Edit Resignation Details
           </Typography>
           <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
@@ -139,63 +313,177 @@ useEffect(() => {
 
         <Divider />
 
-        {/* ✅ Form Section */}
+        {/* 🧩 Form Section */}
         <Box sx={{ p: 6 }}>
           <form className='flex flex-col gap-5'>
+            {/* 👤 Employee Dropdown */}
             <TextField
-              label='Department Name'
-              fullWidth
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
-            />
-
-            {/* <TextField
-              label='Branch'
-              fullWidth
-              value={formData.Plot}
-              onChange={e => setFormData({ ...formData, Plot: e.target.value })}
-            /> */}
-
-             <TextField
               select
-              label='Branch'
+              label='Employee'
               fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
+              value={formData.employeeId || ''}
+              onChange={handleEmployeeChange}
             >
-              {loadingBranches ? (
-                <MenuItem disabled>Loading branches...</MenuItem>
-              ) : branches.length > 0 ? (
-                branches.map(branch => (
-                  <MenuItem key={branch._id} value={branch._id}>
-                    {branch.branchName}
+              {loadingEmployees ? (
+                <MenuItem disabled>Loading employees...</MenuItem>
+              ) : employees.length > 0 ? (
+                employees.map(emp => (
+                  <MenuItem key={emp._id} value={emp._id}>
+                    {emp.username}
                   </MenuItem>
                 ))
               ) : (
-                <MenuItem disabled>No branches found</MenuItem>
+                <MenuItem disabled>No employees found</MenuItem>
               )}
             </TextField>
 
+            {/* 📅 Resignation Date */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label='Resignation Date'
+                value={
+                  formData.resignationDate
+                    ? dayjs(formData.resignationDate)
+                    : null
+                }
+                onChange={newValue =>
+                  setFormData({
+                    ...formData,
+                    resignationDate: newValue
+                      ? newValue.toISOString()
+                      : ''
+                  })
+                }
+                enableAccessibleFieldDOMStructure={false}
+                slots={{ textField: TextField }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: 'outlined',
+                    sx: {
+                      '& .MuiOutlinedInput-root fieldset': {
+                        borderColor: '#bdbdbd'
+                      },
+                      '& .MuiOutlinedInput-root:hover fieldset': {
+                        borderColor: '#2B3380'
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                        borderColor: '#2B3380',
+                        borderWidth: 2
+                      }
+                    }
+                  }
+                }}
+              />
+            </LocalizationProvider>
+
+            {/* 📅 Last Working Date */}
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label='Last Working Date'
+                value={
+                  formData.lastWorkingDay
+                    ? dayjs(formData.lastWorkingDay)
+                    : null
+                }
+                onChange={newValue =>
+                  setFormData({
+                    ...formData,
+                    lastWorkingDay: newValue
+                      ? newValue.toISOString()
+                      : ''
+                  })
+                }
+                enableAccessibleFieldDOMStructure={false}
+                slots={{ textField: TextField }}
+                slotProps={{
+                  textField: {
+                    fullWidth: true,
+                    variant: 'outlined',
+                    sx: {
+                      '& .MuiOutlinedInput-root fieldset': {
+                        borderColor: '#bdbdbd'
+                      },
+                      '& .MuiOutlinedInput-root:hover fieldset': {
+                        borderColor: '#2B3380'
+                      },
+                      '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                        borderColor: '#2B3380',
+                        borderWidth: 2
+                      }
+                    }
+                  }
+                }}
+              />
+            </LocalizationProvider>
+
+            {/* 🕒 Notice Period */}
+            <TextField
+              label='Notice Period'
+              fullWidth
+              value={formData.noticePeriod ?? ''}
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  noticePeriod: e.target.value
+                })
+              }
+            />
+
+            {/* 📝 Reason */}
+            <TextField
+              label='Reason'
+              fullWidth
+              value={formData.reason ?? ''}
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  reason: e.target.value
+                })
+              }
+            />
+
+            {/* 🗒️ Description */}
             <TextField
               label='Description'
               fullWidth
+              multiline
+              minRows={2}
               value={formData.description}
-              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  description: e.target.value
+                })
+              }
             />
 
+            {/* 📎 Upload Document */}
+            <FileUploadController
+              formData={formData}
+              setFormData={setFormData}
+              label='Upload Document'
+            />
 
+            {/* 🔖 Status */}
             <TextField
               select
               label='Status'
               fullWidth
               value={formData.status}
-              onChange={e => setFormData({ ...formData, status: e.target.value })}
+              onChange={e =>
+                setFormData({
+                  ...formData,
+                  status: e.target.value
+                })
+              }
             >
-              <MenuItem value='Active'>Active</MenuItem>
-              <MenuItem value='Inactive'>Inactive</MenuItem>
+              <MenuItem value='Pending'>Pending</MenuItem>
+              <MenuItem value='Approved'>Approved</MenuItem>
+              <MenuItem value='Rejected'>Rejected</MenuItem>
             </TextField>
 
-            {/* ✅ Action Buttons same style as Add Drawer */}
+            {/* ✅ Buttons */}
             <div className='flex items-center gap-4 mt-4'>
               <Button variant='contained' onClick={handleSave}>
                 Save Changes
@@ -208,30 +496,35 @@ useEffect(() => {
         </Box>
       </Drawer>
 
-      {/* ✅ Snackbar for backend message */}
+      {/* ✅ Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        <Alert
+        <MuiAlert
           onClose={handleSnackbarClose}
           severity={snackbar.severity}
           variant='filled'
           sx={{
-            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
+            backgroundColor:
+              snackbar.severity === 'success'
+                ? '#2B3380'
+                : '#d32f2f',
             color: 'white',
             fontWeight: 500
           }}
         >
           {snackbar.message}
-        </Alert>
+        </MuiAlert>
       </Snackbar>
     </>
   )
 }
 
 export default EditDepartment
+
+
 
 

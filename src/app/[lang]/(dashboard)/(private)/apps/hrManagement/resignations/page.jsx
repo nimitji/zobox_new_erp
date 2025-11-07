@@ -1,13 +1,14 @@
 // Component Imports
-import DepartmentList from '@views/apps/hrManagement/departments'
+import DepartmentList from '@views/apps/hrManagement/resignations'
 // import { fetchBranches } from '@/app/server/actions'
 
 // Data Imports
-import { fetchDepartments } from '@/app/server/actions'
+import { fetchResignation } from '@/app/server/actions'
 
 const DepartmentListApp = async () => {
   // Vars
-  const data = await fetchDepartments()
+  const data = await fetchResignation()
+  console.log("NIMIT",data)
     // const data = await fetchBranches()
 
   return <DepartmentList departmentData={data} />
