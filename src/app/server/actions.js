@@ -3235,6 +3235,127 @@ export const fetchCountAttendanceRegularization = async (token) => {
 }
 
 
+export const fetchAttendanceRecordsForAR = async (employeeId, token) => {
+  try {
+    if (!employeeId) throw new Error('Employee ID missing for fetchAttendanceRecordsForAR');
+    if (!token) throw new Error('Token missing for fetchAttendanceRecordsForAR');
+
+    console.log("📩 Fetching Attendance Records For:", employeeId);
+    console.log("🔑 Token:", token);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-records-for-ar/${employeeId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token // ✅ Backend expects token here (not Bearer)
+      },
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log('✅ Fetched Attendance Records For AR:', data);
+
+    // returns: { success: true, count: <number>, data: [ { _id, displayInfo } ] }
+    return data;
+  } catch (error) {
+    console.error('❌ Error fetching Attendance Records For AR:', error);
+    return { success: false, data: [] };
+  }
+};
+
+export const createAttendanceRegularization = async (payload, token) => {
+  try {
+    if (!token) throw new Error('Token missing for createAttendanceRegularization')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-regularization`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token: token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.error('❌ Error in createAttendanceRegularization:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong while creating regularization request'
+    }
+  }
+}
+
+
+export const fetchAttendanceRegularizations = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing for fetchAttendanceRegularizations')
+
+    console.log('🔹 Fetching Attendance Regularizations with token:', token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-regularizations`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token, // ✅ backend expects token here (not Bearer)
+      },
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch attendance regularizations: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Attendance Regularizations fetched:', data)
+
+    // return the array safely
+    return data?.data || []
+  } catch (error) {
+    console.error('❌ Error fetching attendance regularizations:', error)
+    throw error
+  }
+}
+
+export const updateAttendanceRegularization = async (payload, token) => {
+  try {
+    if (!token) throw new Error('Token missing for updateAttendanceRegularization')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-attendance-regularization`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token: token // ✅ backend expects 'token' header
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // ✅ handle response
+    const data = await res.json()
+
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to update attendance regularization')
+    }
+
+    console.log('✅ Attendance Regularization updated successfully:', data)
+    return data
+  } catch (error) {
+    console.error('❌ Error in updateAttendanceRegularization:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong while updating attendance regularization'
+    }
+  }
+}
 
 
 

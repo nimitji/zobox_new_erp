@@ -27,7 +27,7 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Department Details</Typography>
+        <Typography variant='h5'>View Regularization Request</Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -40,39 +40,42 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Employee Name'
               fullWidth
-              value={departmentData.name || ''}
+              value={departmentData.employee || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
+
+        
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Branch'
+              label='Requested Clock In'
               fullWidth
-              value={departmentData.branch || ''}
+              value={departmentData.requestedClockIn || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
-          <Grid item xs={12}>
+            <Grid item xs={12}>
             <CustomTextField
-              label='Description'
+              label='Requested Clock Out'
               fullWidth
-              value={departmentData.description || ''}
+              value={departmentData.requestedClockOut || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
-     <Grid item xs={12}>
+         <Grid item xs={12}>
             <CustomTextField
-              label='Status'
+              label='Reason'
               fullWidth
-              value={departmentData.status || ''}
+              value={departmentData.reason || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
+          
         </Grid>
 
         <Divider sx={{ my: 3 }} />
