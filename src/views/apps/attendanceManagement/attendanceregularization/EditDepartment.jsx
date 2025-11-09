@@ -1,6 +1,5 @@
 
 
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -16,21 +15,25 @@ import MenuItem from '@mui/material/MenuItem'
 import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
-import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+import { FormControlLabel, Checkbox } from '@mui/material'
+
+// MUI X Date Imports
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { TimePicker } from '@mui/x-date-pickers/TimePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   const [formData, setFormData] = useState({
     _id: '',
-    name: '',
-    branch: '',
-    description: '',
+    employee: '',
+   
+    requestedClockIn: '',
+    requestedClockOut: '',
+     typeofuser: '' ,
+     requestedOn:'',
     status: 'Active'
   })
-console.log("POOJA456",formData)
-    // ✅ Branch dropdown data
-  const [branches, setBranches] = useState([])
-  const [loadingBranches, setLoadingBranches] = useState(true)
 
   // ✅ Snackbar state
   const [snackbar, setSnackbar] = useState({
@@ -39,72 +42,35 @@ console.log("POOJA456",formData)
     severity: 'success'
   })
 
-  const handleSnackbarClose = () => {
-    setSnackbar({ ...snackbar, open: false })
-  }
+  const handleSnackbarClose = () => setSnackbar(prev => ({ ...prev, open: false }))
 
-    useEffect(() => {
-    const loadBranches = async () => {
-      try {
-        const res = await fetchListOfBranch()
-        if (res?.success && Array.isArray(res.data)) {
-          setBranches(res.data)
-        } else if (Array.isArray(res)) {
-          setBranches(res)
-        } else {
-          console.warn('Invalid branch data format:', res)
-        }
-      } catch (err) {
-        console.error('Error fetching branches:', err)
-      } finally {
-        setLoadingBranches(false)
-      }
+  // ✅ Load data when editing
+  useEffect(() => {
+    if (selectedDepartment) {
+      setFormData({
+        _id: selectedDepartment._id || '',
+        employee: selectedDepartment.employee || '',
+        requestedClockIn: selectedDepartment.requestedClockIn || '',
+        requestedClockOut: selectedDepartment.requestedClockOut || '',
+        typeofuser: selectedDepartment.typeofuser || '',
+        requestedOn:selectedDepartment.requestedOn || '',
+        reason:selectedDepartment.reason || '',
+        status: selectedDepartment.status || ''
+      })
     }
+  }, [selectedDepartment])
 
-    loadBranches()
-  }, [])
-
-  // ✅ Auto-fill fields when drawer opens
-  // useEffect(() => {
-  //   if (selectedDepartment) {
-  //     setFormData({
-  //       _id: selectedDepartment._id || '',
-  //       name: selectedDepartment.name || '',
-  //       branch: selectedDepartment.branch || '',
-  //       description: selectedDepartment.description || '',
-  //       status: selectedDepartment.status || 'Active'
-  //     })
-  //   }
-  // }, [selectedDepartment])
-
-/
-
-useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
-
-    setFormData({
-      _id: selectedDepartment._id || '',
-      name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
-      description: selectedDepartment.description || '',
-      status: selectedDepartment.status || 'Active'
-    })
-  }
-}, [selectedDepartment, branches.length])
-
-
-  // ✅ Handle save with snackbar feedback
+  // ✅ Handle save
   const handleSave = async () => {
     try {
-      const res = await onSave(formData) // backend call in parent component
+      const res = await onSave(formData)
+
       setSnackbar({
         open: true,
-        message: res?.message || 'Department updated successfully!',
+        message: res?.message || 'Shift updated successfully!',
         severity: res?.success ? 'success' : 'error'
       })
+
       if (res?.success) handleClose()
     } catch (error) {
       setSnackbar({
@@ -115,92 +81,116 @@ useEffect(() => {
     }
   }
 
+  // ✅ Reusable TimePicker Component
+  const renderTimePicker = (label, fieldName) => (
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <TimePicker
+        label={label}
+        value={formData[fieldName] ? dayjs(formData[fieldName], 'HH:mm') : null}
+        onChange={newValue =>
+          setFormData({
+            ...formData,
+            [fieldName]:
+              newValue && dayjs(newValue).isValid()
+                ? dayjs(newValue).format('HH:mm')
+                : ''
+          })
+        }
+        enableAccessibleFieldDOMStructure={false}
+        slots={{ textField: TextField }}
+        slotProps={{
+          textField: {
+            fullWidth: true,
+            variant: 'outlined',
+            sx: {
+              '& .MuiOutlinedInput-root fieldset': {
+                borderColor: '#bdbdbd'
+              },
+              '& .MuiOutlinedInput-root:hover fieldset': {
+                borderColor: '#2B3380'
+              },
+              '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                borderColor: '#2B3380',
+                borderWidth: 2
+              }
+            }
+          }
+        }}
+      />
+    </LocalizationProvider>
+  )
+
   return (
     <>
       <Drawer
         open={open}
-        anchor='right'
-        variant='temporary'
+        anchor="right"
+        variant="temporary"
         onClose={handleClose}
         ModalProps={{ keepMounted: true }}
-        sx={{
-          '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } }
-        }}
+        sx={{ '& .MuiDrawer-paper': { width: { xs: 320, sm: 420 } } }}
       >
-        {/* ✅ Header same as AddBranchDrawer */}
-        <div className='flex items-center justify-between plb-5 pli-6'>
-          <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Edit Department
+        {/* Header */}
+        <div className="flex items-center justify-between plb-5 pli-6">
+          <Typography variant="h5" sx={{ fontWeight: 600 }}>
+            Edit Attendance Regularization Details
           </Typography>
-          <IconButton size='small' onClick={handleClose}>
-            <i className='tabler-x text-2xl text-textPrimary' />
+          <IconButton size="small" onClick={handleClose}>
+            <i className="tabler-x text-2xl text-textPrimary" />
           </IconButton>
         </div>
 
         <Divider />
 
-        {/* ✅ Form Section */}
+        {/* Form */}
         <Box sx={{ p: 6 }}>
-          <form className='flex flex-col gap-5'>
+          <form className="flex flex-col gap-5">
             <TextField
-              label='Department Name'
+              label="Employee Name"
               fullWidth
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
+              value={formData.employee}
+              onChange={e => setFormData({ ...formData, employee: e.target.value })}
             />
 
-            {/* <TextField
-              label='Branch'
-              fullWidth
-              value={formData.Plot}
-              onChange={e => setFormData({ ...formData, Plot: e.target.value })}
-            /> */}
+           
 
-             <TextField
-              select
-              label='Branch'
-              fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
-            >
-              {loadingBranches ? (
-                <MenuItem disabled>Loading branches...</MenuItem>
-              ) : branches.length > 0 ? (
-                branches.map(branch => (
-                  <MenuItem key={branch._id} value={branch._id}>
-                    {branch.branchName}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No branches found</MenuItem>
-              )}
-            </TextField>
+            {renderTimePicker('Requested Clock In', 'requestedClockIn')}
+            {renderTimePicker('Requested Clock Out', 'requestedClockOut')}
+           
 
             <TextField
-              label='Description'
+              label="Reason"
               fullWidth
-              value={formData.description}
-              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              value={formData.reason}
+              onChange={e => setFormData({ ...formData, reason: e.target.value })}
             />
 
 
-            <TextField
-              select
-              label='Status'
-              fullWidth
-              value={formData.status}
-              onChange={e => setFormData({ ...formData, status: e.target.value })}
-            >
-              <MenuItem value='Active'>Active</MenuItem>
-              <MenuItem value='Inactive'>Inactive</MenuItem>
-            </TextField>
+          
+  {formData?.typeofuser && formData.typeofuser !== 'Employee' && (
+  <TextField
+    select
+    label="Status"
+    fullWidth
+    value={formData.status || ''}
+    onChange={e =>
+      setFormData({ ...formData, status: e.target.value })
+    }
+  >
+    <MenuItem value="Pending">Pending</MenuItem>
+    <MenuItem value="Rejected">Rejected</MenuItem>
+    <MenuItem value="Approved">Approved</MenuItem>
+  </TextField>
+)}
 
-            {/* ✅ Action Buttons same style as Add Drawer */}
-            <div className='flex items-center gap-4 mt-4'>
-              <Button variant='contained' onClick={handleSave}>
+
+
+            {/* Buttons */}
+            <div className="flex items-center gap-4 mt-4">
+              <Button variant="contained" onClick={handleSave}>
                 Save Changes
               </Button>
-              <Button variant='tonal' color='error' onClick={handleClose}>
+              <Button variant="tonal" color="error" onClick={handleClose}>
                 Cancel
               </Button>
             </div>
@@ -208,7 +198,7 @@ useEffect(() => {
         </Box>
       </Drawer>
 
-      {/* ✅ Snackbar for backend message */}
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -218,9 +208,10 @@ useEffect(() => {
         <Alert
           onClose={handleSnackbarClose}
           severity={snackbar.severity}
-          variant='filled'
+          variant="filled"
           sx={{
-            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
+            backgroundColor:
+              snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
             color: 'white',
             fontWeight: 500
           }}
@@ -233,5 +224,6 @@ useEffect(() => {
 }
 
 export default EditDepartment
+
 
 
