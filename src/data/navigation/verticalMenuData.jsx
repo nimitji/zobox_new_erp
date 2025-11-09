@@ -264,7 +264,7 @@ const verticalMenuData = dictionary => [
           },
             {
             label: dictionary['navigation'].holidays,
-            href: '/apps/hrManagement/complaints'
+            href: '/apps/hrManagement/holidays'
           },
               {
             label: dictionary['navigation'].announcements,

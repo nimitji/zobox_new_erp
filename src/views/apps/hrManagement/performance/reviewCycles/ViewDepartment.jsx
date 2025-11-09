@@ -40,18 +40,18 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Review Cycle Name'
               fullWidth
-              value={departmentData.name || ''}
+              value={departmentData.reviewCycleName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Branch'
+              label='Frequency'
               fullWidth
-              value={departmentData.branch || ''}
+              value={departmentData.frequency || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>

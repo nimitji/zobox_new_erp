@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid2'
 import HorizontalWithSubtitle from '@components/card-statistics/HorizontalWithSubtitle'
-import { fetchCountDepartments } from '../../../../app/server/actions'
+import { fetchCountAnnouncement } from '../../../../app/server/actions'
 
 const DepartmentListCards = () => {
   const [cardsData, setCardsData] = useState([])
@@ -11,11 +11,11 @@ const DepartmentListCards = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const response = await fetchCountDepartments()
-        console.log('Fetched deparment data ✅', response)
+        const response = await fetchCountAnnouncement()
+        console.log('Fetched announcement data ✅', response)
         setCardsData(response)
       } catch (error) {
-        console.error('Error fetching department count ❌', error)
+        console.error('Error fetching announcement count ❌', error)
       }
     }
     getData()

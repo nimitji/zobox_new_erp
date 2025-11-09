@@ -17,20 +17,19 @@ import Box from '@mui/material/Box'
 import Snackbar from '@mui/material/Snackbar'
 import Alert from '@mui/material/Alert'
 import { description } from 'valibot'
-import { fetchListOfBranch } from '../../../../app/server/actions.js'
+
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   const [formData, setFormData] = useState({
     _id: '',
-    name: '',
-    branch: '',
+    reviewCycleName: '',
+    frequency:'',
     description: '',
     status: 'Active'
   })
 console.log("POOJA456",formData)
     // ✅ Branch dropdown data
-  const [branches, setBranches] = useState([])
-  const [loadingBranches, setLoadingBranches] = useState(true)
+ 
 
   // ✅ Snackbar state
   const [snackbar, setSnackbar] = useState({
@@ -43,57 +42,23 @@ console.log("POOJA456",formData)
     setSnackbar({ ...snackbar, open: false })
   }
 
-    useEffect(() => {
-    const loadBranches = async () => {
-      try {
-        const res = await fetchListOfBranch()
-        if (res?.success && Array.isArray(res.data)) {
-          setBranches(res.data)
-        } else if (Array.isArray(res)) {
-          setBranches(res)
-        } else {
-          console.warn('Invalid branch data format:', res)
-        }
-      } catch (err) {
-        console.error('Error fetching branches:', err)
-      } finally {
-        setLoadingBranches(false)
-      }
-    }
+ 
 
-    loadBranches()
-  }, [])
 
-  // ✅ Auto-fill fields when drawer opens
-  // useEffect(() => {
-  //   if (selectedDepartment) {
-  //     setFormData({
-  //       _id: selectedDepartment._id || '',
-  //       name: selectedDepartment.name || '',
-  //       branch: selectedDepartment.branch || '',
-  //       description: selectedDepartment.description || '',
-  //       status: selectedDepartment.status || 'Active'
-  //     })
-  //   }
-  // }, [selectedDepartment])
-
-/
 
 useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
+  if (selectedDepartment ) {
+   
 
     setFormData({
       _id: selectedDepartment._id || '',
-      name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
+      reviewCycleName: selectedDepartment.reviewCycleName || '',
+      frequency: selectedDepartment.frequency || '',
       description: selectedDepartment.description || '',
       status: selectedDepartment.status || 'Active'
     })
   }
-}, [selectedDepartment, branches.length])
+}, [selectedDepartment])
 
 
   // ✅ Handle save with snackbar feedback
@@ -102,7 +67,7 @@ useEffect(() => {
       const res = await onSave(formData) // backend call in parent component
       setSnackbar({
         open: true,
-        message: res?.message || 'Department updated successfully!',
+        message: res?.message || 'Review Cycle updated successfully!',
         severity: res?.success ? 'success' : 'error'
       })
       if (res?.success) handleClose()
@@ -130,7 +95,7 @@ useEffect(() => {
         {/* ✅ Header same as AddBranchDrawer */}
         <div className='flex items-center justify-between plb-5 pli-6'>
           <Typography variant='h5' sx={{ fontWeight: 600 }}>
-            Edit Department
+            Edit Review Cycle
           </Typography>
           <IconButton size='small' onClick={handleClose}>
             <i className='tabler-x text-2xl text-textPrimary' />
@@ -143,38 +108,18 @@ useEffect(() => {
         <Box sx={{ p: 6 }}>
           <form className='flex flex-col gap-5'>
             <TextField
-              label='Department Name'
+              label='Review Cycle Name'
               fullWidth
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
+              value={formData.reviewCycleName}
+              onChange={e => setFormData({ ...formData, reviewCycleName: e.target.value })}
             />
 
-            {/* <TextField
-              label='Branch'
+         <TextField
+              label='Frequency'
               fullWidth
-              value={formData.Plot}
-              onChange={e => setFormData({ ...formData, Plot: e.target.value })}
-            /> */}
-
-             <TextField
-              select
-              label='Branch'
-              fullWidth
-              value={formData.branch||""}
-              onChange={e => setFormData({ ...formData, branch: e.target.value })}
-            >
-              {loadingBranches ? (
-                <MenuItem disabled>Loading branches...</MenuItem>
-              ) : branches.length > 0 ? (
-                branches.map(branch => (
-                  <MenuItem key={branch._id} value={branch._id}>
-                    {branch.branchName}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No branches found</MenuItem>
-              )}
-            </TextField>
+              value={formData.frequency}
+              onChange={e => setFormData({ ...formData, frequency: e.target.value })}
+            />
 
             <TextField
               label='Description'

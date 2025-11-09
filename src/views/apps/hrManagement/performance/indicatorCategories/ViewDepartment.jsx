@@ -27,7 +27,7 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Department Details</Typography>
+        <Typography variant='h5'>Category Indicators Details</Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -40,21 +40,14 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Category Indicators Name'
               fullWidth
-              value={departmentData.name || ''}
+              value={departmentData.category || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
-          <Grid item xs={12}>
-            <CustomTextField
-              label='Branch'
-              fullWidth
-              value={departmentData.branch || ''}
-              InputProps={{ readOnly: true }}
-            />
-          </Grid>
+     
 
           <Grid item xs={12}>
             <CustomTextField

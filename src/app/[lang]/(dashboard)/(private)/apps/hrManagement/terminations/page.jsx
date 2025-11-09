@@ -1,5 +1,5 @@
 // Component Imports
-import DepartmentList from '@views/apps/hrManagement/departments'
+import DepartmentList from '@views/apps/hrManagement/terminations'
 // import { fetchBranches } from '@/app/server/actions'
 
 // Data Imports

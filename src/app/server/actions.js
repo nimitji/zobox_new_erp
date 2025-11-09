@@ -1374,6 +1374,1870 @@ return data.data // return only branch array
   }
 }
 
+
+
+
+
+export const createCategoryIndicator = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator-category`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create category indicator: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG createCategoryIndicator:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create category indicator:', err)
+    throw err
+  }
+}
+
+
+export const fetchCountCategoryIndicator = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-indicator-category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Category Indicator Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Category Indicator:', error)
+    throw error
+  }
+}
+
+
+
+export const fetchCategoryIndicator = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch category indicator: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category indicator Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching category indicator:', error)
+    throw error
+  }
+}
+
+
+export const editCategoryIndicator = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+    console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicatorcategory`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to edit category indicator: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG updateCategoryIndicator:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to update category indicator:', err)
+    throw err
+  }
+}
+//Inndicator
+
+export const fetchListOfCategoryIndicator = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-indicator-category`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch category indicator: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only category indicator array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const createIndicator = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create indicator: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG createIndicator:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create indicator:', err)
+    throw err
+  }
+}
+
+export const fetchIndicator = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch indicator: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category  Data:', data)
+    
+return data.data // return only indicator array
+  } catch (error) {
+    console.error('Error fetching  indicator:', error)
+    throw error
+  }
+}
+// app/server/actions.js
+// export const fetchIndicator = async () => {
+//   try {
+//     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+//       method: 'GET',
+//       headers: { 'Content-Type': 'application/json' },
+//       cache: 'no-store' // ensures latest data
+//     })
+
+//     if (!res.ok) {
+//       const errorText = await res.text()
+//       throw new Error(`Failed to fetch indicator: ${errorText}`)
+//     }
+
+//     const json = await res.json()
+
+//     console.log('📦 Fetched indicator data:', json)
+
+//     // ✅ Always return a consistent shape
+//     return {
+//       success: json.success ?? true,
+//       message: json.message ?? 'Fetched successfully',
+//       data: json.data ?? []
+//     }
+//   } catch (error) {
+//     console.error('❌ Error fetching indicator:', error)
+//     return { success: false, message: error.message, data: [] }
+//   }
+// }
+
+// app/server/actions.js
+// export const fetchIndicator = async () => {
+//   try {
+//     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+//       method: 'GET',
+//       headers: { 'Content-Type': 'application/json' },
+//       cache: 'no-store'
+//     })
+
+//     // Parse JSON once, safely
+//     const json = await res.json()
+
+//     // ✅ Check HTTP errors (only non-200)
+//     if (!res.ok) {
+//       throw new Error(`HTTP ${res.status}: ${json.message || 'Failed to fetch indicators'}`)
+//     }
+
+//     // ✅ Handle successful but empty data
+//     if (!Array.isArray(json.data) || json.data.length === 0) {
+//       console.warn('⚠️ No indicator records found')
+//       return {
+//         success: true,
+//         message: json.message || 'No indicators found',
+//         data: []
+//       }
+//     }
+
+//     // ✅ Normal case: data exists
+//     return {
+//       success: true,
+//       message: json.message || 'Indicators fetched successfully',
+//       data: json.data
+//     }
+//   } catch (error) {
+//     console.error('❌ fetchIndicator failed:', error)
+//     return { success: false, message: error.message, data: [] }
+//   }
+// }
+
+
+
+export const fetchCountIndicator = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-indicator`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count  Indicator Data:', data)
+    
+return data.data // return only indicator array
+  } catch (error) {
+    console.error('Error fetching  Indicator:', error)
+    throw error
+  }
+}
+
+export const editIndicator = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+    console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicator`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to edit indicator: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG updateIndicator:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to update indicator:', err)
+    throw err
+  }
+}
+
+
+export const createGoalType = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-goal-type`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create GoalType: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG createGoalType:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create GoalType:', err)
+    throw err
+  }
+}
+
+export const fetchGoalType = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-goal-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch GoalType: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category  Data:', data)
+    
+return data.data // return only GoalType array
+  } catch (error) {
+    console.error('Error fetching  GoalType:', error)
+    throw error
+  }
+}
+
+export const fetchCountGoalType = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-goal-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count  GoalType Data:', data)
+    
+return data.data // return only GoalType array
+  } catch (error) {
+    console.error('Error fetching  GoalType:', error)
+    throw error
+  }
+}
+
+export const editGoalType = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+    console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-goaltype`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to edit GoalType: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG updateGoalType:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to update GoalType:', err)
+    throw err
+  }
+}
+
+export const fetchListOfGoalType = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-goal-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch goal type: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only category indicator array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const createEmployeeGoal = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-goal`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create employee Goal: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG create employee Goal:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create  employee Goal:', err)
+    throw err
+  }
+}
+
+export const fetchCountEmployeeGoal = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-goal`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count  employee goal Data:', data)
+    
+return data.data // return only GoalType array
+  } catch (error) {
+    console.error('Error fetching  employee goal:', error)
+    throw error
+  }
+}
+
+export const fetchEmployeeGoal = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-goals`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch EmployeeGoal: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category  Data:', data)
+    
+return data.data // return only EmployeeGoal array
+  } catch (error) {
+    console.error('Error fetching  EmployeeGoal:', error)
+    throw error
+  }
+}
+export const editEmployeeGoal = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+    console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-employee-goal`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to edit EmployeeGoal: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG updateEmployeeGoal:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to update EmployeeGoal:', err)
+    throw err
+  }
+}
+
+//Review Cycle APIS
+export const createReviewCycle = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-review-cycle`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create ReviewCycle: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG createReviewCycle:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create ReviewCycle:', err)
+    throw err
+  }
+}
+
+export const fetchReviewCycle = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-review-cycle`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch ReviewCycle: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category  Data:', data)
+    
+return data.data // return only ReviewCycle array
+  } catch (error) {
+    console.error('Error fetching  ReviewCycle:', error)
+    throw error
+  }
+}
+
+export const fetchCountReviewCycle = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-review-cycle`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count  ReviewCycle Data:', data)
+    
+return data.data // return only ReviewCycle array
+  } catch (error) {
+    console.error('Error fetching  ReviewCycle:', error)
+    throw error
+  }
+}
+
+export const editReviewCycle = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+    console.log("TODAYDEBUG",formData,payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-review-cycle`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to edit ReviewCycle: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG updateReviewCycle:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to update ReviewCycle:', err)
+    throw err
+  }
+}
+//Employee Review Cycle
+
+export const fetchListOfEmployeeReviewCycle = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-review-cycle`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch goal type: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only category indicator array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+export const fetchCountEmployeeReviewCycle = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-review-cycle`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count  employee review cycle Data:', data)
+    
+return data.data // return only Employee Review cycle array
+  } catch (error) {
+    console.error('Error fetching  Employee Review cycle:', error)
+    throw error
+  }
+}
+
+export const createEmployeeReviewCycle = async (formData) => {
+  try {
+    // Map form fields to backend expected structure
+    const payload = formData
+
+console.log("TODAYDEBUG",formData,process.env.API_URL)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-review-cycle`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create employee review cycle: ${errorText}`)
+    }
+
+    const departmentData = await res.json()
+
+    console.log("DEBUG create employee review cycle:", departmentData)
+    
+return departmentData
+  } catch (err) {
+    console.error('Failed to create  employee review cycle:', err)
+    throw err
+  }
+}
+
+export const fetchEmployeeReviewCycle = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-review-cycle`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch EmployeeReviewCycle: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched category  Data:', data)
+    
+return data.data // return only EmployeeReviewCycle array
+  } catch (error) {
+    console.error('Error fetching  EmployeeReviewCycle:', error)
+    throw error
+  }
+}
+
+
+// 🧠 Fetch single employee review details by ID
+export const fetchEmployeeReviewById = async (id) => {
+  try {
+    console.log("POOJAIDS",id)
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-review/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // always get the latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch review details: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    // Debug log
+    console.log('📦 Review Details Fetched:', data)
+
+    if (!data.success) {
+      throw new Error(data.message || 'Failed to fetch review details')
+    }
+
+    return data
+  } catch (error) {
+    console.error('❌ Error fetching employee review details:', error)
+    throw error
+  }
+}
+
+
+export const fetchIndicatorDetailsEmployeeReview = async () => {
+  try {
+   
+
+    const res = await fetch(`${ process.env.API_URL }/zobiz/fetch-indicator-details-employee-review`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // always fetch latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch indicator details: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Indicator Details:', data)
+
+    // return only array for easy usage
+    return data
+  } catch (error) {
+    console.error('❌ Error fetching indicator details:', error)
+    throw error
+  }
+}
+
+export async function fetchDepartmentsByBranch(branchId) {
+  try {
+    console.log("TESTDATA",branchId)
+    const res = await fetch(`${process.env.API_URL}/zobiz/departments/byBranch/${branchId}`, {
+      cache: 'no-store'
+    })
+    const data = await res.json()
+    return data // { success: true, data: [ { _id, departmentName } ] }
+  } catch (error) {
+    console.error('Error fetching departments by branch:', error)
+    return { success: false, data: [] }
+  }
+}
+
+export async function fetchDesignationsByDepartment(departmentId) {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/designations/byDepartment/${departmentId}`, {
+      cache: 'no-store'
+    })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.error('Error fetching designations by department:', error)
+    return { success: false, data: [] }
+  }
+}
+
+//Resignation 
+export const fetchCountResignation = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-resignation`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Resignations Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Resignations:', error)
+    throw error
+  }
+}
+
+
+export const createResignation = async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-resignation`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create resignation: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ createResignation Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create resignation:', err)
+    throw err
+  }
+}
+
+export const fetchResignation = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-resignations`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch resignation: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Resignation Data:', data)
+    
+ return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Resignations:', error)
+    throw error
+  }
+}
+
+export const updateResignation = async (formData) =>  {
+  try {
+
+    console.log("NPRSTEST",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-resignation`, {
+      method: 'PUT',
+      body: formData
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to update resignation: ${errorText}`)
+    }
+
+    const data = await res.json()
+    return data
+  } catch (err) {
+    console.error('Error updating resignation:', err)
+    throw err
+  }
+}
+
+//Termination
+export const fetchCountTermination = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-termination`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Terminations Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Terminations:', error)
+    throw error
+  }
+}
+
+export const createTermination = async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-termination`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create termination: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ createTermination Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create termination:', err)
+    throw err
+  }
+}
+
+//Warning
+export const fetchCountWarning = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-warning`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Warnings Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Warnings:', error)
+    throw error
+  }
+}
+
+export const createWarning = async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-warning`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create warning: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Warning Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create warning:', err)
+    throw err
+  }
+}
+
+
+
+//Trip
+export const fetchCountTrip = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-trip`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Trips Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Trips:', error)
+    throw error
+  }
+}
+
+export const createTrip= async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-trip`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create trip: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Trip Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create trip:', err)
+    throw err
+  }
+}
+//Complaint
+export const fetchCountComplaint = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-complaint`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Complaints Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Complaints:', error)
+    throw error
+  }
+}
+
+export const createComplaint= async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-complaint`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create complaint: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Complaint Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create complaint:', err)
+    throw err
+  }
+}
+//Transfer
+export const fetchCountTransfer = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-transfer`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Transfer Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Transfer:', error)
+    throw error
+  }
+}
+export const createTransfer= async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-transfer`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create transfer: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Transfer Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create transfer:', err)
+    throw err
+  }
+}
+//Holidays
+export const fetchCountHolidays = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-holidays`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Holidays Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Holidays:', error)
+    throw error
+  }
+}
+
+export const createHolidays= async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-holiday`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create holiday: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Holiday Response:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create holiday:', err)
+    throw err
+  }
+}
+//Announcement
+export const fetchCountAnnouncement = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-announcement`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Announcements Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Announcements:', error)
+    throw error
+  }
+}
+
+
+export const createAnnouncements= async (formData) => {
+  try {
+    // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
+    console.log("POOJAFORMDATA",formData)
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-announcement`, {
+      method: 'POST',
+      body: formData, // send raw FormData
+      cache: 'no-store',
+    })
+
+    // 🧾 Handle errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create Announcements: ${errorText}`)
+    }
+
+    const result = await res.json()
+    console.log("✅ create  Holiday Announcements:", result)
+    return result
+  } catch (err) {
+    console.error('❌ Failed to create Announcements:', err)
+    throw err
+  }
+}
+
+//Attendancemanagemet  Shift
+export const fetchCountShift = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-shift`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Shift Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Shift:', error)
+    throw error
+  }
+}
+
+
+
+export  const createShift =async (payload) =>{
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-shift`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    // Parse the response
+    const data = await res.json()
+
+    // Optional: handle bad status codes
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to create shift')
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error in createDepartment:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong'
+    }
+  }
+}
+
+
+export const fetchShift = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-shift`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch shifts: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Shifts Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching shifts ❌:', error)
+    throw error
+  }
+}
+
+
+export const editShift = async (formData) => {
+  try {
+    // Prepare payload directly from formData
+    const payload = {
+      _id: formData._id,
+      shiftName: formData.shiftName,
+      description: formData.description,
+      startTime: formData.startTime,
+      endTime: formData.endTime,
+      breakDuration: formData.breakDuration,
+      breakStartTime: formData.breakStartTime,
+      breakEndTime: formData.breakEndTime,
+      afternoonBreakStartTime: formData.afternoonBreakStartTime,
+      afternoonBreakEndTime: formData.afternoonBreakEndTime,
+      eveningBreakStartTime: formData.eveningBreakStartTime,
+      eveningBreakEndTime: formData.eveningBreakEndTime,
+      gracePeriod: formData.gracePeriod,
+      isNightShift: formData.isNightShift,
+      status: formData.status
+    };
+
+    console.log("🟡 Sending update shift payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-shift`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update shift: ${errorText}`);
+    }
+
+    const shiftData = await res.json();
+
+    console.log("✅ Updated Shift Response:", shiftData);
+
+    return shiftData;
+  } catch (err) {
+    console.error('❌ Failed to update shift:', err);
+    throw err;
+  }
+};
+
+//Attendance policy
+
+export const fetchCountAttendancePolicy = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-policy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Attendance Policy Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Attendance Policy:', error)
+    throw error
+  }
+}
+
+
+// ✅ Create Attendance Policy - POST API
+export const createAttendancePolicy = async (formData) => {
+  try {
+    // 🧩 Prepare payload — ensure numeric fields are numbers
+    const payload = {
+      policyName: formData.policyName,
+      description: formData.description,
+      lateArrivalGrace: Number(formData.lateArrivalGrace),
+      earlyDeparture: Number(formData.earlyDeparture),
+      status: formData.status
+    }
+
+    console.log('🟢 Sending Attendance Policy Payload:', payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-policy`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // ❌ Handle server errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create attendance policy: ${errorText}`)
+    }
+
+    // ✅ Parse response
+    const data = await res.json()
+    console.log('✅ Attendance Policy Created:', data)
+
+    return data
+  } catch (error) {
+    console.error('❌ Error creating attendance policy:', error)
+    throw error
+  }
+}
+
+export const fetchAttendancePolicy = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-policy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch atttendance policy: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Attendance Policy Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching atttendance policy ❌:', error)
+    throw error
+  }
+}
+
+export const editAttendancePolicy = async (formData) => {
+  try {
+    // 🧩 Prepare payload directly from formData
+    const payload = {
+      _id: formData._id,
+      policyName: formData.policyName,
+      description: formData.description,
+      lateArrivalGrace: Number(formData.lateArrivalGrace),
+      earlyDeparture: Number(formData.earlyDeparture),
+      status: formData.status
+    };
+
+    console.log("🟡 Sending Attendance Policy Update Payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-policy`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update attendance policy: ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    console.log("✅ Attendance Policy Updated Successfully:", data);
+
+    return data;
+  } catch (err) {
+    console.error('❌ Failed to update attendance policy:', err);
+    throw err;
+  }
+};
+
+//Attendance records
+export const fetchCountAttendanceRecord = async () => {
+  try {
+   
+   
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-records`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Attendance Record Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Attendance Record:', error)
+    throw error
+  }
+}
+
+
+export const createAttendanceRecord = async (formData) => {
+  try {
+    // 🧩 Prepare payload to match backend expectations
+    const payload = {
+      employees: formData.employees,                                // employee ObjectId
+      date: formData.date,                                          // ISO date string (YYYY-MM-DD)
+      clockIn: formData.clockIn,                                    // HH:mm
+      clockOut: formData.clockOut,                                  // HH:mm
+      breakHours: formData.breakHours,                              // number or string
+      status: formData.status,                                      // Present/Absent/etc.
+      isHoliday: formData.isHoliday,                                // boolean
+      notes: formData.notes                                         // string
+    };
+
+    console.log('🟢 Sending Attendance Record Payload:', payload);
+
+    // 📨 Send POST request to backend API
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-record`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store' // ensures fresh API call
+    });
+
+    // ❌ Handle HTTP-level errors
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create attendance record: ${errorText}`);
+    }
+
+    // ✅ Parse backend response
+    const data = await res.json();
+    console.log('✅ Attendance Record Created:', data);
+
+    return data;
+  } catch (error) {
+    console.error('❌ Error creating attendance record:', error);
+    throw error;
+  }
+};
+
+export const fetchAttendanceRecords = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/get-attendance-records`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // always get latest records
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log('✅ Fetched Attendance Records:', data);
+
+    // Return only the array of records
+    return data.data;
+  } catch (error) {
+    console.error('❌ Error fetching attendance records:', error);
+    throw error;
+  }
+};
+
+
+
+export const editAttendanceRecord = async (formData) => {
+  try {
+    // 🧩 Prepare payload from formData
+    const payload = {
+      _id: formData._id,
+      employeeId: formData.employeeId,
+      employee: formData.employee,
+      date: formData.date,
+      clockIn: formData.clockIn,
+      clockOut: formData.clockOut,
+      breakHours: formData.breakHours,
+      status: formData.status,
+      isHoliday: formData.isHoliday ?? false,
+      notes: formData.notes || ''
+    }
+
+    console.log('🟡 Sending Attendance Record Update Payload:', payload)
+
+    // ✅ API call
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-record`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // If your backend uses auth middleware, uncomment below:
+        // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // 🚨 Log the status for debugging
+    console.log('📡 editAttendanceRecord Response Status:', res.status)
+
+    if (res.status === 403) {
+      throw new Error('Forbidden (403): You might be hitting the wrong endpoint or missing authorization.')
+    }
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to update attendance record: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Attendance Record Updated Successfully:', data)
+    return data
+  } catch (err) {
+    console.error('❌ Failed to update attendance record:', err)
+    throw err
+  }
+}
+//Attendance Regularization
+
+export const fetchCountAttendanceRegularization = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing for fetchCountAttendanceRegularization')
+    console.log("TOKEN",token)
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-regularization`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token // ✅ your backend expects token here, not Bearer
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch regularization count: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Count Attendance Regularization Data:', data)
+    return data.data
+  } catch (error) {
+    console.error('❌ Error fetching Attendance Regularization Count:', error)
+    throw error
+  }
+}
+
+
+
+
+
 export const getPermissionsData = async () => {
   return permissionData
 }

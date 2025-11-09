@@ -27,7 +27,7 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Department Details</Typography>
+        <Typography variant='h5'>View Performance Indicator</Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -40,18 +40,18 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Indicator Name'
               fullWidth
-              value={departmentData.name || ''}
+              value={departmentData.indicatorName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Branch'
+              label='Category'
               fullWidth
-              value={departmentData.branch || ''}
+              value={departmentData.category || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
@@ -61,6 +61,24 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
               label='Description'
               fullWidth
               value={departmentData.description || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+              <Grid item xs={12}>
+            <CustomTextField
+              label='Measurement Unit'
+              fullWidth
+              value={departmentData.measurementUnit || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+                 <Grid item xs={12}>
+            <CustomTextField
+              label='Target Value'
+              fullWidth
+              value={departmentData.targetValue || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>

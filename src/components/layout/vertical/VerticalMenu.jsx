@@ -197,7 +197,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/hrManagement/trips`}>{dictionary['navigation'].trips}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/complaints`}>{dictionary['navigation'].complaints}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/transfers`}>{dictionary['navigation'].transfers}</MenuItem>
-             <MenuItem href={`/${locale}/apps/hrManagement/complaints`}>{dictionary['navigation'].holidays}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/holidays`}>{dictionary['navigation'].holidays}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/announcements`}>{dictionary['navigation'].announcements}</MenuItem>
               <SubMenu label={dictionary['navigation'].assetManagements} >
             <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/assetTypes`}>{dictionary['navigation'].assetTypes}</MenuItem>
@@ -244,10 +244,10 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].leaveBalances}</MenuItem>
           </SubMenu>
            <SubMenu label={dictionary['navigation'].attendanceManagement} icon={<i className='tabler-attendance-management' />}>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].shifts}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].attendancePolicies}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].attendanceRecords}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].attendanceRegularization}</MenuItem>
+            <MenuItem href={`/${locale}/apps/attendanceManagement/shift`}>{dictionary['navigation'].shifts}</MenuItem>
+            <MenuItem href={`/${locale}/apps/attendanceManagement/attendancepolicies`}>{dictionary['navigation'].attendancePolicies}</MenuItem>
+            <MenuItem href={`/${locale}/apps/attendanceManagement/attendancerecords`}>{dictionary['navigation'].attendanceRecords}</MenuItem>
+            <MenuItem href={`/${locale}/apps/attendanceManagement/attendanceregularization`}>{dictionary['navigation'].attendanceRegularization}</MenuItem>
           </SubMenu>
            <SubMenu label={dictionary['navigation'].timeTracking} icon={<i className='tabler-time-tracking' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].timeEntries}</MenuItem>
