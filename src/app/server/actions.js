@@ -2783,6 +2783,461 @@ export const createAnnouncements= async (formData) => {
   }
 }
 
+//Attendancemanagemet  Shift
+export const fetchCountShift = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-shift`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Shift Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Shift:', error)
+    throw error
+  }
+}
+
+
+
+export  const createShift =async (payload) =>{
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-shift`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    // Parse the response
+    const data = await res.json()
+
+    // Optional: handle bad status codes
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to create shift')
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error in createDepartment:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong'
+    }
+  }
+}
+
+
+export const fetchShift = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-shift`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch shifts: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Shifts Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching shifts ❌:', error)
+    throw error
+  }
+}
+
+
+export const editShift = async (formData) => {
+  try {
+    // Prepare payload directly from formData
+    const payload = {
+      _id: formData._id,
+      shiftName: formData.shiftName,
+      description: formData.description,
+      startTime: formData.startTime,
+      endTime: formData.endTime,
+      breakDuration: formData.breakDuration,
+      breakStartTime: formData.breakStartTime,
+      breakEndTime: formData.breakEndTime,
+      afternoonBreakStartTime: formData.afternoonBreakStartTime,
+      afternoonBreakEndTime: formData.afternoonBreakEndTime,
+      eveningBreakStartTime: formData.eveningBreakStartTime,
+      eveningBreakEndTime: formData.eveningBreakEndTime,
+      gracePeriod: formData.gracePeriod,
+      isNightShift: formData.isNightShift,
+      status: formData.status
+    };
+
+    console.log("🟡 Sending update shift payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-shift`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update shift: ${errorText}`);
+    }
+
+    const shiftData = await res.json();
+
+    console.log("✅ Updated Shift Response:", shiftData);
+
+    return shiftData;
+  } catch (err) {
+    console.error('❌ Failed to update shift:', err);
+    throw err;
+  }
+};
+
+//Attendance policy
+
+export const fetchCountAttendancePolicy = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-policy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Attendance Policy Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Attendance Policy:', error)
+    throw error
+  }
+}
+
+
+// ✅ Create Attendance Policy - POST API
+export const createAttendancePolicy = async (formData) => {
+  try {
+    // 🧩 Prepare payload — ensure numeric fields are numbers
+    const payload = {
+      policyName: formData.policyName,
+      description: formData.description,
+      lateArrivalGrace: Number(formData.lateArrivalGrace),
+      earlyDeparture: Number(formData.earlyDeparture),
+      status: formData.status
+    }
+
+    console.log('🟢 Sending Attendance Policy Payload:', payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-policy`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // ❌ Handle server errors
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create attendance policy: ${errorText}`)
+    }
+
+    // ✅ Parse response
+    const data = await res.json()
+    console.log('✅ Attendance Policy Created:', data)
+
+    return data
+  } catch (error) {
+    console.error('❌ Error creating attendance policy:', error)
+    throw error
+  }
+}
+
+export const fetchAttendancePolicy = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-policy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch atttendance policy: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Attendance Policy Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching atttendance policy ❌:', error)
+    throw error
+  }
+}
+
+export const editAttendancePolicy = async (formData) => {
+  try {
+    // 🧩 Prepare payload directly from formData
+    const payload = {
+      _id: formData._id,
+      policyName: formData.policyName,
+      description: formData.description,
+      lateArrivalGrace: Number(formData.lateArrivalGrace),
+      earlyDeparture: Number(formData.earlyDeparture),
+      status: formData.status
+    };
+
+    console.log("🟡 Sending Attendance Policy Update Payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-policy`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update attendance policy: ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    console.log("✅ Attendance Policy Updated Successfully:", data);
+
+    return data;
+  } catch (err) {
+    console.error('❌ Failed to update attendance policy:', err);
+    throw err;
+  }
+};
+
+//Attendance records
+export const fetchCountAttendanceRecord = async () => {
+  try {
+   
+   
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-records`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Attendance Record Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Attendance Record:', error)
+    throw error
+  }
+}
+
+
+export const createAttendanceRecord = async (formData) => {
+  try {
+    // 🧩 Prepare payload to match backend expectations
+    const payload = {
+      employees: formData.employees,                                // employee ObjectId
+      date: formData.date,                                          // ISO date string (YYYY-MM-DD)
+      clockIn: formData.clockIn,                                    // HH:mm
+      clockOut: formData.clockOut,                                  // HH:mm
+      breakHours: formData.breakHours,                              // number or string
+      status: formData.status,                                      // Present/Absent/etc.
+      isHoliday: formData.isHoliday,                                // boolean
+      notes: formData.notes                                         // string
+    };
+
+    console.log('🟢 Sending Attendance Record Payload:', payload);
+
+    // 📨 Send POST request to backend API
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-record`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store' // ensures fresh API call
+    });
+
+    // ❌ Handle HTTP-level errors
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create attendance record: ${errorText}`);
+    }
+
+    // ✅ Parse backend response
+    const data = await res.json();
+    console.log('✅ Attendance Record Created:', data);
+
+    return data;
+  } catch (error) {
+    console.error('❌ Error creating attendance record:', error);
+    throw error;
+  }
+};
+
+export const fetchAttendanceRecords = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/get-attendance-records`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // always get latest records
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log('✅ Fetched Attendance Records:', data);
+
+    // Return only the array of records
+    return data.data;
+  } catch (error) {
+    console.error('❌ Error fetching attendance records:', error);
+    throw error;
+  }
+};
+
+
+
+export const editAttendanceRecord = async (formData) => {
+  try {
+    // 🧩 Prepare payload from formData
+    const payload = {
+      _id: formData._id,
+      employeeId: formData.employeeId,
+      employee: formData.employee,
+      date: formData.date,
+      clockIn: formData.clockIn,
+      clockOut: formData.clockOut,
+      breakHours: formData.breakHours,
+      status: formData.status,
+      isHoliday: formData.isHoliday ?? false,
+      notes: formData.notes || ''
+    }
+
+    console.log('🟡 Sending Attendance Record Update Payload:', payload)
+
+    // ✅ API call
+    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-record`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        // If your backend uses auth middleware, uncomment below:
+        // 'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // 🚨 Log the status for debugging
+    console.log('📡 editAttendanceRecord Response Status:', res.status)
+
+    if (res.status === 403) {
+      throw new Error('Forbidden (403): You might be hitting the wrong endpoint or missing authorization.')
+    }
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to update attendance record: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Attendance Record Updated Successfully:', data)
+    return data
+  } catch (err) {
+    console.error('❌ Failed to update attendance record:', err)
+    throw err
+  }
+}
+//Attendance Regularization
+
+export const fetchCountAttendanceRegularization = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing for fetchCountAttendanceRegularization')
+    console.log("TOKEN",token)
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-regularization`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token // ✅ your backend expects token here, not Bearer
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch regularization count: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Count Attendance Regularization Data:', data)
+    return data.data
+  } catch (error) {
+    console.error('❌ Error fetching Attendance Regularization Count:', error)
+    throw error
+  }
+}
+
+
+
+
+
 export const getPermissionsData = async () => {
   return permissionData
 }
