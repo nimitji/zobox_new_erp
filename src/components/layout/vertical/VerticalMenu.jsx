@@ -199,7 +199,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/hrManagement/transfers`}>{dictionary['navigation'].transfers}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/holidays`}>{dictionary['navigation'].holidays}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/announcements`}>{dictionary['navigation'].announcements}</MenuItem>
-              <SubMenu label={dictionary['navigation'].assetManagements} >
+              {/* <SubMenu label={dictionary['navigation'].assetManagements} >
             <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/assetTypes`}>{dictionary['navigation'].assetTypes}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/assets`}>{dictionary['navigation'].assets}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/assetManagements/dashboard`}>{dictionary['navigation'].dashboard}</MenuItem>
@@ -210,9 +210,9 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/trainingPrograms`}>{dictionary['navigation'].trainingPrograms}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/trainingSessions`}>{dictionary['navigation'].trainingSessions}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/trainingManagement/employeeTraining`}>{dictionary['navigation'].employeeTraining}</MenuItem>
-            </SubMenu>
+            </SubMenu> */}
           </SubMenu>
-           <SubMenu label={dictionary['navigation'].contractManagement} icon={<i className='tabler-contract-management' />}>
+           {/* <SubMenu label={dictionary['navigation'].contractManagement} icon={<i className='tabler-contract-management' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].documentCategories}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].hrDocuments}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].acknowledgments}</MenuItem>
@@ -223,43 +223,43 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].employeeContracts}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].contractRenewals}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].contractTemplates}</MenuItem>
-          </SubMenu>
-          <SubMenu label={dictionary['navigation'].meetings} icon={<i className='tabler-meetings' />}>
+          </SubMenu> */}
+          {/* <SubMenu label={dictionary['navigation'].meetings} icon={<i className='tabler-meetings' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].meetingsTypes}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].meetingRooms}</MenuItem>
              <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].meetings}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].meetingAttendees}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].meetingMinutes}</MenuItem>
              <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].actionItems}</MenuItem>
-            </SubMenu>
+            </SubMenu> */}
 
-             <MenuItem href={`/${locale}/apps/calendar`} icon={<i className='tabler-calendar' />}>
+             {/* <MenuItem href={`/${locale}/apps/calendar`} icon={<i className='tabler-calendar' />}>
             {dictionary['navigation'].calendars}
-          </MenuItem>
+          </MenuItem> */}
         
-           <SubMenu label={dictionary['navigation'].leaveManagement} icon={<i className='tabler-leave-management' />}>
+           {/* <SubMenu label={dictionary['navigation'].leaveManagement} icon={<i className='tabler-leave-management' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].leaveTypes}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].leavePolicies}</MenuItem>
               <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].leaveApplications}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].leaveBalances}</MenuItem>
-          </SubMenu>
+          </SubMenu> */}
            <SubMenu label={dictionary['navigation'].attendanceManagement} icon={<i className='tabler-attendance-management' />}>
             <MenuItem href={`/${locale}/apps/attendanceManagement/shift`}>{dictionary['navigation'].shifts}</MenuItem>
             <MenuItem href={`/${locale}/apps/attendanceManagement/attendancepolicies`}>{dictionary['navigation'].attendancePolicies}</MenuItem>
             <MenuItem href={`/${locale}/apps/attendanceManagement/attendancerecords`}>{dictionary['navigation'].attendanceRecords}</MenuItem>
             <MenuItem href={`/${locale}/apps/attendanceManagement/attendanceregularization`}>{dictionary['navigation'].attendanceRegularization}</MenuItem>
           </SubMenu>
-           <SubMenu label={dictionary['navigation'].timeTracking} icon={<i className='tabler-time-tracking' />}>
+           {/* <SubMenu label={dictionary['navigation'].timeTracking} icon={<i className='tabler-time-tracking' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].timeEntries}</MenuItem>
           
           
-          </SubMenu>
+          </SubMenu> */}
 
-           <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
+           {/* <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].salaryComponents}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].employeeSalaries}</MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].payrollRuns}</MenuItem>
-          </SubMenu>
+          </SubMenu> */}
 
 
           </SubMenu>

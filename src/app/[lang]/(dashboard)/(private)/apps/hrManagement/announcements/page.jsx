@@ -3,11 +3,11 @@ import DepartmentList from '@views/apps/hrManagement/announcements'
 // import { fetchBranches } from '@/app/server/actions'
 
 // Data Imports
-import { fetchDepartments } from '@/app/server/actions'
+import { fetchAnnouncements } from '@/app/server/actions'
 
 const DepartmentListApp = async () => {
   // Vars
-  const data = await fetchDepartments()
+  const data = await fetchAnnouncements()
     // const data = await fetchBranches()
 
   return <DepartmentList departmentData={data} />
