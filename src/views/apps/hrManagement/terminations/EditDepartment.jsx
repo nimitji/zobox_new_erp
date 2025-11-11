@@ -80,20 +80,17 @@ console.log("POOJA456",formData)
 /
 
 useEffect(() => {
-  if (selectedDepartment && branches.length > 0) {
-    const matchedBranch = branches.find(
-      b => b.branchName.trim() === selectedDepartment.branch.trim()
-    )
-
+  if (selectedDepartment ) {
+    
     setFormData({
       _id: selectedDepartment._id || '',
       name: selectedDepartment.name || '',
-      branch: matchedBranch?._id || '',
+      
       description: selectedDepartment.description || '',
       status: selectedDepartment.status || 'Active'
     })
   }
-}, [selectedDepartment, branches.length])
+}, [selectedDepartment])
 
 
   // ✅ Handle save with snackbar feedback

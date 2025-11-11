@@ -27,7 +27,7 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Department Details</Typography>
+        <Typography variant='h5'>View Holiday</Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -40,18 +40,36 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <CustomTextField
-              label='Department Name'
+              label='Holiday Name'
               fullWidth
-              value={departmentData.name || ''}
+              value={departmentData.holidayName || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Branch'
+              label='Category'
               fullWidth
-              value={departmentData.branch || ''}
+              value={departmentData.category || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+            <Grid item xs={12}>
+            <CustomTextField
+              label='Start Date'
+              fullWidth
+              value={departmentData.startDate || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+            <Grid item xs={12}>
+            <CustomTextField
+              label='End Date'
+              fullWidth
+              value={departmentData.endDate || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
@@ -64,15 +82,44 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
               InputProps={{ readOnly: true }}
             />
           </Grid>
-
-     <Grid item xs={12}>
+          <Grid item xs={12}>
             <CustomTextField
-              label='Status'
+              label='Recurring Annual Holiday'
               fullWidth
-              value={departmentData.status || ''}
+              value={departmentData.recurringAnnualHoliday || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
+            <Grid item xs={12}>
+            <CustomTextField
+              label='Paid Holiday'
+              fullWidth
+              value={departmentData.paidHoliday || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+               <Grid item xs={12}>
+            <CustomTextField
+              label='Half Day'
+              fullWidth
+              value={departmentData.halfDay || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+         <Grid item xs={12}>
+  <CustomTextField
+    label='Branches'
+    fullWidth
+    value={
+      Array.isArray(departmentData.branchNames) && departmentData.branchNames.length > 0
+        ? departmentData.branchNames.join(', ') // join all names with commas
+        : 'NA' // show NA if empty or not available
+    }
+    InputProps={{ readOnly: true }}
+  />
+</Grid>
+
         </Grid>
 
         <Divider sx={{ my: 3 }} />

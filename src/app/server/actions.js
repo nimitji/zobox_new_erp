@@ -2467,6 +2467,34 @@ export const createTermination = async (formData) => {
   }
 }
 
+export const fetchTermination = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-terminations`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch termination: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Termination Data:', data)
+   
+ return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Terminations:', error)
+    throw error
+  }
+}
+
 //Warning
 export const fetchCountWarning = async () => {
   try {
@@ -2517,6 +2545,34 @@ export const createWarning = async (formData) => {
   } catch (err) {
     console.error('❌ Failed to create warning:', err)
     throw err
+  }
+}
+
+export const fetchWarning = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-warnings`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+    console.log("DEBUG",res)
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch warnings: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Warning Data:', data)
+   
+ return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Warnings:', error)
+    throw error
   }
 }
 
@@ -2574,6 +2630,28 @@ export const createTrip= async (formData) => {
     throw err
   }
 }
+
+export const fetchTrips = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-trips`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch trips: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Trips:', data)
+    return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Trips:', error)
+    throw error
+  }
+}
 //Complaint
 export const fetchCountComplaint = async () => {
   try {
@@ -2626,6 +2704,28 @@ export const createComplaint= async (formData) => {
     throw err
   }
 }
+
+export const fetchComplaints = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-complaints`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch complaints: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Complaints:', data)
+    return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Complaints:', error)
+    throw error
+  }
+}
 //Transfer
 export const fetchCountTransfer = async () => {
   try {
@@ -2675,6 +2775,28 @@ export const createTransfer= async (formData) => {
   } catch (err) {
     console.error('❌ Failed to create transfer:', err)
     throw err
+  }
+}
+
+export const fetchTransfers = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-transfers`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch transfers: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Transfers:', data)
+    return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Transfers:', error)
+    throw error
   }
 }
 //Holidays
@@ -2729,6 +2851,29 @@ export const createHolidays= async (formData) => {
     throw err
   }
 }
+
+export const fetchHolidays = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-holidays`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch holidays: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Holidays:', data)
+    return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Holidays:', error)
+    throw error
+  }
+}
+
 //Announcement
 export const fetchCountAnnouncement = async () => {
   try {
@@ -2780,6 +2925,29 @@ export const createAnnouncements= async (formData) => {
   } catch (err) {
     console.error('❌ Failed to create Announcements:', err)
     throw err
+  }
+}
+
+
+export const fetchAnnouncements = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-announcements`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch announcements: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Announcements:', data)
+    return { success: true, data: data.data }
+  } catch (error) {
+    console.error('Error fetching Announcements:', error)
+    throw error
   }
 }
 
