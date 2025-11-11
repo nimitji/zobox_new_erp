@@ -4,8 +4,8 @@ export const users = [
   {
     id: 1,
     name: 'John Doe',
-    password: 'admin',
-    email: 'admin@vuexy.com',
+    password: '123456',
+    email: 'testadmin@gmail.com',
     image: '/images/avatars/1.png'
   }
 ]
