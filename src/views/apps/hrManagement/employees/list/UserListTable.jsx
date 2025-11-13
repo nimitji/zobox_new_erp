@@ -251,11 +251,26 @@ const UserListTable = ({ tableData = [] }) => {
 </IconButton>
 
 
-                <IconButton>
+                {/* <IconButton>
             <Link href={getLocalizedUrl(`/apps/hrManagement/employees/edit?_id=${row.original._id}`, locale)} className='flex'>
               <i className='tabler-edit' />
             </Link>
-          </IconButton>
+          </IconButton> */}
+          <IconButton
+  onClick={() => {
+    localStorage.setItem('selectedUser', JSON.stringify(row.original))
+
+    setTimeout(() => {
+      window.location.href = getLocalizedUrl(
+        `/apps/hrManagement/employees/edit?_id=${row.original._id}`,
+        locale
+      )
+    }, 10)
+  }}
+>
+  <i className='tabler-edit text-textSecondary' />
+</IconButton>
+
      
         </div>
       )

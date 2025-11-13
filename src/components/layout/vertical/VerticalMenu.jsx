@@ -255,11 +255,11 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           
           </SubMenu> */}
 
-           {/* <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].salaryComponents}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].employeeSalaries}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].payrollRuns}</MenuItem>
-          </SubMenu> */}
+           <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
+            <MenuItem href={`/${locale}/apps/payrollManagement/salarycomponent`}>{dictionary['navigation'].salaryComponents}</MenuItem>
+            <MenuItem href={`/${locale}/apps/payrollManagement/employeesalary`}>{dictionary['navigation'].employeeSalaries}</MenuItem>
+            <MenuItem href={`/${locale}/apps/payrollManagement/payrollruns`}>{dictionary['navigation'].payrollRuns}</MenuItem>
+          </SubMenu>
 
 
           </SubMenu>

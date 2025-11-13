@@ -3525,6 +3525,184 @@ export const updateAttendanceRegularization = async (payload, token) => {
   }
 }
 
+//Payroll Management
+
+export const fetchCountSalaryComponent = async () => {
+  try {
+  
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-salarycomponent-count`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch salary component count: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Count Salary Component Data:', data)
+    return data.data
+  } catch (error) {
+    console.error('❌ Error fetching Salary Component Count:', error)
+    throw error
+  }
+}
+
+
+
+export const createSalaryComponent = async (formData) => {
+  try {
+  
+
+    // 📨 Send POST request to backend API
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-salary-component`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData),
+      cache: 'no-store' // ensures fresh API call
+    });
+
+    // ❌ Handle HTTP-level errors
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create salary component: ${errorText}`);
+    }
+
+    // ✅ Parse backend response
+    const data = await res.json();
+    console.log('✅Salary component Created:', data);
+
+    return data;
+  } catch (error) {
+    console.error('❌ Error creating Salary Component:', error);
+    throw error;
+  }
+};
+
+export const fetchSalaryComponent = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-salary-component`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // always get latest records
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+    }
+
+    const data = await res.json();
+    console.log('✅ Fetched Attendance Records:', data);
+
+    // Return only the array of records
+    return data.data;
+  } catch (error) {
+    console.error('❌ Error fetching attendance records:', error);
+    throw error;
+  }
+};
+
+export const editSararyComponent = async (formData) => {
+  try {
+   
+const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update salary component: ${errorText}`);
+    }
+
+    const data = await res.json();
+
+    console.log("✅ Salary  Component Updated Successfully:", data);
+
+    return data;
+  } catch (err) {
+    console.error('❌ Failed to update salary component:', err);
+    throw err;
+  }
+};
+
+// export const fetchListOfSalaryComponent = async () => {
+//   try {
+//     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-salary-component`, {
+//       method: 'GET',
+//       headers: {
+//         'Content-Type': 'application/json'
+//       },
+//       cache: 'no-store' // ensures latest data
+//     })
+
+//     if (!res.ok) {
+//       const errorText = await res.text()
+
+//       throw new Error(`Failed to fetch salary component: ${errorText}`)
+//     }
+
+//     const data = await res.json()
+
+//     console.log(' Data:', data)
+    
+// return data.data 
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
+
+export const fetchListOfSalaryComponent = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-salary-component`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch salary component: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Salary Component API Response:', data)
+
+    // If backend returns { success: true, data: [...] }
+    if (data?.data && Array.isArray(data.data)) {
+      return data.data
+    }
+
+    // If backend directly returns array
+    if (Array.isArray(data)) {
+      return data
+    }
+
+    console.warn('⚠️ Unexpected salary component response structure:', data)
+    return []
+  } catch (error) {
+    console.error('❌ Error fetching salary components:', error)
+    return []
+  }
+}
+
 
 
 export const getPermissionsData = async () => {
