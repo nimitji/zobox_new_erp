@@ -425,13 +425,23 @@ const handleUpdateDepartment = async updatedData => {
           }}
         />
       </Card>
-      <AddDepartmentDrawer
+      {/* <AddDepartmentDrawer
         open={addUserOpen}
         handleClose={() => setAddUserOpen(!addUserOpen)}
         userData={data}
         setData={setData}
          refreshDepartments={refreshDepartments}
-      />
+      /> */}
+
+      <AddDepartmentDrawer
+  open={addUserOpen}
+  handleClose={async () => {
+    setAddUserOpen(false)
+    await refreshDepartments()   // ⭐ FIX: auto refresh now works
+  }}
+  userData={data}
+  setData={setData}
+/>
 
 
 <ViewDepartment
