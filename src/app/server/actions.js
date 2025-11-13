@@ -3221,15 +3221,17 @@ export const editAttendancePolicy = async (formData) => {
 };
 
 //Attendance records
-export const fetchCountAttendanceRecord = async () => {
+export const fetchCountAttendanceRecord = async (token) => {
   try {
    
-   
+    if (!token) throw new Error('Token missing for fetchCountAttendanceRecord')
+    console.log("TOKEN",token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-records`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+         'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3295,12 +3297,14 @@ export const createAttendanceRecord = async (formData) => {
   }
 };
 
-export const fetchAttendanceRecords = async () => {
+export const fetchAttendanceRecords = async (token) => {
   try {
+    if (!token) throw new Error('Token missing for fetchAttendanceRegularizations')
     const res = await fetch(`${process.env.API_URL}/zobiz/get-attendance-records`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'token': token
       },
       cache: 'no-store' // always get latest records
     });
