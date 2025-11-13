@@ -402,7 +402,7 @@ const DepartmentListTable = ({ tableData }) => {
             <DebouncedInput
               value={globalFilter ?? ''}
               onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search Transfer'
+              placeholder='Search Holiday'
               className='max-sm:is-full'
             />
             <ExportButton filteredData={filteredDatas} />
@@ -412,7 +412,7 @@ const DepartmentListTable = ({ tableData }) => {
               onClick={() => setAddUserOpen(!addUserOpen)}
               className='max-sm:is-full'
             >
-              Add Transfer
+              Add Holiday
             </Button>
           </div>
         </div>
