@@ -134,47 +134,100 @@ export const authOptions = {
       name: 'Credentials',
       type: 'credentials',
       credentials: {},
-      async authorize(credentials) {
-        const { email, password } = credentials
+      // async authorize(credentials) {
+      //   const { email, password } = credentials
 
-        console.log("PIHU",credentials)
+      //   console.log("PIHU",credentials)
 
-        try {
-          // 🔹 Third-party API login
-          const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
+      //   try {
+      //     // 🔹 Third-party API login
+      //     const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
             
-            },
-            body: JSON.stringify({ email, password })
-          })
+      //       },
+      //       body: JSON.stringify({ email, password })
+      //     })
 
-          const data = await res.json()
+      //     const data = await res.json()
 
-          console.log("DATA",data)
+      //     console.log("DATA",data)
 
-          if (res.status === 401) {
-            throw new Error(data?.message || 'Invalid credentials')
-          }
+      //     if (res.status === 401) {
+      //       throw new Error(data?.message || 'Invalid credentials')
+      //     }
 
-          if (res.status === 200) {
-            console.log("poojaenter",data)
+      //     if (res.status === 200) {
+      //       console.log("poojaenter",data)
 
-            // 🔹 Return user object including Bearer token
-            return {
-              id: data._id,
-              name: data.name,
-              email: data.emailid,
-              token: data.token // third-party token
-            }
-          }
+      //       // 🔹 Return user object including Bearer token
+      //       return {
+      //         id: data._id,
+      //         name: data.name,
+      //         email: data.emailid,
+      //         token: data.token // third-party token
+      //       }
+      //     }
 
-          return null
-        } catch (e) {
-          throw new Error(e.message)
-        }
+      //     return null
+      //   } catch (e) {
+      //     throw new Error(e.message)
+      //   }
+      // }
+
+async authorize(credentials) {
+  const { email, password } = credentials
+
+  try {
+    const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+
+    const data = await res.json()
+    console.log("BACKEND DATA:", data)
+
+    // ❌ ERROR CASE → backend sending 403
+    if (res.status === 403) {
+      throw new Error(JSON.stringify({
+        success: false,
+        message: data?.message || 'Invalid credentials'
+      }))
+    }
+
+    // ✔ SUCCESS CASE
+    if (res.status === 200) {
+      return {
+        id: data._id,
+        name: data.name,
+        email: data.emailid,
+        token: data.token
       }
+    }
+
+    return null
+  }
+
+  catch (e) {
+    // If backend has already sent JSON string, forward it cleanly
+    try {
+      const parsed = JSON.parse(e.message)
+      throw new Error(JSON.stringify(parsed))
+    } catch {
+      // If error message is plain string, wrap into JSON
+      throw new Error(JSON.stringify({
+        success: false,
+        message: e?.message || "Login failed"
+      }))
+    }
+  }
+}
+
+
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
