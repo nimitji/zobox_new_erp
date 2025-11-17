@@ -16,8 +16,7 @@
 //   Snackbar,
 //   Alert as MuiAlert,
 //   Chip,
-//   Box,
-//   Checkbox
+//   Box
 // } from '@mui/material'
 
 // // 🧩 Third-party Imports
@@ -48,7 +47,6 @@
 //     control,
 //     reset,
 //     handleSubmit,
-//     watch,
 //     formState: { errors }
 //   } = useForm({
 //     defaultValues: {
@@ -59,13 +57,9 @@
 //       fixedSalary: '',
 //       salaryComponents: [],
 //       status: '',
-//       notes: '',
-//       isHraFixed: false,       // ✔ Checkbox
-//       hraFixedAmount: ''       // ✔ Conditional field
+//       notes: ''
 //     }
 //   })
-
-//   const isHraFixed = watch('isHraFixed')
 
 //   // 🧠 Fetch Employee list
 //   useEffect(() => {
@@ -87,6 +81,7 @@
 //     const loadSalaries = async () => {
 //       try {
 //         const list = await fetchListOfSalaryComponent()
+//         console.log('✅ Salary Components Loaded:', list)
 //         setSalaries(list)
 //       } catch (err) {
 //         console.error('❌ Error loading salary components:', err)
@@ -102,7 +97,11 @@
 //   const onSubmit = async data => {
 //     try {
 //       const token = session?.user?.accessToken
-//       if (!token) return
+
+//       if (!token) {
+//         console.warn('⚠️ No access token found — user not logged in.')
+//         return
+//       }
 
 //       const payload = {
 //         employee: data.employee,
@@ -112,13 +111,12 @@
 //         fixedSalary: data.fixedSalary,
 //         salaryComponents: data.salaryComponents,
 //         status: data.status,
-//         notes: data.notes,
-
-//         // ✔ NEW FIELDS
-//         isHraFixed: data.isHraFixed,
-//         hraFixedAmount: data.isHraFixed ? data.hraFixedAmount : null
+//         notes: data.notes
 //       }
 
+//       console.log('🟢 Sending Create Employee Salary Payload:', payload)
+
+//       // ⭐ Correct API call with token
 //       const response = await createEmployeeSalary(payload, token)
 
 //       if (response?.success) {
@@ -142,6 +140,7 @@
 //         })
 //       }
 //     } catch (error) {
+//       console.error('❌ Error creating employee salary:', error)
 //       setSnackbar({
 //         open: true,
 //         message: 'Error creating salary record',
@@ -167,7 +166,7 @@
 //       >
 //         <div className='flex items-center justify-between p-5'>
 //           <Typography variant='h5' fontWeight='bold'>
-//             Add New Salary
+//             Add New Advance Salary Request
 //           </Typography>
 //           <IconButton size='small' onClick={handleReset}>
 //             <i className='tabler-x text-2xl text-textPrimary' />
@@ -178,14 +177,20 @@
 
 //         {/* 🧾 FORM */}
 //         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
-          
 //           {/* 👤 Employee */}
 //           <Controller
 //             name='employee'
 //             control={control}
 //             rules={{ required: 'Employee is required' }}
 //             render={({ field }) => (
-//               <CustomTextField select fullWidth label='Employee' {...field}>
+//               <CustomTextField
+//                 select
+//                 fullWidth
+//                 label='Employee'
+//                 {...field}
+//                 error={!!errors.employee}
+//                 helperText={errors.employee?.message}
+//               >
 //                 {employees.map(emp => (
 //                   <MenuItem key={emp._id} value={emp._id}>
 //                     {emp.username}
@@ -196,7 +201,7 @@
 //           />
 
 //           {/* 💰 Salary Fields */}
-//           {['annualSalary', 'grossSalary', 'basicSalary', 'fixedSalary'].map(fieldName => (
+//           {['RequestedAmount'].map(fieldName => (
 //             <Controller
 //               key={fieldName}
 //               name={fieldName}
@@ -207,83 +212,15 @@
 //                   {...field}
 //                   fullWidth
 //                   label={fieldName.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+//                   placeholder='Enter amount'
+//                   error={!!errors[fieldName]}
+//                   helperText={errors[fieldName]?.message}
 //                 />
 //               )}
 //             />
 //           ))}
 
-//             {/* 🧾 Salary Components */}
-//           <Controller
-//             name='salaryComponents'
-//             control={control}
-//             rules={{ required: 'Please select at least one salary component' }}
-//             render={({ field }) => (
-//               <CustomTextField
-//                 select
-//                 fullWidth
-//                 label='Salary Components'
-//                 SelectProps={{
-//                   multiple: true,
-//                   value: field.value || [],
-//                   onChange: e => field.onChange(e.target.value),
-//                   renderValue: selected => (
-//                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-//                       {selected.map(value => {
-//                         const salary = salaries.find(b => b._id === value)
-//                         return <Chip key={value} label={salary?.componentName || 'Unnamed'} size='small' />
-//                       })}
-//                     </Box>
-//                   )
-//                 }}
-//               >
-//                 {loadingSalaries ? (
-//                   <MenuItem disabled>Loading...</MenuItem>
-//                 ) : (
-//                   salaries.map(salary => (
-//                     <MenuItem key={salary._id} value={salary._id}>
-//                       {salary.componentName}
-//                     </MenuItem>
-//                   ))
-//                 )}
-//               </CustomTextField>
-//             )}
-//           />
-
-//           {/* 🟦 HRA FIXED CHECKBOX */}
-//           <Controller
-//             name='isHraFixed'
-//             control={control}
-//             render={({ field }) => (
-//               <div className='flex items-center gap-3'>
-//                 <Checkbox
-//                   checked={field.value === true}
-//                   onChange={e => field.onChange(e.target.checked)}
-//                 />
-//                 <Typography>Use Fixed HRA Amount?</Typography>
-//               </div>
-//             )}
-//           />
-
-//           {/* 🟨 Conditional HRA Amount Field */}
-//           {isHraFixed && (
-//             <Controller
-//               name='hraFixedAmount'
-//               control={control}
-//               rules={{ required: 'Fixed HRA Amount is required' }}
-//               render={({ field }) => (
-//                 <CustomTextField
-//                   {...field}
-//                   fullWidth
-//                   label='Fixed HRA Amount'
-//                   placeholder='Enter fixed HRA amount'
-//                   error={!!errors.hraFixedAmount}
-//                   helperText={errors.hraFixedAmount?.message}
-//                 />
-//               )}
-//             />
-//           )}
-
-        
+      
 
 //           {/* 📊 Status */}
 //           <Controller
@@ -292,8 +229,9 @@
 //             rules={{ required: 'Status is required' }}
 //             render={({ field }) => (
 //               <CustomTextField select fullWidth label='Status' {...field}>
-//                 <MenuItem value='Active'>Active</MenuItem>
-//                 <MenuItem value='Inactive'>Inactive</MenuItem>
+//                 <MenuItem value='Pending'>Pending</MenuItem>
+//                 <MenuItem value='Approved'>Approved</MenuItem>
+//                  <MenuItem value='Rejected'>Rejected</MenuItem>
 //               </CustomTextField>
 //             )}
 //           />
@@ -307,7 +245,7 @@
 //             )}
 //           />
 
-//           {/* ⏺ BUTTONS */}
+//           {/* ✅ Buttons */}
 //           <div className='flex items-center gap-4'>
 //             <Button variant='contained' type='submit'>
 //               Submit
@@ -319,13 +257,24 @@
 //         </form>
 //       </Drawer>
 
-//       {/* 🚨 Snackbar */}
+//       {/* ✅ Snackbar */}
 //       <Snackbar
 //         open={snackbar.open}
 //         autoHideDuration={3000}
 //         onClose={() => setSnackbar({ ...snackbar, open: false })}
+//         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
 //       >
-//         <MuiAlert severity={snackbar.severity} variant='filled'>
+//         <MuiAlert
+//           onClose={() => setSnackbar({ ...snackbar, open: false })}
+//           severity={snackbar.severity}
+//           variant='filled'
+//           sx={{
+//             width: '100%',
+//             backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
+//             color: 'white',
+//             fontWeight: 500
+//           }}
+//         >
 //           {snackbar.message}
 //         </MuiAlert>
 //       </Snackbar>
@@ -350,10 +299,7 @@ import {
   Typography,
   Divider,
   Snackbar,
-  Alert as MuiAlert,
-  Chip,
-  Box,
-  Checkbox
+  Alert as MuiAlert
 } from '@mui/material'
 
 // 🧩 Third-party Imports
@@ -361,9 +307,9 @@ import { useForm, Controller } from 'react-hook-form'
 
 // 🧠 Server Actions
 import {
-  createEmployeeSalary,
-  fetchListOfUser,
-  fetchListOfSalaryComponent
+  createAdvanceSalaryRequest,
+  fetchListOfUser
+  
 } from '../../../../app/server/actions.js'
 
 // 🧱 Component Imports
@@ -374,40 +320,26 @@ const AddAttendanceDrawer = props => {
 
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' })
   const [employees, setEmployees] = useState([])
-  const [salaries, setSalaries] = useState([])
-  const [loadingSalaries, setLoadingSalaries] = useState(true)
+ 
 
   const { data: session } = useSession()
+  const userType = session?.user.typeOfUser     // 👈 Checking user type (Employee / Admin)
+  console.log("poojapihu123456",userType)
 
-  // 🔧 react-hook-form setup
+  // 📌 react-hook-form setup
   const {
     control,
     reset,
     handleSubmit,
-    watch,
     formState: { errors }
   } = useForm({
     defaultValues: {
       employee: '',
-      annualSalary: '',
-      grossSalary: '',
-      basicSalary: '',
-      fixedSalary: '',
-      salaryComponents: [],
+      requestedAmount: '',
       status: '',
-      notes: '',
-
-      isHraFixed: false,
-      hraFixedAmount:'',
-      employeeStatus:'',
-
-      // ⭐ NEW CHECKBOX FIELDS
-      isNAPS: false,
-      isNATS: false
+      notes: ''
     }
   })
-
-  const isHraFixed = watch('isHraFixed')
 
   // 🧠 Fetch Employee list
   useEffect(() => {
@@ -424,21 +356,7 @@ const AddAttendanceDrawer = props => {
     loadEmployees()
   }, [])
 
-  // 🧠 Fetch Salary Components
-  useEffect(() => {
-    const loadSalaries = async () => {
-      try {
-        const list = await fetchListOfSalaryComponent()
-        setSalaries(list)
-      } catch (err) {
-        console.error('❌ Error loading salary components:', err)
-      } finally {
-        setLoadingSalaries(false)
-      }
-    }
-
-    loadSalaries()
-  }, [])
+ 
 
   // ✅ Submit Form
   const onSubmit = async data => {
@@ -448,49 +366,29 @@ const AddAttendanceDrawer = props => {
 
       const payload = {
         employee: data.employee,
-        annualSalary: data.annualSalary,
-        grossSalary: data.grossSalary,
-        basicSalary: data.basicSalary,
-        fixedSalary: data.fixedSalary,
-        salaryComponents: data.salaryComponents,
+        requestedAmount: data.requestedAmount,
         status: data.status,
-        notes: data.notes,
-
-        isHraFixed: data.isHraFixed,
-        hraFixedAmount:data.hraFixedAmount,
-        employeeStatus:data.employeeStatus,
-
-        // ⭐ NEW CHECKBOXES
-        isNAPS: data.isNAPS,
-        isNATS: data.isNATS
+        notes: data.notes
       }
 
-      const response = await createEmployeeSalary(payload, token)
+      const response = await createAdvanceSalaryRequest(payload, token)
 
-      if (response?.success) {
-        setSnackbar({
-          open: true,
-          message: response.message || 'Salary created successfully',
-          severity: 'success'
-        })
-
-        if (typeof refreshDepartments === 'function') {
-          await refreshDepartments()
-        }
-
-        handleClose()
-        reset()
-      } else {
-        setSnackbar({
-          open: true,
-          message: response.message || 'Failed to create salary record',
-          severity: 'error'
-        })
-      }
-    } catch (error) {
       setSnackbar({
         open: true,
-        message: 'Error creating salary record',
+        message: response?.message || 'Record saved',
+        severity: response?.success ? 'success' : 'error'
+      })
+
+      if (response?.success) {
+        refreshDepartments?.()
+        handleClose()
+        reset()
+      }
+    } catch (error) {
+      console.log(error)
+      setSnackbar({
+        open: true,
+        message: 'Something went wrong!',
         severity: 'error'
       })
     }
@@ -513,7 +411,7 @@ const AddAttendanceDrawer = props => {
       >
         <div className='flex items-center justify-between p-5'>
           <Typography variant='h5' fontWeight='bold'>
-            Add New Salary
+            Add New Advance Salary Request
           </Typography>
           <IconButton size='small' onClick={handleReset}>
             <i className='tabler-x text-2xl text-textPrimary' />
@@ -525,13 +423,20 @@ const AddAttendanceDrawer = props => {
         {/* 🧾 FORM */}
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
           
-          {/* EMPLOYEE */}
+          {/* 👤 Employee */}
           <Controller
             name='employee'
             control={control}
             rules={{ required: 'Employee is required' }}
             render={({ field }) => (
-              <CustomTextField select fullWidth label='Employee' {...field}>
+              <CustomTextField
+                select
+                fullWidth
+                label='Employee'
+                {...field}
+                error={!!errors.employee}
+                helperText={errors.employee?.message}
+              >
                 {employees.map(emp => (
                   <MenuItem key={emp._id} value={emp._id}>
                     {emp.username}
@@ -541,132 +446,43 @@ const AddAttendanceDrawer = props => {
             )}
           />
 
-          {/* Salary Fields */}
-          {['annualSalary', 'grossSalary', 'basicSalary', 'fixedSalary'].map(fieldName => (
-            <Controller
-              key={fieldName}
-              name={fieldName}
-              control={control}
-              rules={{ required: `${fieldName} is required` }}
-              render={({ field }) => (
-                <CustomTextField {...field} fullWidth label={fieldName} />
-              )}
-            />
-          ))}
-
-          {/* Salary Components */}
+          {/* 💰 Requested Amount */}
           <Controller
-            name='salaryComponents'
+            name='requestedAmount'
             control={control}
-            rules={{ required: 'Select at least one component' }}
+            rules={{ required: 'Requested Amount is required' }}
             render={({ field }) => (
               <CustomTextField
-                select
+                {...field}
                 fullWidth
-                label='Salary Components'
-                SelectProps={{
-                  multiple: true,
-                  value: field.value || [],
-                  onChange: e => field.onChange(e.target.value),
-                  renderValue: selected => (
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                      {selected.map(value => {
-                        const salary = salaries.find(b => b._id === value)
-                        return <Chip key={value} label={salary?.componentName || 'Unnamed'} size='small' />
-                      })}
-                    </Box>
-                  )
-                }}
-              >
-                {loadingSalaries ? (
-                  <MenuItem disabled>Loading...</MenuItem>
-                ) : (
-                  salaries.map(salary => (
-                    <MenuItem key={salary._id} value={salary._id}>
-                      {salary.componentName}
-                    </MenuItem>
-                  ))
-                )}
-              </CustomTextField>
+                label='Requested Amount'
+                placeholder='Enter amount'
+                error={!!errors.requestedAmount}
+                helperText={errors.requestedAmount?.message}
+              />
             )}
           />
 
-          {/* HRA FIXED */}
-          <Controller
-            name='isHraFixed'
-            control={control}
-            render={({ field }) => (
-              <div className='flex items-center gap-3'>
-                <Checkbox checked={field.value} onChange={e => field.onChange(e.target.checked)} />
-                <Typography>Use Fixed HRA Amount?</Typography>
-              </div>
-            )}
-          />
-
-          {isHraFixed && (
-            <Controller
-              name='hraFixedAmount'
-              control={control}
-              rules={{ required: 'Fixed HRA Amount is required' }}
-              render={({ field }) => (
-                <CustomTextField {...field} fullWidth label='Fixed HRA Amount' />
-              )}
-            />
-          )}
-
-          {/* ⭐ NAPS CHECKBOX */}
-          <Controller
-            name='isNAPS'
-            control={control}
-            render={({ field }) => (
-              <div className='flex items-center gap-3'>
-                <Checkbox checked={field.value} onChange={e => field.onChange(e.target.checked)} />
-                <Typography>NAPS Applicable?</Typography>
-              </div>
-            )}
-          />
-
-          {/* ⭐ NATS CHECKBOX */}
-          <Controller
-            name='isNATS'
-            control={control}
-            render={({ field }) => (
-              <div className='flex items-center gap-3'>
-                <Checkbox checked={field.value} onChange={e => field.onChange(e.target.checked)} />
-                <Typography>NATS Applicable?</Typography>
-              </div>
-            )}
-          />
-
-          {/* Status */}
-
-            <Controller
-            name='employeeStatus'
-            control={control}
-            rules={{ required: 'Employee Status is required' }}
-            render={({ field }) => (
-              <CustomTextField select fullWidth label='Employee Status' {...field}>
-                <MenuItem value='ONROLL'>ONROLL</MenuItem>
-                <MenuItem value='CASH'>CASH</MenuItem>
-                <MenuItem value='NAPS'>NAPS</MenuItem>
-                <MenuItem value='NATS'>NATS</MenuItem>
-
-              </CustomTextField>
-            )}
-          />
+          {/* 📊 Status — CONDITIONAL */}
           <Controller
             name='status'
             control={control}
             rules={{ required: 'Status is required' }}
             render={({ field }) => (
               <CustomTextField select fullWidth label='Status' {...field}>
-                <MenuItem value='Active'>Active</MenuItem>
-                <MenuItem value='Inactive'>Inactive</MenuItem>
+                <MenuItem value='Pending'>Pending</MenuItem>
+
+                {/* 👇 Hide Approved Option for Employees */}
+                {userType !== 'Employee' && (
+                  <MenuItem value='Approved'>Approved</MenuItem>
+                )}
+
+                <MenuItem value='Rejected'>Rejected</MenuItem>
               </CustomTextField>
             )}
           />
 
-          {/* Notes */}
+          {/* 📝 Notes */}
           <Controller
             name='notes'
             control={control}
@@ -675,24 +491,44 @@ const AddAttendanceDrawer = props => {
             )}
           />
 
-          {/* Buttons */}
+          {/* 🎯 Buttons */}
           <div className='flex items-center gap-4'>
-            <Button variant='contained' type='submit'>Submit</Button>
-            <Button variant='tonal' color='error' onClick={handleReset}>Cancel</Button>
+            <Button variant='contained' type='submit'>
+              Submit
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleReset}>
+              Cancel
+            </Button>
           </div>
         </form>
       </Drawer>
 
-      {/* Snackbar */}
-      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={() => setSnackbar({ ...snackbar, open: false })}>
-        <MuiAlert severity={snackbar.severity} variant='filled'>{snackbar.message}</MuiAlert>
+      {/* 🔔 Snackbar */}
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <MuiAlert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant='filled'
+          sx={{
+            width: '100%',
+            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
+            color: 'white',
+            fontWeight: 500
+          }}
+        >
+          {snackbar.message}
+        </MuiAlert>
       </Snackbar>
     </>
   )
 }
 
 export default AddAttendanceDrawer
-
 
 
 

@@ -71,18 +71,18 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           suffix={<CustomChip label='5' size='small' color='error' round='true' />}
         >
           <MenuItem href={`/${locale}/dashboards/crm`}>{dictionary['navigation'].crm}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/analytics`}>{dictionary['navigation'].analytics}</MenuItem>
+          {/* <MenuItem href={`/${locale}/dashboards/analytics`}>{dictionary['navigation'].analytics}</MenuItem>
           <MenuItem href={`/${locale}/dashboards/ecommerce`}>{dictionary['navigation'].eCommerce}</MenuItem>
           <MenuItem href={`/${locale}/dashboards/academy`}>{dictionary['navigation'].academy}</MenuItem>
-          <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem>
+          <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem> */}
         </SubMenu>
         {/* changes here pooja  */}
       
 
          <MenuSection label={dictionary['navigation'].modules}>
-          <SubMenu label={dictionary['navigation'].sales} icon={<i className='tabler-sales' />}>
+          {/* <SubMenu label={dictionary['navigation'].sales} icon={<i className='tabler-sales' />}> */}
             {/* <MenuItem href={`/${locale}/apps/ecommerce/dashboard`}>{dictionary['navigation'].dashboard}</MenuItem> */}
-            <SubMenu label={dictionary['navigation'].customers}>
+            {/* <SubMenu label={dictionary['navigation'].customers}>
                    <SubMenu label={dictionary['navigation'].b2rBuyers}>
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].addGstBuyer}</MenuItem>
               <MenuItem href={`/${locale}/apps/ecommerce/products/add`}>{dictionary['navigation'].addNonGstBuyer}</MenuItem>
@@ -94,8 +94,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].addCustomer}</MenuItem>
            
             </SubMenu>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].salesData}>
+            </SubMenu> */}
+            {/* <SubMenu label={dictionary['navigation'].salesData}>
               <MenuItem href={`/${locale}/apps/ecommerce/orders/list`}>{dictionary['navigation'].b2rSales}</MenuItem>
              <MenuItem href={`/${locale}/apps/ecommerce/orders/list`}>{dictionary['navigation'].b2cSales}</MenuItem>
 
@@ -104,21 +104,21 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
            
             </SubMenu>
            
-            </SubMenu>
-               <SubMenu label={dictionary['navigation'].salesBatch}>
+            </SubMenu> */}
+               {/* <SubMenu label={dictionary['navigation'].salesBatch}>
               <MenuItem href={`/${locale}/apps/ecommerce/orders/list`}>{dictionary['navigation'].createBatch}</MenuItem>
              
-            </SubMenu>
+            </SubMenu> */}
           
-            <MenuItem href={`/${locale}/apps/ecommerce/sales-invoices`}>
+            {/* <MenuItem href={`/${locale}/apps/ecommerce/sales-invoices`}>
               {dictionary['navigation'].salesInvoices}
             </MenuItem>
             <MenuItem href={`/${locale}/apps/ecommerce/sales-returns`}>{dictionary['navigation'].salesReturns}</MenuItem>
-            <MenuItem href={`/${locale}/apps/ecommerce/reports`}>{dictionary['navigation'].reports}</MenuItem>
-          </SubMenu>
+            <MenuItem href={`/${locale}/apps/ecommerce/reports`}>{dictionary['navigation'].reports}</MenuItem> */}
+          {/* </SubMenu> */}
 
 
-          <SubMenu label={dictionary['navigation'].purchase} icon={<i className='tabler-purchase' />}>
+          {/* <SubMenu label={dictionary['navigation'].purchase} icon={<i className='tabler-purchase' />}>
              <SubMenu label={dictionary['navigation'].suppliers}>
             <MenuItem href={`/${locale}/apps/academy/dashboard`}>{dictionary['navigation'].suppliersData}</MenuItem>
               <SubMenu label={dictionary['navigation'].addSupplier} >
@@ -150,20 +150,20 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
         
             <MenuItem href={`/${locale}/apps/academy/my-courses`}>{dictionary['navigation'].reports}</MenuItem>
          
-          </SubMenu>
-        
+          </SubMenu> */}
+{/*         
           <MenuItem href={`/${locale}/apps/orders`} icon={<i className='tabler-orders-icon' />}>
             {dictionary['navigation'].ordersdata}
-          </MenuItem>
-          <MenuItem href={`/${locale}/apps/repairs`} icon={<i className='tabler-repairs-icon' />}>
+          </MenuItem> */}
+          {/* <MenuItem href={`/${locale}/apps/repairs`} icon={<i className='tabler-repairs-icon' />}>
             {dictionary['navigation'].repairs}
-          </MenuItem>
-          <MenuItem href={`/${locale}/apps/inventory`} icon={<i className='tabler-inventory-icon' />}>
+          </MenuItem> */}
+          {/* <MenuItem href={`/${locale}/apps/inventory`} icon={<i className='tabler-inventory-icon' />}>
             {dictionary['navigation'].inventory}
-          </MenuItem>
-           <MenuItem href={`/${locale}/apps/crm`} icon={<i className='tabler-crm-icon' />}>
+          </MenuItem> */}
+           {/* <MenuItem href={`/${locale}/apps/crm`} icon={<i className='tabler-crm-icon' />}>
             {dictionary['navigation'].crm}
-          </MenuItem>
+          </MenuItem> */}
           
           <SubMenu label={dictionary['navigation'].hrm} icon={<i className='tabler-hrm-icon' />}>
             <SubMenu label={dictionary['navigation'].staff} icon={<i className='tabler-saff' />}>
@@ -258,6 +258,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
            <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
             <MenuItem href={`/${locale}/apps/payrollManagement/salarycomponent`}>{dictionary['navigation'].salaryComponents}</MenuItem>
             <MenuItem href={`/${locale}/apps/payrollManagement/employeesalary`}>{dictionary['navigation'].employeeSalaries}</MenuItem>
+            <MenuItem href={`/${locale}/apps/payrollManagement/salaryadvancerequest`}>{dictionary['navigation'].salaryAdvanceRequests}</MenuItem>
+
             <MenuItem href={`/${locale}/apps/payrollManagement/payrollruns`}>{dictionary['navigation'].payrollRuns}</MenuItem>
           </SubMenu>
 
