@@ -26,7 +26,7 @@ import EditDepartment from './EditDepartment'
 import tableStyles from '@core/styles/table.module.css'
 
 // API
-import { fetchEmployeeSalary, updateEmployeeSalary } from "../../../../app/server/actions"
+import { fetchSalaryAdvanceRequest, updateAdvanceSalaryRequest } from "../../../../app/server/actions"
 
 // Tanstack
 import { rankItem } from '@tanstack/match-sorter-utils'
@@ -81,7 +81,7 @@ const DepartmentListTable = () => {
   const refreshSalary = async () => {
     if (!token) return
 
-    const res = await fetchEmployeeSalary(token)
+    const res = await fetchSalaryAdvanceRequest(token)
 
     const cleaned = (res?.data || []).map(item => ({
       ...item,
@@ -89,7 +89,6 @@ const DepartmentListTable = () => {
       // 🔥 FIXED: employeeName directly from API (not nested)
       employeeName: item.employeeName || "-",  
 
-      componentNames: item.salaryComponents?.map(c => c.componentName).join(", ") || ""
     }))
 
     setData(cleaned)
@@ -104,7 +103,7 @@ const DepartmentListTable = () => {
   }, [token])
 
   const handleUpdateSalary = async updatedData => {
-    const result =  await updateEmployeeSalary(updatedData, token)
+    const result =  await updateAdvanceSalaryRequest(updatedData, token)
     await refreshSalary()
      return result
   }
@@ -139,66 +138,51 @@ const DepartmentListTable = () => {
         header: "Employee",
         cell: ({ row }) => <Typography fontWeight={700}>{row.original.employeeName}</Typography>
       }),
-        columnHelper.accessor('annualSalary', {
-        header: "Annual Salary",
+        columnHelper.accessor('requestedAmount', {
+        header: "Requested Amount",
         cell: ({ row }) => (
           <Typography color="success.main" fontWeight={700}>
-            ₹ {Number(row.original.annualSalary).toLocaleString('en-IN')}
+            ₹ {Number(row.original.requestedAmount).toLocaleString('en-IN')}
           </Typography>
         )
       }),
-        columnHelper.accessor('grossSalary', {
-        header: "Gross Salary",
-        cell: ({ row }) => (
-          <Typography color="success.main" fontWeight={700}>
-            ₹ {Number(row.original.grossSalary).toLocaleString('en-IN')}
-          </Typography>
-        )
-      }),
-
-      columnHelper.accessor('basicSalary', {
-        header: "Basic Salary",
-        cell: ({ row }) => (
-          <Typography color="success.main" fontWeight={700}>
-            ₹ {Number(row.original.basicSalary).toLocaleString('en-IN')}
-          </Typography>
-        )
-      }),
-
-         columnHelper.accessor('fixedSalary', {
-        header: "Fixed Salary",
-        cell: ({ row }) => (
-          <Typography color="success.main" fontWeight={700}>
-            ₹ {Number(row.original.fixedSalary).toLocaleString('en-IN')}
-          </Typography>
-        )
-      }),
-
-      columnHelper.accessor('componentNames', {
-        header: "Components",
-        cell: ({ row }) => (
-          <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
-            {row.original.salaryComponents?.map(comp => (
-              <Chip
-                key={comp._id}
-                label={comp.componentName}
-                color={comp.type === "Earning" ? "success" : "error"}
-                size="small"
-                variant="tonal"
-              />
-            ))}
-          </Box>
-        )
-      }),
-
-     columnHelper.accessor('employeeStatus', {
-        header: "Employee Status",
+        columnHelper.accessor('requestedDate', {
+        header: "Requested Date",
         cell: ({ row }) => (
           <Typography  fontWeight={700}>
-             {row.original.employeeStatus||'NA'}
+            {row.original.requestedDate}
           </Typography>
         )
       }),
+
+        columnHelper.accessor('approvedBy', {
+        header: "Approved By",
+        cell: ({ row }) => (
+          <Typography  fontWeight={700}>
+            {row.original.approvedBy}
+          </Typography>
+        )
+      }),
+
+           columnHelper.accessor('approvedDate', {
+        header: "Approved Date",
+        cell: ({ row }) => (
+          <Typography  fontWeight={700}>
+            {row.original.approvedDate}
+          </Typography>
+        )
+      }),
+
+           columnHelper.accessor('rejectedDate', {
+        header: "Rejected Date",
+        cell: ({ row }) => (
+          <Typography  fontWeight={700}>
+            {row.original.rejectedDate}
+          </Typography>
+        )
+      }),
+
+     
 
       columnHelper.accessor('status', {
         header: "Status",
@@ -272,7 +256,7 @@ const DepartmentListTable = () => {
             <DebouncedInput
               value={globalFilter ?? ""}
               onChange={v => setGlobalFilter(String(v))}
-              placeholder="Search Employee Salary"
+              placeholder="Search Salary Advance Request"
             />
 
             <ExportButton filteredData={filteredRows} />
@@ -282,7 +266,7 @@ const DepartmentListTable = () => {
               startIcon={<i className="tabler-plus" />}
               onClick={() => setAddUserOpen(true)}
             >
-              Add Employee Salary
+              Add Salary Advance Request
             </Button>
           </div>
         </div>

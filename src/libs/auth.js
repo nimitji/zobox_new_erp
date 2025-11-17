@@ -205,7 +205,8 @@ async authorize(credentials) {
         id: data._id,
         name: data.name,
         email: data.emailid,
-        token: data.token
+        token: data.token,
+        typeOfUser:data.typeOfUser
       }
     }
 
@@ -244,29 +245,60 @@ async authorize(credentials) {
     signIn: '/login'
   },
 
-  callbacks: {
-    // 🔹 Save token from authorize into JWT
-    async jwt({ token, user }) {
-      //console.log("POOJATOKEN123",token,user)
-      if (user?.token) token.accessToken = user.token
-      if (user?.name) token.name = user.name
-      console.log("PATANHI",token)
+//   callbacks: {
+//     // 🔹 Save token from authorize into JWT
+     
+//     async jwt({ token, user }) {
+//       console.log("POOJATOKEN123",token,user)
+//       if (user?.token) token.accessToken = user.token
+//       if (user?.name) token.name = user.name
+//       if (user?.typeOfUser) token.typeOfUser = user.typeOfUser
+
+//       console.log("PATANHI",token)
       
-return token
-    },
+// return token
+//     },
 
-    // 🔹 Expose JWT token in session object
-    async session({ session, token }) {
-       console.log("POOJATOKENSESSION",token,session)
+//     // 🔹 Expose JWT token in session object
+//     async session({ session, token }) {
+//        console.log("POOJATOKENSESSION",token,session)
 
-      if (session.user) {
-        session.user.name = token.name
-        session.user.accessToken = token.accessToken // <- Bearer token here
-      }
+//       if (session.user) {
+//         session.user.name = token.name
+//         session.user.accessToken = token.accessToken // <- Bearer token here
+//         session.user.typeOfUser = token.typeOfUser;   // ⭐ ADD THIS LINE
+      
+
+//       }
 
       
-return session
+// return session
+//     }
+//   }
+
+callbacks: {
+  async jwt({ token, user }) {
+    console.log("JWT CALLBACK:", token, user);
+
+    if (user) {
+      token.accessToken = user.token;
+      token.name = user.name;
+      token.typeOfUser = user.typeOfUser;
     }
+
+    return token;
+  },
+
+  async session({ session, token }) {
+    console.log("SESSION CALLBACK:", token, session);
+
+    session.user.name = token.name;
+    session.user.accessToken = token.accessToken;
+    session.user.typeOfUser = token.typeOfUser;   // ⭐ FIXED
+
+    return session;
   }
+}
+
 }
 

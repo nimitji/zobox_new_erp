@@ -3707,7 +3707,320 @@ export const fetchListOfSalaryComponent = async () => {
   }
 }
 
+export const fetchCountEmployeeSalary = async (token) => {
+  try {
+   
+    if (!token) throw new Error('Token missing for fetchCountEmployeeSalary')
+    console.log("TOKEN",token)
 
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-salary`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+         'token': token
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Employee Salary Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Emloyee Salary:', error)
+    throw error
+  }
+}
+export const createEmployeeSalary = async (formData, token) => {
+  try {
+    // 🧩 Prepare payload matching backend expectations
+    const payload = {
+      employee: formData.employee,
+      basicSalary: formData.basicSalary,
+      salaryComponents: formData.salaryComponents,
+      fixedSalary: formData.fixedSalary,
+      grossSalary: formData.grossSalary,
+      annualSalary: formData.annualSalary,
+      isHraFixed:formData.isHraFixed,
+      hraFixedAmount:formData.hraFixedAmount,
+      isNAPS:formData.isNAPS,
+      isNAPS:formData.isNAPS,
+      status: formData.status,
+      notes: formData.notes
+    };
+
+    console.log('🟢 Sending Salary Payload:', payload);
+
+    // 📨 Send POST request to backend API
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-salary`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token // ✅ added auth token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    // ❌ Handle HTTP-level errors
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create employee salary: ${errorText}`);
+    }
+
+    // ✅ Parse backend response
+    const data = await res.json();
+    console.log('✅ Employee Salary Created:', data);
+
+    return data;
+  } catch (error) {
+    console.error('❌ Error creating employee salary:', error);
+    throw error;
+  }
+};
+
+
+export const fetchEmployeeSalary = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing for fetchEmployeeSalary')
+
+    console.log('🔹 Fetching Employee Salary with token:', token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-salary`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token, // ✅ backend expects token here (not Bearer)
+      },
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to employee salary: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Employee Salary fetched:', data)
+
+    // return the array safely
+    return data || []
+  } catch (error) {
+    console.error('❌ Error fetching employee salary:', error)
+    throw error
+  }
+}
+
+
+export const updateEmployeeSalary = async (payload, token) => {
+  try {
+    if (!token) throw new Error('Token missing for updateEmployeeSalary')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-employee-salary`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token: token // ✅ backend expects 'token' header
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // ✅ handle response
+    const data = await res.json()
+
+    // if (!res.ok) {
+    //   throw new Error(data.message || 'Failed to update employee salary')
+    // }
+
+    console.log('✅ Employee Salary updated successfully:', data)
+    // return data
+
+      if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || "Failed to update employee salary"
+      }
+    }
+console.log("testdebug",{
+      success: true,
+      message: data?.message || "Employee salary updated successfully!"
+    })
+    // SUCCESS case
+    return {
+      success: true,
+      message: data?.message || "Employee salary updated successfully!"
+    }
+   
+  } catch (error) {
+    console.error('❌ Error in updateEmployeeSalary:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong while updating employee salary'
+    }
+  }
+}
+
+//Advance Salary Request
+
+export const fetchCountSalaryAdvanceRequest = async (token) => {
+  try {
+   
+    if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
+    console.log("TOKEN",token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-advance-request`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+         'token': token
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Salary Advance Request Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Salary Advance Request:', error)
+    throw error
+  }
+}
+
+
+export const createAdvanceSalaryRequest = async (formData, token) => {
+  try {
+    // 🧩 Prepare payload matching backend expectations
+    const payload = {
+      employee: formData.employee,
+      requestedAmount: formData.requestedAmount,
+       status: formData.status,
+      notes: formData.notes
+    };
+
+    console.log('🟢 Sending Salary advance Payload:', payload);
+
+    // 📨 Send POST request to backend API
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-advance-request`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token // ✅ added auth token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    // ❌ Handle HTTP-level errors
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to create employee salary advance request: ${errorText}`);
+    }
+
+    // ✅ Parse backend response
+    const data = await res.json();
+    console.log('✅ Employee Salary  advance requested Created:', data);
+
+    return data;
+  } catch (error) {
+    console.error('❌ Error creating employee salary request:', error);
+    throw error;
+  }
+};
+
+
+export const updateAdvanceSalaryRequest = async (payload, token) => {
+  try {
+    if (!token) throw new Error('Token missing for updateSalaryRequest')
+      console.log("DADADADADADA",payload)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-advance-request`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token: token // ✅ backend expects 'token' header
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    // ✅ handle response
+    const data = await res.json()
+
+    // if (!res.ok) {
+    //   throw new Error(data.message || 'Failed to update employee salary')
+    // }
+
+    console.log('✅ Employee Salary Advance Request updated successfully:', data)
+    // return data
+
+      if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || "Failed to update employee salary advance request"
+      }
+    }
+
+    // SUCCESS case
+    return {
+      success: true,
+      message: data?.message || "Employee salary advance request updated successfully!"
+    }
+   
+  } catch (error) {
+    console.error('❌ Error in updateSalaryRequest:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong while updating employee salary request'
+    }
+  }
+}
+
+export const fetchSalaryAdvanceRequest = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing for fetchSalaryAdvanceRequest')
+
+    console.log('🔹 Fetching Employee Salary with token:', token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-advance-requests`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': token, // ✅ backend expects token here (not Bearer)
+      },
+      cache: 'no-store',
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to employee salary advance: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Employee Salary advance fetched:', data)
+
+    // return the array safely
+    return data || []
+  } catch (error) {
+    console.error('❌ Error fetching employee salary advance:', error)
+    throw error
+  }
+}
 
 export const getPermissionsData = async () => {
   return permissionData

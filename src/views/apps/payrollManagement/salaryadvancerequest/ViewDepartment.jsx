@@ -27,7 +27,7 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
     >
       {/* Header */}
       <div className='flex items-center justify-between pb-3'>
-        <Typography variant='h5'>Employee Salary Details</Typography>
+        <Typography variant='h5'>Employee Advance Salary Request Details</Typography>
         <IconButton size='small' onClick={handleClose}>
           <i className='tabler-x text-2xl text-textPrimary' />
         </IconButton>
@@ -49,49 +49,47 @@ const ViewDepartment = ({ open, handleClose, departmentData }) => {
 
           <Grid item xs={12}>
             <CustomTextField
-              label='Annual Salary'
+              label='Requested Amount'
               fullWidth
-              value={departmentData.annualSalary || ''}
+              value={departmentData.requestedAmount || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
           <Grid item xs={12}>
             <CustomTextField
-              label='Gross Salary'
+              label='Requested Date'
               fullWidth
-              value={departmentData.grossSalary || ''}
+              value={departmentData.requestedDate || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
           <Grid item xs={12}>
             <CustomTextField
-              label='Basic Salary'
+              label='Approved By'
               fullWidth
-              value={departmentData.basicSalary || ''}
+              value={departmentData.approvedBy || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
           <Grid item xs={12}>
             <CustomTextField
-              label='Fixed Salary'
+              label='Approved Date'
               fullWidth
-              value={departmentData.fixedSalary || ''}
+              value={departmentData.approvedDate || ''}
               InputProps={{ readOnly: true }}
             />
           </Grid>
 
-          <Grid item xs={12}>
-  <CustomTextField
-    label="Salary Components"
-    fullWidth
-    value={
-      departmentData.salaryComponents
-        ?.map(c => c.componentName)
-        .join(", ") || "-"
-    }
-    InputProps={{ readOnly: true }}
-  />
-</Grid>
+            <Grid item xs={12}>
+            <CustomTextField
+              label='Rejected Date'
+              fullWidth
+              value={departmentData.rejectedDate || ''}
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+      
 
 
          
