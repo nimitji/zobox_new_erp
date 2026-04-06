@@ -237,12 +237,12 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             {dictionary['navigation'].calendars}
           </MenuItem> */}
         
-           {/* <SubMenu label={dictionary['navigation'].leaveManagement} icon={<i className='tabler-leave-management' />}>
-            <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].leaveTypes}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].leavePolicies}</MenuItem>
-              <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].leaveApplications}</MenuItem>
-            <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].leaveBalances}</MenuItem>
-          </SubMenu> */}
+           <SubMenu label={dictionary['navigation'].leaveManagement} icon={<i className='tabler-leave-management' />}>
+            <MenuItem href={`/${locale}/apps/leaveManagement/leavetypes`}>{dictionary['navigation'].leaveTypes}</MenuItem>
+            <MenuItem href={`/${locale}/apps/leaveManagement/leavepolicies`}>{dictionary['navigation'].leavePolicies}</MenuItem>
+              <MenuItem href={`/${locale}/apps/leaveManagement/leaveapplications`}>{dictionary['navigation'].leaveApplications}</MenuItem>
+            <MenuItem href={`/${locale}/apps/leaveManagement/leavebalances`}>{dictionary['navigation'].leaveBalances}</MenuItem>
+          </SubMenu>
            <SubMenu label={dictionary['navigation'].attendanceManagement} icon={<i className='tabler-attendance-management' />}>
             <MenuItem href={`/${locale}/apps/attendanceManagement/shift`}>{dictionary['navigation'].shifts}</MenuItem>
             <MenuItem href={`/${locale}/apps/attendanceManagement/attendancepolicies`}>{dictionary['navigation'].attendancePolicies}</MenuItem>
@@ -259,6 +259,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/payrollManagement/salarycomponent`}>{dictionary['navigation'].salaryComponents}</MenuItem>
             <MenuItem href={`/${locale}/apps/payrollManagement/employeesalary`}>{dictionary['navigation'].employeeSalaries}</MenuItem>
             <MenuItem href={`/${locale}/apps/payrollManagement/salaryadvancerequest`}>{dictionary['navigation'].salaryAdvanceRequests}</MenuItem>
+             <MenuItem href={`/${locale}/apps/payrollManagement/napsnats`}>{dictionary['navigation'].napsNats}</MenuItem>
 
             <MenuItem href={`/${locale}/apps/payrollManagement/payrollruns`}>{dictionary['navigation'].payrollRuns}</MenuItem>
           </SubMenu>

@@ -3753,7 +3753,8 @@ export const createEmployeeSalary = async (formData, token) => {
       isNAPS:formData.isNAPS,
       isNAPS:formData.isNAPS,
       status: formData.status,
-      notes: formData.notes
+      notes: formData.notes,
+      employeeStatus:formData.employeeStatus
     };
 
     console.log('🟢 Sending Salary Payload:', payload);
@@ -4021,6 +4022,803 @@ export const fetchSalaryAdvanceRequest = async (token) => {
     throw error
   }
 }
+
+
+export const fetchCountLeaveType = async () => {
+  try {
+  
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch leave type count: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Count Leave Type Data:', data)
+    return data.data
+  } catch (error) {
+    console.error('❌ Error fetching Leave Type Count:', error)
+    throw error
+  }
+}
+
+export  const createLeaveType =async (payload) =>{
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-type`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    // Parse the response
+    const data = await res.json()
+
+    // Optional: handle bad status codes
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to create leaveType')
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error in createLeaveType:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong'
+    }
+  }
+}
+
+export const fetchLeaveType = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch leave type: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Leave Type Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching leave Type ❌:', error)
+    throw error
+  }
+}
+
+
+export const editLeaveType = async (formData) => {
+  try {
+    // Prepare payload directly from formData
+    const payload = {
+      _id: formData._id,
+      leaveTypeName: formData.leaveTypeName,
+      description: formData.description,
+      maxDays: formData.maxDays,
+      isPaidStaus: formData.isPaidStaus,
+      status: formData.status
+     
+    };
+
+    console.log("🟡 Sending update leave type payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-leave-type`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update leave type: ${errorText}`);
+    }
+
+    const leaveTypeData = await res.json();
+
+    console.log("✅ Updated leave type:", leaveTypeData);
+
+    return leaveTypeData;
+  } catch (err) {
+    console.error('❌ Failed to update leave type:', err);
+    throw err;
+  }
+};
+
+
+export const fetchListOfLeaveType= async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-list-leave-type`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch leave type: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+
+//Leave Policy
+
+export const fetchCountLeavePolicy = async () => {
+  try {
+  
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-policy`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch leave policy count: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Fetched Count Leave Policy Data:', data)
+    return data.data
+  } catch (error) {
+    console.error('❌ Error fetching Leave Policy Count:', error)
+    throw error
+  }
+}
+
+
+export  const createLeavePolicy =async (payload) =>{
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-policy`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+
+    // Parse the response
+    const data = await res.json()
+
+    // Optional: handle bad status codes
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to create leave policy')
+    }
+
+    return data
+  } catch (error) {
+    console.error('Error in createLeavePolicy:', error)
+    return {
+      success: false,
+      message: error.message || 'Something went wrong'
+    }
+  }
+}
+
+export const fetchLeavePolicy = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-policies`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to fetch leave policy: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('Fetched Leave Policy Data ✅:', data)
+
+    // return just the array of shifts
+    return data.data
+  } catch (error) {
+    console.error('Error fetching leave Policy ❌:', error)
+    throw error
+  }
+}
+
+
+export const editLeavePolicy = async (formData) => {
+  try {
+    // Prepare payload directly from formData
+    const payload = {
+        _id:formData._id,
+        policyName: formData.policyName,
+        description: formData.description,
+        leaveType: formData.leaveType,
+        accuralType: formData.accuralType,
+        accuralRates: formData.accuralRates,
+        carryForwardLimit: formData.carryForwardLimit,
+        minDays: formData.minDays,
+        maxDays: formData.maxDays,
+        isRequired: formData.isRequired,
+        status: formData.status
+     
+    };
+
+    console.log("🟡 Sending update leave policy payload:", payload);
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-leave-policy`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    });
+
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to update leave policy: ${errorText}`);
+    }
+
+    const leavePolicyData = await res.json();
+
+    console.log("✅ Updated leave policy:", leavePolicyData);
+
+    return leavePolicyData;
+  } catch (err) {
+    console.error('❌ Failed to update leave policy:', err);
+    throw err;
+  }
+};
+
+//Leave Application
+
+export const fetchCountLeaveApplication = async (token) => {
+  try {
+   
+    if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
+    console.log("TOKEN",token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-application`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+         'token': token
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Leave Application Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Leave Application:', error)
+    throw error
+  }
+}
+
+
+
+export const createLeaveApplication = async (formData, token) => {
+  try {
+    const payload = new FormData()
+
+    payload.append('employee', formData.employee)
+    payload.append('leaveType', formData.leaveType)
+    payload.append('startDate', formData.startDate)
+    payload.append('endDate', formData.endDate)
+   
+    payload.append('reason', formData.reason)
+    payload.append('status', formData.status)
+
+    // ✅ FILE / ATTACHMENT
+    if (formData.attachments) {
+      // FileUploadController single file de raha hai
+      payload.append('attachments', formData.attachments)
+    }
+
+    console.log('🟢 Sending Leave Application FormData')
+
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/create-leave-application`,
+      {
+        method: 'POST',
+        headers: {
+          token // ✅ AUTH ONLY
+        },
+        body: payload,
+        cache: 'no-store'
+      }
+    )
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(`Failed to create leave application: ${errorText}`)
+    }
+
+    const data = await res.json()
+    console.log('✅ Leave application created:', data)
+
+    return data
+  } catch (error) {
+    console.error('❌ Error creating leave application:', error)
+    throw error
+  }
+}
+
+
+
+
+export const updateLeaveApplication = async (payload, token) => {
+  try {
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for updateLeaveApplication'
+      }
+    }
+
+    console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
+
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/update-leave-application`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          token // ✅ backend expects token header
+        },
+        body: JSON.stringify(payload),
+        cache: 'no-store'
+      }
+    )
+
+    let data = {}
+    try {
+      data = await res.json()
+    } catch (err) {
+      // backend did not return JSON
+    }
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to update employee leave application'
+      }
+    }
+
+    console.log('✅ Leave Application updated successfully:', data)
+
+    return {
+      success: true,
+      message: data?.message || 'Leave application updated successfully'
+    }
+  } catch (error) {
+    console.error('❌ Error in updateLeaveApplication:', error)
+
+    return {
+      success: false,
+      message:
+        error?.message ||
+        'Something went wrong while updating employee leave application'
+    }
+  }
+}
+
+
+
+export const fetchLeaveApplication = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-application`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(errorText)
+    }
+
+    const json = await res.json()
+    console.log('✅ Leave Application API:', json)
+
+    // ✅ IMPORTANT
+    return json?.data || []
+
+  } catch (error) {
+    console.error('❌ Error fetching leave application:', error)
+    return []
+  }
+}
+
+
+//Leave Balances
+
+export const fetchCountLeaveBalance = async (token) => {
+  try {
+   
+    if (!token) throw new Error('Token missing for fetchLeaveBalnce')
+    console.log("TOKEN",token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-balance`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+         'token': token
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Leave Balance Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Leave Balance:', error)
+    throw error
+  }
+}
+
+export const createLeaveBalance = async (formData, token) => {
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/create-leave-balance`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // ✅ MUST
+          token:token     // ✅ Better than custom token
+        },
+        body: JSON.stringify({
+          employee: formData.employee,
+          leaveType: formData.leaveType,
+          year: formData.year,
+          allocatedDays: formData.allocatedDays,
+          carriedForwardDays: formData.carriedForwardDays,
+          manualAdustment: formData.manualAdustment,
+          reason: formData.reason
+        }),
+        cache: 'no-store'
+      }
+    )
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(errorText)
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('❌ Error creating leave balance:', error)
+    throw error
+  }
+}
+
+
+
+export const updateLeaveBalance = async (payload, token) => {
+  try {
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for updateLeaveBalance'
+      }
+    }
+
+    console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
+
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/update-leave-balance`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          token // ✅ backend expects token header
+        },
+        body: JSON.stringify(payload),
+        cache: 'no-store'
+      }
+    )
+
+    let data = {}
+    try {
+      data = await res.json()
+    } catch (err) {
+      // backend did not return JSON
+    }
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to update employee leave balance'
+      }
+    }
+
+    console.log('✅ Leave Balance updated successfully:', data)
+
+    return {
+      success: true,
+      message: data?.message || 'Leave balance updated successfully'
+    }
+  } catch (error) {
+    console.error('❌ Error in updateLeaveBalance:', error)
+
+    return {
+      success: false,
+      message:
+        error?.message ||
+        'Something went wrong while updating employee leave balance'
+    }
+  }
+}
+
+export const fetchLeaveBalance = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-balance`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(errorText)
+    }
+
+    const json = await res.json()
+    console.log('✅ Leave Balance API:', json)
+
+    // ✅ IMPORTANT
+    return json?.data || []
+
+  } catch (error) {
+    console.error('❌ Error fetching leave balance:', error)
+    return []
+  }
+}
+
+//NAPSNATS
+export const fetchListOfNapsNatsUser= async (status) => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-napsnats-user?status=${status}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch user: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log(' Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching:', error)
+    throw error
+  }
+}
+
+
+export const fetchCountNapsNats = async (token) => {
+  try {
+   
+    if (!token) throw new Error('Token missing for fetchNapsNats')
+    console.log("TOKEN",token)
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-naps-nats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+         'token': token
+      },
+      cache: 'no-store' // ensures latest data
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch data: ${errorText}`)
+    }
+
+    const data = await res.json()
+
+    console.log('Fetched Count Naps Nats Data:', data)
+    
+return data.data // return only branch array
+  } catch (error) {
+    console.error('Error fetching Naps Nats:', error)
+    throw error
+  }
+}
+
+export const createNapsNats = async (formData, token) => {
+  try {
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/create-naps-nats`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json', // ✅ MUST
+          token:token     // ✅ Better than custom token
+        },
+        body: JSON.stringify({
+          employee: formData.employee,
+          napsNatsStatus: formData.napsNatsStatus,
+          deductionForThisMonth:formData.deductionForThisMonth,
+          amount: formData.amount,
+          status:formData.status
+         
+        }),
+        cache: 'no-store'
+      }
+    )
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(errorText)
+    }
+
+    return await res.json()
+  } catch (error) {
+    console.error('❌ Error creating naps nats:', error)
+    throw error
+  }
+}
+
+
+
+export const updateNapsNats = async (payload, token) => {
+  try {
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for updateNapsNats'
+      }
+    }
+
+    console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
+
+    const res = await fetch(
+      `${process.env.API_URL}/zobiz/update-naps-nats`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          token // ✅ backend expects token header
+        },
+        body: JSON.stringify(payload),
+        cache: 'no-store'
+      }
+    )
+
+    let data = {}
+    try {
+      data = await res.json()
+    } catch (err) {
+      // backend did not return JSON
+    }
+
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to update naps/nats'
+      }
+    }
+
+    console.log('✅ Naps/Nats updated successfully:', data)
+
+    return {
+      success: true,
+      message: data?.message || 'Naps/Nats updated successfully'
+    }
+  } catch (error) {
+    console.error('❌ Error in updateNapsNats:', error)
+
+    return {
+      success: false,
+      message:
+        error?.message ||
+        'Something went wrong while updating naps/nats'
+    }
+  }
+}
+
+export const fetchNapsNats = async (token) => {
+  try {
+    if (!token) throw new Error('Token missing')
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-naps-nats`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      const errorText = await res.text()
+      throw new Error(errorText)
+    }
+
+    const json = await res.json()
+    console.log('✅ Naps/Nats API:', json)
+
+    // ✅ IMPORTANT
+    return json?.data || []
+
+  } catch (error) {
+    console.error('❌ Error fetching naps/nats:', error)
+    return []
+  }
+}
+
+
 
 export const getPermissionsData = async () => {
   return permissionData
