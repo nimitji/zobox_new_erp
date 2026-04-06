@@ -649,6 +649,8 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
     // New Fields
     isHraFixed: false,
     hraFixedAmount: '',
+      isTdsFixed: false,
+    tdsFixedAmount: '',
     isNAPS: false,
     isNATS: false,
     employeeStatus:''
@@ -707,6 +709,8 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
 
         isHraFixed: convertToBoolean(selectedDepartment.isHraFixed),
         hraFixedAmount: selectedDepartment.hraFixedAmount ?? "",
+         isTdsFixed: convertToBoolean(selectedDepartment.isTdsFixed),
+        tdsFixedAmount: selectedDepartment.tdsFixedAmount ?? "",
         isNAPS: convertToBoolean(selectedDepartment.isNAPS),
         isNATS: convertToBoolean(selectedDepartment.isNATS),
         employeeStatus:selectedDepartment.employeeStatus
@@ -721,6 +725,8 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
         ...formData,
         isHraFixed: !!formData.isHraFixed,
         hraFixedAmount: formData.isHraFixed ? formData.hraFixedAmount : null,
+         isTdsFixed: !!formData.isTdsFixed,
+        tdsFixedAmount: formData.isTdsFixed ? formData.tdsFixedAmount : null,
         isNAPS: !!formData.isNAPS,
         isNATS: !!formData.isNATS,
         employeeStatus:formData.employeeStatus
@@ -817,6 +823,28 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
                   label="Fixed HRA Amount"
                   value={formData.hraFixedAmount ?? ""}
                   onChange={e => setFormData({ ...formData, hraFixedAmount: e.target.value })}
+                />
+              </Grid>
+            )}
+
+
+             <Grid item xs={12}>
+              <div className="flex items-center gap-3">
+                <Checkbox
+                  checked={!!formData.isTdsFixed}
+                  onChange={e => setFormData({ ...formData, isTdsFixed: e.target.checked })}
+                />
+                <Typography>Use Fixed TDS Amount?</Typography>
+              </div>
+            </Grid>
+
+            {formData.isTdsFixed && (
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="Fixed TDS Amount"
+                  value={formData.tdsFixedAmount ?? ""}
+                  onChange={e => setFormData({ ...formData, tdsFixedAmount: e.target.value })}
                 />
               </Grid>
             )}
