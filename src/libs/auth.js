@@ -3,6 +3,7 @@ import CredentialProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
+import {encrypt,decrypt} from '../utils/crypto'
 
 const prisma = new PrismaClient()
 
@@ -180,33 +181,41 @@ async authorize(credentials) {
   const { email, password } = credentials
 
   try {
-    const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
+       const encryptedData = encrypt(
+      JSON.stringify({ email, password })
+    );
+    const res = await fetch("http://localhost:4002/jaycon/erploginusser", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({
+        data: encryptedData, // ✅ encrypted send
+      })
     })
 
     const data = await res.json()
-    console.log("BACKEND DATA:", data)
+    const decryptedPayload= decrypt(data.data)
+     const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("BACKEND DATA:", decrypt(parsedBody.name),decrypt(parsedBody.emailid))
 
     // ❌ ERROR CASE → backend sending 403
     if (res.status === 403) {
       throw new Error(JSON.stringify({
         success: false,
-        message: data?.message || 'Invalid credentials'
+        message: ndata?.message || 'Invalid credentials'
       }))
     }
 
     // ✔ SUCCESS CASE
     if (res.status === 200) {
       return {
-        id: data._id,
-        name: data.name,
-        email: data.emailid,
-        token: data.token,
-        typeOfUser:data.typeOfUser
+        id: parsedBody._id,
+        name: decrypt(parsedBody.name),
+        email: decrypt(parsedBody.emailid),
+        token: parsedBody.token,
+        typeOfUser:decrypt(parsedBody.typeOfUser)
       }
     }
 
