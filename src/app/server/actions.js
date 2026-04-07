@@ -15,6 +15,7 @@ import { db as profileData } from '@/fake-db/pages/userProfile'
 import { db as faqData } from '@/fake-db/pages/faq'
 import { db as pricingData } from '@/fake-db/pages/pricing'
 import { db as statisticsData } from '@/fake-db/pages/widgetExamples'
+import { encrypt ,decrypt } from '@/utils/crypto'
 
 export const getEcommerceData = async () => {
   return eCommerceData
@@ -39,7 +40,7 @@ export const getUserDatas = async () => {
 // src/app/server/actions.js
 
 export const getUserData = async () => {
-  const res = await fetch(`${process.env.API_URL}/zobiz/fetch-role`, {
+  const res = await fetch(`${process.env.API_URL}/jaycon/fetch-role`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -83,12 +84,16 @@ export const createBranch = async (formData) => {
 
 console.log("TODAYDEBUG",formData,payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-branch`, {
+ const encryptedData = encrypt(JSON.stringify(payload));
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-branch`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({
+        data: encryptedData, // ✅ encrypted send
+      }),
       cache: 'no-store'
     })
 
@@ -114,7 +119,7 @@ return branchData
 
 export const fetchBranches = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-branch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -131,8 +136,11 @@ export const fetchBranches = async () => {
     const data = await res.json()
 
     console.log('Fetched Branch Data:', data)
+       
+    const decryptedPayload= decrypt(data.data)
+     const parsedBody = JSON.parse(decryptedPayload);
     
-return data.data // return only branch array
+return parsedBody // return only branch array
   } catch (error) {
     console.error('Error fetching branches:', error)
     throw error
@@ -141,7 +149,7 @@ return data.data // return only branch array
 
 export const fetchCountBranches = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-branch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -156,10 +164,12 @@ export const fetchCountBranches = async () => {
     }
 
     const data = await res.json()
+    const decryptedPayload= decrypt(data.data)
+     const parsedBody = JSON.parse(decryptedPayload);
 
     console.log('Fetched Count Branch Data:', data)
     
-return data.data // return only branch array
+return parsedBody // return only branch array
   } catch (error) {
     console.error('Error fetching branches:', error)
     throw error

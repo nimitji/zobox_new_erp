@@ -184,7 +184,7 @@ async authorize(credentials) {
        const encryptedData = encrypt(
       JSON.stringify({ email, password })
     );
-    const res = await fetch("http://localhost:4002/jaycon/erploginusser", {
+    const res = await fetch("https://jaycon.live.kevalindigital.com/jaycon/erploginusser", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
