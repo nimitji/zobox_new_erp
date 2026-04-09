@@ -50,8 +50,8 @@
 const Logo = (props) => {
   return (
     <img
-      src="https://storage.googleapis.com/zobizproductphotos/banners/zoboxlogo.png"
-      alt="Zobox Logo"
+      src="https://storage.googleapis.com/membersdata/membersdata/l1.jpeg"
+      alt="Jaycon Logo"
       width={200}
       height={50}
       style={{ objectFit: 'contain' }} // poora image dikhega
