@@ -181,41 +181,44 @@ async authorize(credentials) {
   const { email, password } = credentials
 
   try {
-       const encryptedData = encrypt(
-      JSON.stringify({ email, password })
-    );
-    const res = await fetch("https://jaycon.live.kevalindigital.com/jaycon/erploginusser", {
+    //    const encryptedData = encrypt(
+    //   JSON.stringify({ email, password })
+    // );
+    const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        data: encryptedData, // ✅ encrypted send
-      })
+      // body: JSON.stringify({
+      //   data: encryptedData, // ✅ encrypted send
+      // })
+      body: JSON.stringify({ email, password })
     })
 
     const data = await res.json()
-    const decryptedPayload= decrypt(data.data)
-     const parsedBody = JSON.parse(decryptedPayload);
+    // const decryptedPayload= decrypt(data.data)
+    //  const parsedBody = JSON.parse(decryptedPayload);
+          // const parsedBody = data.data;
 
-    console.log("BACKEND DATA:", decrypt(parsedBody.name),decrypt(parsedBody.emailid))
+
+    console.log("BACKEND DATA:", data)
 
     // ❌ ERROR CASE → backend sending 403
     if (res.status === 403) {
       throw new Error(JSON.stringify({
         success: false,
-        message: ndata?.message || 'Invalid credentials'
+        message: parsedBody?.message || 'Invalid credentials'
       }))
     }
 
     // ✔ SUCCESS CASE
     if (res.status === 200) {
       return {
-        id: parsedBody._id,
-        name: decrypt(parsedBody.name),
-        email: decrypt(parsedBody.emailid),
-        token: parsedBody.token,
-        typeOfUser:decrypt(parsedBody.typeOfUser)
+        id: data._id,
+        name: data.name,
+        email: data.emailid,
+        token: data.token,
+        typeOfUser:data.typeOfUser
       }
     }
 

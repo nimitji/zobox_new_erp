@@ -460,7 +460,7 @@ const Login = ({ mode }) => {
         <div className='flex flex-col gap-6 is-full sm:max-is-[400px] mbs-8'>
 
           <div className='flex flex-col gap-1'>
-            <Typography variant='h4'>Welcome to Zobox!</Typography>
+            <Typography variant='h4'>Welcome to JAYCON!</Typography>
             <Typography>Please sign-in to your account and start the adventure</Typography>
           </div>
 
