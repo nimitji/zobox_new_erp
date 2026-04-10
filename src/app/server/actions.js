@@ -5,7 +5,7 @@
 'use server'
 
 // Data Imports
-import { db as eCommerceData } from '@/fake-db/apps/ecommerce'
+import { db as eCojayconerceData } from '@/fake-db/apps/ecojayconerce'
 import { db as academyData } from '@/fake-db/apps/academy'
 import { db as vehicleData } from '@/fake-db/apps/logistics'
 import { db as invoiceData } from '@/fake-db/apps/invoice'
@@ -17,8 +17,8 @@ import { db as pricingData } from '@/fake-db/pages/pricing'
 import { db as statisticsData } from '@/fake-db/pages/widgetExamples'
 import { encrypt, decrypt } from '../../utils/crypto'
 
-export const getEcommerceData = async () => {
-  return eCommerceData
+export const getEcojayconerceData = async () => {
+  return eCojayconerceData
 }
 
 export const getAcademyData = async () => {
@@ -3340,9 +3340,9 @@ export const createAttendanceRecord = async formData => {
     // 🧩 Prepare payload to match backend expectations
     const payload = {
       employees: formData.employees, // employee ObjectId
-      date: formData.date, // ISO date string (YYYY-MM-DD)
-      clockIn: formData.clockIn, // HH:mm
-      clockOut: formData.clockOut, // HH:mm
+      date: formData.date, // ISO date string (YYYY-jaycon-DD)
+      clockIn: formData.clockIn, // HH:jaycon
+      clockOut: formData.clockOut, // HH:jaycon
       breakHours: formData.breakHours, // number or string
       status: formData.status, // Present/Absent/etc.
       isHoliday: formData.isHoliday, // boolean
@@ -3435,7 +3435,7 @@ export const editAttendanceRecord = async formData => {
       headers: {
         'Content-Type': 'application/json'
 
-        // If your backend uses auth middleware, uncomment below:
+        // If your backend uses auth middleware, uncojayconent below:
         // 'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(payload),
@@ -4896,7 +4896,7 @@ export const createLeaveApplication = async (formData, token) => {
 
     console.log('🟢 Sending Leave Application FormData')
 
-    const res = await fetch(`${process.env.API_URL}/mm/create-leave-application`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-leave-application`, {
       method: 'POST',
       headers: {
         token // ❗ only token (no Content-Type)
@@ -4966,7 +4966,7 @@ export const updateLeaveApplication = async (payload, token) => {
 
     console.log('📤 UPDATE LEAVE APPLICATION PAYLOAD:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/mm/update-leave-application`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-leave-application`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -5129,7 +5129,7 @@ export const createLeaveBalance = async (formData, token) => {
 
     console.log('📤 CREATE LEAVE BALANCE PAYLOAD:', formData)
 
-    const res = await fetch(`${process.env.API_URL}/mm/create-leave-balance`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-leave-balance`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -5207,7 +5207,7 @@ export const updateLeaveBalance = async (payload, token) => {
 
     console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/mm/update-leave-balance`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-leave-balance`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -5405,7 +5405,7 @@ export const createNapsNats = async (formData, token) => {
 
     console.log('📤 CREATE NAPS/NATS PAYLOAD:', formData)
 
-    const res = await fetch(`${process.env.API_URL}/mm/create-naps-nats`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-naps-nats`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
