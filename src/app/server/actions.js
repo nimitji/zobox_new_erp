@@ -414,23 +414,23 @@ export const editDepartment = async (formData) => {
 
     console.log("DEBUG updateDeaprtment:", departmentData)
 
-//     return departmentData
-//   } catch (err) {
-//     console.error('Failed to update department:', err)
-//     throw err
-//   }
-// }
- // ✅ Decrypt the response
+    //     return departmentData
+    //   } catch (err) {
+    //     console.error('Failed to update department:', err)
+    //     throw err
+    //   }
+    // }
+    // ✅ Decrypt the response
     const decryptedPayload = decrypt(departmentData.data);
 
     // ✅ Convert decrypted string → JSON
     const parsedBody = JSON.parse(decryptedPayload);
 
-    console.log("Decrypted List of Branch Data:", parsedBody);
+    console.log("Decrypted edit dept Data:", parsedBody);
 
     return parsedBody; // final usable data
   } catch (error) {
-    console.error("Error fetching List of Branch Data:", error.message);
+    console.error("Error fetching editdept Data:", error.message);
     throw error;
   }
 }
@@ -476,13 +476,26 @@ export const editBranch = async (formData) => {
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(branchData.data);
 
-    return branchData
-  } catch (err) {
-    console.error('Failed to update branch:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted edit Branch Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching edit Branch Data:", error.message);
+    throw error;
   }
 }
+//     return branchData
+//   } catch (err) {
+//     console.error('Failed to update branch:', err)
+//     throw err
+//   }
+// }
 
 export const fetchListOfDepartment = async () => {
   try {
@@ -503,13 +516,26 @@ export const fetchListOfDepartment = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted List of dept Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching List of dept Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const createDesignation = async (formData) => {
   try {
@@ -535,14 +561,27 @@ export const createDesignation = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createDepartment:", departmentData)
+    console.log("DEBUG createDesignation:", departmentData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create department:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted create Designation Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching create Designation Data:", error.message);
+    throw error;
   }
 }
+// return departmentData
+//   } catch (err) {
+//     console.error('Failed to create department:', err)
+//     throw err
+//   }
+// }
 
 export const fetchCountDesignation = async () => {
   try {
@@ -563,13 +602,26 @@ export const fetchCountDesignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Department Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted create Designation Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Department:', error)
-    throw error
+    console.error("Error fetching List of Branch Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Department:', error)
+//     throw error
+//   }
+// }
 
 export const fetchDesignation = async () => {
   try {
@@ -584,19 +636,32 @@ export const fetchDesignation = async () => {
     if (!res.ok) {
       const errorText = await res.text()
 
-      throw new Error(`Failed to fetch departments: ${errorText}`)
+      throw new Error(`Failed to fetchDesignation: ${errorText}`)
     }
 
     const data = await res.json()
 
     console.log('Fetched Department Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted fetchDesignation Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching departments:', error)
-    throw error
+    console.error("Error fetching Designation Data:", error.message);
+    throw error;
   }
 }
+//   return data.data // return only branch array
+// } catch (error) {
+//   console.error('Error fetching departments:', error)
+//   throw error
+// }
+// }
 
 export const editDesignation = async (formData) => {
   try {
@@ -623,13 +688,26 @@ export const editDesignation = async (formData) => {
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(branchData.data);
 
-    return branchData
-  } catch (err) {
-    console.error('Failed to update branch:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted editDesignation Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching editDesignation Data:", error.message);
+    throw error;
   }
 }
+//     return branchData
+//   } catch (err) {
+//     console.error('Failed to update branch:', err)
+//     throw err
+//   }
+// }
 
 export const createDocuments = async (formData) => {
   try {
@@ -655,14 +733,27 @@ export const createDocuments = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createDepartment:", departmentData)
+    console.log("DEBUG createDocuments:", departmentData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create department:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted createDocuments Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching createDocuments Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create department:', err)
+//     throw err
+//   }
+// }
 
 export const fetchCountDocument = async () => {
   try {
@@ -683,13 +774,26 @@ export const fetchCountDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Document Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted fetchCountDocument Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Document:', error)
-    throw error
+    console.error("Error fetching fetchCountDocument Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Document:', error)
+//     throw error
+//   }
+// }
 
 export const fetchDocument = async () => {
   try {
@@ -710,13 +814,26 @@ export const fetchDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Document Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching documents:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching documents:', error)
+//     throw error
+//   }
+// }
 
 export const editDocument = async (formData) => {
   try {
@@ -743,13 +860,26 @@ export const editDocument = async (formData) => {
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(branchData.data);
 
-    return branchData
-  } catch (err) {
-    console.error('Failed to update branch:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return branchData
+//   } catch (err) {
+//     console.error('Failed to update branch:', err)
+//     throw err
+//   }
+// }
 
 
 export const fetchListOfRole = async () => {
@@ -771,13 +901,26 @@ export const fetchListOfRole = async () => {
     const data = await res.json()
 
     console.log(' DataPOOJA:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching t Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const fetchListOfDesignation = async () => {
   try {
@@ -798,13 +941,26 @@ export const fetchListOfDesignation = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted t Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment) => {
   try {
@@ -825,13 +981,26 @@ export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment
     const data = await res.json()
 
     console.log(' Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const fetchListOfUser = async () => {
   try {
@@ -852,13 +1021,26 @@ export const fetchListOfUser = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 
 export const fetchListOfAwardTypes = async () => {
@@ -880,13 +1062,26 @@ export const fetchListOfAwardTypes = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const createEmployee = async (formData) => {
   try {
@@ -913,13 +1108,26 @@ export const createEmployee = async (formData) => {
     const employeeData = await res.json()
 
     console.log("DEBUG createDepartment:", employeeData)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(employeeData.data);
 
-    return employeeData
-  } catch (err) {
-    console.error('Failed to create department:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return employeeData
+//   } catch (err) {
+//     console.error('Failed to create department:', err)
+//     throw err
+//   }
+// }
 
 export const fetchEmployeeData = async () => {
   try {
@@ -940,13 +1148,26 @@ export const fetchEmployeeData = async () => {
     const data = await res.json()
 
     console.log('Fetched Users Data:', data)
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching users:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching users:', error)
+//     throw error
+//   }
+// }
 
 // app/api/user.js
 
@@ -966,7 +1187,15 @@ export const changeUserPassword = async (_id, passworddata) => {
     }
 
     const result = await res.json()
-    return result
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
     console.error('❌ changeUserPassword error:', error)
     return {
@@ -975,6 +1204,13 @@ export const changeUserPassword = async (_id, passworddata) => {
     }
   }
 }
+// } catch (error) {
+//   console.error("Error fetching  Data:", error.message);
+//   throw error;
+// }
+
+//   return result
+
 
 
 export const updateUserAddress = async (userId, addressData) => {
@@ -986,10 +1222,20 @@ export const updateUserAddress = async (userId, addressData) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(addressData)
     })
-
     const result = await res.json()
-    return result
-  } catch (err) {
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    // const result = await res.json()
+    // return result
+    // } catch (err) {
     console.error('❌ updateUserAddress error:', err)
     return { success: false, message: 'Network or server error' }
   }
@@ -1005,9 +1251,20 @@ export const updateUserPermanentAddress = async (userId, addressData) => {
       body: JSON.stringify(addressData)
     })
 
-    const result = await res.json()
-    return result
-  } catch (err) {
+  //   const result = await res.json()
+  //   return result
+  // } catch (err) {
+  const result = await res.json()
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+    } catch (error) {
     console.error('❌ updateUserAddress error:', err)
     return { success: false, message: 'Network or server error' }
   }
@@ -1023,9 +1280,20 @@ export const updateUserBankDetails = async (userId, bank) => {
       body: JSON.stringify(bank)
     })
 
-    const result = await res.json()
-    return result
-  } catch (err) {
+  //   const result = await res.json()
+  //   return result
+  // } catch (err) {
+  const result = await res.json()
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+    } catch (error) {
     console.error('❌ updateUserAddress error:', err)
     return { success: false, message: 'Network or server error' }
   }
@@ -1041,9 +1309,20 @@ export const updateUserFamilyDetails = async (userId, family) => {
       body: JSON.stringify(family)
     })
 
-    const result = await res.json()
-    return result
-  } catch (err) {
+  //   const result = await res.json()
+  //   return result
+  // } catch (err) {
+  const result = await res.json()
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+    } catch (error) {
     console.error('❌ updateUserAddress error:', err)
     return { success: false, message: 'Network or server error' }
   }
@@ -1076,13 +1355,26 @@ export const createAwardTypes = async (formData) => {
     const awardTypesData = await res.json()
 
     console.log("DEBUG createDepartment:", awardTypesData)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(awardTypesData.data);
 
-    return awardTypesData
-  } catch (err) {
-    console.error('Failed to create department:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return awardTypesData
+//   } catch (err) {
+//     console.error('Failed to create department:', err)
+//     throw err
+//   }
+// }
 
 export const fetchCountAwardTypes = async () => {
   try {
@@ -1103,13 +1395,26 @@ export const fetchCountAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award Types Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Award Types:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Award Types:', error)
+//     throw error
+//   }
+// }
 
 export const fetchAwardTypes = async () => {
   try {
@@ -1131,13 +1436,26 @@ export const fetchAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Award Types Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching award types:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching award types:', error)
+//     throw error
+//   }
+// }
 
 export const editAwardTypes = async (formData) => {
   try {
@@ -1164,13 +1482,26 @@ export const editAwardTypes = async (formData) => {
     const awardTypesData = await res.json()
 
     console.log("DEBUG update Award Types:", awardTypesData)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(awardTypesData.data);
 
-    return awardTypesData
-  } catch (err) {
-    console.error('Failed to update awad types:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return awardTypesData
+//   } catch (err) {
+//     console.error('Failed to update awad types:', err)
+//     throw err
+//   }
+// }
 
 
 
@@ -1202,13 +1533,26 @@ export const createAward = async (formData) => {
     const awardData = await res.json()
 
     console.log("DEBUG createAward:", awardData)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(awardData.data);
 
-    return awardData
-  } catch (err) {
-    console.error('Failed to create award:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return awardData
+//   } catch (err) {
+//     console.error('Failed to create award:', err)
+//     throw err
+//   }
+// }
 
 
 
@@ -1231,13 +1575,26 @@ export const fetchCountAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award ', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Award:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Award:', error)
+//     throw error
+//   }
+// }
 
 export const fetchAward = async () => {
   try {
@@ -1259,13 +1616,26 @@ export const fetchAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching award ', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching award ', error)
+//     throw error
+//   }
+// }
 
 
 export const fetchUserDesignation = async (id) => {
@@ -1288,13 +1658,26 @@ export const fetchUserDesignation = async (id) => {
     const data = await res.json()
 
     console.log('Fetched user designation  Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data// return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching user designation ', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data// return only branch array
+//   } catch (error) {
+//     console.error('Error fetching user designation ', error)
+//     throw error
+//   }
+// }
 
 export const fetchListOfNewDesignation = async () => {
   try {
@@ -1315,13 +1698,26 @@ export const fetchListOfNewDesignation = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 
 
@@ -1362,13 +1758,26 @@ export const fetchCountUser = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Employee Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Employee:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Employee:', error)
+//     throw error
+//   }
+// }
 
 // export const createPromotions = async (formData) => {
 //   try {
@@ -1431,13 +1840,27 @@ export const createPromotions = async (formData) => {
 
     const data = await res.json()
     console.log("✅ Promotion Created:", data)
-    return data
+     // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-  } catch (err) {
-    console.error('❌ Failed to create promotion:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data
+
+//   } catch (err) {
+//     console.error('❌ Failed to create promotion:', err)
+//     throw err
+//   }
+// }
 
 
 export const fetchCountPromotion = async () => {
@@ -1459,13 +1882,26 @@ export const fetchCountPromotion = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Promotion Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Promotion:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Promotion:', error)
+//     throw error
+//   }
+// }
 
 export const fetchPromotions = async () => {
   try {
@@ -1487,13 +1923,26 @@ export const fetchPromotions = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching award ', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching award ', error)
+//     throw error
+//   }
+// }
 
 
 
@@ -1524,13 +1973,26 @@ export const createCategoryIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG createCategoryIndicator:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create category indicator:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create category indicator:', err)
+//     throw err
+//   }
+// }
 
 
 export const fetchCountCategoryIndicator = async () => {
@@ -1552,13 +2014,26 @@ export const fetchCountCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Category Indicator Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Category Indicator:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Category Indicator:', error)
+//     throw error
+//   }
+// }
 
 
 
@@ -1581,13 +2056,26 @@ export const fetchCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category indicator Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching category indicator:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching category indicator:', error)
+//     throw error
+//   }
+// }
 
 
 export const editCategoryIndicator = async (formData) => {
@@ -1615,13 +2103,26 @@ export const editCategoryIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateCategoryIndicator:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to update category indicator:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update category indicator:', err)
+//     throw err
+//   }
+// }
 //Inndicator
 
 export const fetchListOfCategoryIndicator = async () => {
@@ -1643,13 +2144,26 @@ export const fetchListOfCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only category indicator array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only category indicator array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const createIndicator = async (formData) => {
   try {
@@ -1676,13 +2190,26 @@ export const createIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG createIndicator:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create indicator:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create indicator:', err)
+//     throw err
+//   }
+// }
 
 export const fetchIndicator = async () => {
   try {
@@ -1703,13 +2230,26 @@ export const fetchIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only indicator array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  indicator:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only indicator array
+//   } catch (error) {
+//     console.error('Error fetching  indicator:', error)
+//     throw error
+//   }
+// }
 // app/server/actions.js
 // export const fetchIndicator = async () => {
 //   try {
@@ -1800,13 +2340,26 @@ export const fetchCountIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  Indicator Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only indicator array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  Indicator:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only indicator array
+//   } catch (error) {
+//     console.error('Error fetching  Indicator:', error)
+//     throw error
+//   }
+// }
 
 export const editIndicator = async (formData) => {
   try {
@@ -1833,13 +2386,26 @@ export const editIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateIndicator:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to update indicator:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update indicator:', err)
+//     throw err
+//   }
+// }
 
 
 export const createGoalType = async (formData) => {
@@ -1867,13 +2433,26 @@ export const createGoalType = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG createGoalType:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create GoalType:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create GoalType:', err)
+//     throw err
+//   }
+// }
 
 export const fetchGoalType = async () => {
   try {
@@ -1894,13 +2473,26 @@ export const fetchGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only GoalType array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  GoalType:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only GoalType array
+//   } catch (error) {
+//     console.error('Error fetching  GoalType:', error)
+//     throw error
+//   }
+// }
 
 export const fetchCountGoalType = async () => {
   try {
@@ -1921,13 +2513,26 @@ export const fetchCountGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  GoalType Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only GoalType array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  GoalType:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only GoalType array
+//   } catch (error) {
+//     console.error('Error fetching  GoalType:', error)
+//     throw error
+//   }
+// }
 
 export const editGoalType = async (formData) => {
   try {
@@ -1954,13 +2559,26 @@ export const editGoalType = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateGoalType:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to update GoalType:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update GoalType:', err)
+//     throw err
+//   }
+// }
 
 export const fetchListOfGoalType = async () => {
   try {
@@ -1981,13 +2599,26 @@ export const fetchListOfGoalType = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only category indicator array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only category indicator array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const createEmployeeGoal = async (formData) => {
   try {
@@ -2013,13 +2644,26 @@ export const createEmployeeGoal = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG create employee Goal:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create  employee Goal:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create  employee Goal:', err)
+//     throw err
+//   }
+// }
 
 export const fetchCountEmployeeGoal = async () => {
   try {
@@ -2040,13 +2684,26 @@ export const fetchCountEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee goal Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only GoalType array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  employee goal:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only GoalType array
+//   } catch (error) {
+//     console.error('Error fetching  employee goal:', error)
+//     throw error
+//   }
+// }
 
 export const fetchEmployeeGoal = async () => {
   try {
@@ -2067,13 +2724,26 @@ export const fetchEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only EmployeeGoal array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  EmployeeGoal:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only EmployeeGoal array
+//   } catch (error) {
+//     console.error('Error fetching  EmployeeGoal:', error)
+//     throw error
+//   }
+// }
 export const editEmployeeGoal = async (formData) => {
   try {
     // Map form fields to backend expected structure
@@ -2099,13 +2769,26 @@ export const editEmployeeGoal = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateEmployeeGoal:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to update EmployeeGoal:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update EmployeeGoal:', err)
+//     throw err
+//   }
+// }
 
 //Review Cycle APIS
 export const createReviewCycle = async (formData) => {
@@ -2133,13 +2816,26 @@ export const createReviewCycle = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG createReviewCycle:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create ReviewCycle:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create ReviewCycle:', err)
+//     throw err
+//   }
+// }
 
 export const fetchReviewCycle = async () => {
   try {
@@ -2160,13 +2856,26 @@ export const fetchReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only ReviewCycle array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  ReviewCycle:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only ReviewCycle array
+//   } catch (error) {
+//     console.error('Error fetching  ReviewCycle:', error)
+//     throw error
+//   }
+// }
 
 export const fetchCountReviewCycle = async () => {
   try {
@@ -2187,13 +2896,26 @@ export const fetchCountReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  ReviewCycle Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only ReviewCycle array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  ReviewCycle:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only ReviewCycle array
+//   } catch (error) {
+//     console.error('Error fetching  ReviewCycle:', error)
+//     throw error
+//   }
+// }
 
 export const editReviewCycle = async (formData) => {
   try {
@@ -2220,13 +2942,26 @@ export const editReviewCycle = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateReviewCycle:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to update ReviewCycle:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update ReviewCycle:', err)
+//     throw err
+//   }
+// }
 //Employee Review Cycle
 
 export const fetchListOfEmployeeReviewCycle = async () => {
@@ -2248,13 +2983,26 @@ export const fetchListOfEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only category indicator array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only category indicator array
+//   } catch (error) {
+//     console.error('Error fetching:', error)
+//     throw error
+//   }
+// }
 
 export const fetchCountEmployeeReviewCycle = async () => {
   try {
@@ -2275,13 +3023,26 @@ export const fetchCountEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee review cycle Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only Employee Review cycle array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  Employee Review cycle:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only Employee Review cycle array
+//   } catch (error) {
+//     console.error('Error fetching  Employee Review cycle:', error)
+//     throw error
+//   }
+// }
 
 export const createEmployeeReviewCycle = async (formData) => {
   try {
@@ -2307,13 +3068,26 @@ export const createEmployeeReviewCycle = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG create employee review cycle:", departmentData)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return departmentData
-  } catch (err) {
-    console.error('Failed to create  employee review cycle:', err)
-    throw err
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to create  employee review cycle:', err)
+//     throw err
+//   }
+// }
 
 export const fetchEmployeeReviewCycle = async () => {
   try {
@@ -2334,13 +3108,26 @@ export const fetchEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only EmployeeReviewCycle array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching  EmployeeReviewCycle:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only EmployeeReviewCycle array
+//   } catch (error) {
+//     console.error('Error fetching  EmployeeReviewCycle:', error)
+//     throw error
+//   }
+// }
 
 
 // 🧠 Fetch single employee review details by ID
@@ -2364,12 +3151,20 @@ export const fetchEmployeeReviewById = async (id) => {
 
     // Debug log
     console.log('📦 Review Details Fetched:', data)
+const decryptedData = decrypt(response.data || response)
 
-    if (!data.success) {
-      throw new Error(data.message || 'Failed to fetch review details')
+    console.log('📦 Decrypted Review Details:', decryptedData)
+
+    if (!decryptedData.success) {
+      throw new Error(decryptedData.message || 'Failed to fetch review details')
     }
 
-    return data
+    return decryptedData
+    // if (!data.success) {
+    //   throw new Error(data.message || 'Failed to fetch review details')
+    // }
+
+    // return data
   } catch (error) {
     console.error('❌ Error fetching employee review details:', error)
     throw error
@@ -2396,14 +3191,27 @@ export const fetchIndicatorDetailsEmployeeReview = async () => {
 
     const data = await res.json()
     console.log('✅ Fetched Indicator Details:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    // return only array for easy usage
-    return data
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('❌ Error fetching indicator details:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     // return only array for easy usage
+//     return data
+//   } catch (error) {
+//     console.error('❌ Error fetching indicator details:', error)
+//     throw error
+//   }
+// }
 
 export async function fetchDepartmentsByBranch(branchId) {
   try {
@@ -2412,12 +3220,26 @@ export async function fetchDepartmentsByBranch(branchId) {
       cache: 'no-store'
     })
     const data = await res.json()
-    return data // { success: true, data: [ { _id, departmentName } ] }
+     // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching departments by branch:', error)
-    return { success: false, data: [] }
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data // { success: true, data: [ { _id, departmentName } ] }
+//   } catch (error) {
+//     console.error('Error fetching departments by branch:', error)
+//     return { success: false, data: [] }
+//   }
+// }
 
 export async function fetchDesignationsByDepartment(departmentId) {
   try {
@@ -2426,9 +3248,20 @@ export async function fetchDesignationsByDepartment(departmentId) {
     })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
-    return data
+  //   return data
+  // } catch (error) {
+  //   console.error('Error fetching designations by department:', error)
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching designations by department:', error)
+    console.error("Error fetching  Data:", error.message);
     return { success: false, data: [] }
   }
 }
@@ -2454,12 +3287,26 @@ export const fetchCountResignation = async () => {
 
     console.log('Fetched Count Resignations Data:', data)
 
-    return data.data // return only branch array
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Resignations:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Resignations:', error)
+//     throw error
+//   }
+// }
 
 
 export const createResignation = async (formData) => {
@@ -2479,12 +3326,27 @@ export const createResignation = async (formData) => {
 
     const result = await res.json()
     console.log("✅ createResignation Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create resignation:', err)
-    throw err
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create resignation:', err)
+//     throw err
+//   }
+// }
 
 export const fetchResignation = async () => {
   try {
@@ -2507,12 +3369,26 @@ export const fetchResignation = async () => {
 
     console.log('Fetched Resignation Data:', data)
 
-    return { success: true, data: data.data }
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Resignations:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Resignations:', error)
+//     throw error
+//   }
+// }
 
 export const updateResignation = async (formData) => {
   try {
@@ -2529,12 +3405,27 @@ export const updateResignation = async (formData) => {
     }
 
     const data = await res.json()
-    return data
-  } catch (err) {
-    console.error('Error updating resignation:', err)
-    throw err
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data
+//   } catch (err) {
+//     console.error('Error updating resignation:', err)
+//     throw err
+//   }
+// }
 
 //Termination
 export const fetchCountTermination = async () => {
@@ -2557,12 +3448,26 @@ export const fetchCountTermination = async () => {
 
     console.log('Fetched Count Terminations Data:', data)
 
-    return data.data // return only branch array
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Terminations:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Terminations:', error)
+//     throw error
+//   }
+// }
 
 export const createTermination = async (formData) => {
   try {
@@ -2581,12 +3486,27 @@ export const createTermination = async (formData) => {
 
     const result = await res.json()
     console.log("✅ createTermination Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create termination:', err)
-    throw err
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create termination:', err)
+//     throw err
+//   }
+// }
 
 export const fetchTermination = async () => {
   try {
@@ -2608,13 +3528,28 @@ export const fetchTermination = async () => {
     const data = await res.json()
 
     console.log('Fetched Termination Data:', data)
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return { success: true, data: data.data }
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Terminations:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Terminations:', error)
+//     throw error
+//   }
+// }
 
 //Warning
 export const fetchCountWarning = async () => {
@@ -2637,12 +3572,26 @@ export const fetchCountWarning = async () => {
 
     console.log('Fetched Count Warnings Data:', data)
 
-    return data.data // return only branch array
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Warnings:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Warnings:', error)
+//     throw error
+//   }
+// }
 
 export const createWarning = async (formData) => {
   try {
@@ -2662,12 +3611,27 @@ export const createWarning = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Warning Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create warning:', err)
-    throw err
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create warning:', err)
+//     throw err
+//   }
+// }
 
 export const fetchWarning = async () => {
   try {
@@ -2690,12 +3654,26 @@ export const fetchWarning = async () => {
 
     console.log('Fetched Warning Data:', data)
 
-    return { success: true, data: data.data }
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Warnings:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Warnings:', error)
+//     throw error
+//   }
+// }
 
 
 
@@ -2720,12 +3698,26 @@ export const fetchCountTrip = async () => {
 
     console.log('Fetched Count Trips Data:', data)
 
-    return data.data // return only branch array
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Trips:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Trips:', error)
+//     throw error
+//   }
+// }
 
 export const createTrip = async (formData) => {
   try {
@@ -2745,12 +3737,27 @@ export const createTrip = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Trip Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create trip:', err)
-    throw err
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create trip:', err)
+//     throw err
+//   }
+// }
 
 export const fetchTrips = async () => {
   try {
@@ -2767,12 +3774,27 @@ export const fetchTrips = async () => {
 
     const data = await res.json()
     console.log('Fetched Trips:', data)
-    return { success: true, data: data.data }
+    
+        // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+return { success: true, data:parsedBody}
+    // return { success: true, data: data.data } // final usable data
   } catch (error) {
-    console.error('Error fetching Trips:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+    
+//   } catch (error) {
+//     console.error('Error fetching Trips:', error)
+//     throw error
+//   }
+// }
 //Complaint
 export const fetchCountComplaint = async () => {
   try {
@@ -2793,13 +3815,26 @@ export const fetchCountComplaint = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Complaints Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Complaints:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Complaints:', error)
+//     throw error
+//   }
+// }
 
 export const createComplaint = async (formData) => {
   try {
@@ -2819,12 +3854,26 @@ export const createComplaint = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Complaint Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create complaint:', err)
-    throw err
+     // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create complaint:', err)
+//     throw err
+//   }
+// }
 
 export const fetchComplaints = async () => {
   try {
@@ -2841,12 +3890,26 @@ export const fetchComplaints = async () => {
 
     const data = await res.json()
     console.log('Fetched Complaints:', data)
-    return { success: true, data: data.data }
+    
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+return { success: true, data:parsedBody}
   } catch (error) {
-    console.error('Error fetching Complaints:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Complaints:', error)
+//     throw error
+//   }
+// }
 //Transfer
 export const fetchCountTransfer = async () => {
   try {
@@ -2867,13 +3930,26 @@ export const fetchCountTransfer = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Transfer Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Transfer:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Transfer:', error)
+//     throw error
+//   }
+// }
 export const createTransfer = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
@@ -2892,12 +3968,26 @@ export const createTransfer = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Transfer Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create transfer:', err)
-    throw err
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create transfer:', err)
+//     throw err
+//   }
+// }
 
 export const fetchTransfers = async () => {
   try {
@@ -2914,12 +4004,26 @@ export const fetchTransfers = async () => {
 
     const data = await res.json()
     console.log('Fetched Transfers:', data)
-    return { success: true, data: data.data }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Transfers:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Transfers:', error)
+//     throw error
+//   }
+// }
 //Holidays
 export const fetchCountHolidays = async () => {
   try {
@@ -2940,13 +4044,26 @@ export const fetchCountHolidays = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Holidays Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Holidays:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Holidays:', error)
+//     throw error
+//   }
+// }
 
 export const createHolidays = async (formData) => {
   try {
@@ -2966,12 +4083,26 @@ export const createHolidays = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Holiday Response:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create holiday:', err)
-    throw err
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create holiday:', err)
+//     throw err
+//   }
+// }
 
 export const fetchHolidays = async () => {
   try {
@@ -2988,12 +4119,25 @@ export const fetchHolidays = async () => {
 
     const data = await res.json()
     console.log('Fetched Holidays:', data)
-    return { success: true, data: data.data }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+return { success: true, data:parsedBody}
   } catch (error) {
-    console.error('Error fetching Holidays:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Holidays:', error)
+//     throw error
+//   }
+// }
 
 //Announcement
 export const fetchCountAnnouncement = async () => {
@@ -3015,13 +4159,26 @@ export const fetchCountAnnouncement = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Announcements Data:', data)
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Announcements:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Announcements:', error)
+//     throw error
+//   }
+// }
 
 
 export const createAnnouncements = async (formData) => {
@@ -3042,12 +4199,26 @@ export const createAnnouncements = async (formData) => {
 
     const result = await res.json()
     console.log("✅ create  Holiday Announcements:", result)
-    return result
-  } catch (err) {
-    console.error('❌ Failed to create Announcements:', err)
-    throw err
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(result.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return result
+//   } catch (err) {
+//     console.error('❌ Failed to create Announcements:', err)
+//     throw err
+//   }
+// }
 
 
 export const fetchAnnouncements = async () => {
@@ -3065,12 +4236,25 @@ export const fetchAnnouncements = async () => {
 
     const data = await res.json()
     console.log('Fetched Announcements:', data)
-    return { success: true, data: data.data }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+return { success: true, data:parsedBody}
   } catch (error) {
-    console.error('Error fetching Announcements:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return { success: true, data: data.data }
+//   } catch (error) {
+//     console.error('Error fetching Announcements:', error)
+//     throw error
+//   }
+// }
 
 //Attendancemanagemet  Shift
 export const fetchCountShift = async () => {
@@ -3092,13 +4276,26 @@ export const fetchCountShift = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Shift Data:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Shift:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Shift:', error)
+//     throw error
+//   }
+// }
 
 
 
@@ -3113,13 +4310,25 @@ export const createShift = async (payload) => {
     })
 
     // Parse the response
-    const data = await res.json()
+    const response = await res.json()
 
-    // Optional: handle bad status codes
-    if (!res.ok) {
+    console.log('🔐 Encrypted Response:', response)
+
+    // 🔓 Strict decrypt (only response.data)
+    const data = decrypt(response.data)
+
+    console.log('📦 Decrypted Response:', data)
+
+    // // Optional: handle bad status codes
+    // if (!res.ok) {
+    //   throw new Error(data.message || 'Failed to create shift')
+    // }
+
+
+    // ✅ Same validation style
+    if (!data.success) {
       throw new Error(data.message || 'Failed to create shift')
     }
-
     return data
   } catch (error) {
     console.error('Error in createDepartment:', error)
@@ -3148,14 +4357,27 @@ export const fetchShift = async () => {
 
     const data = await res.json()
     console.log('Fetched Shifts Data ✅:', data)
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    // return just the array of shifts
-    return data.data
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching shifts ❌:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+//     // return just the array of shifts
+//     return data.data
+//   } catch (error) {
+//     console.error('Error fetching shifts ❌:', error)
+//     throw error
+//   }
+// }
 
 
 export const editShift = async (formData) => {
@@ -3198,13 +4420,27 @@ export const editShift = async (formData) => {
     const shiftData = await res.json();
 
     console.log("✅ Updated Shift Response:", shiftData);
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(shiftData.data);
 
-    return shiftData;
-  } catch (err) {
-    console.error('❌ Failed to update shift:', err);
-    throw err;
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
-};
+}
+
+//     return shiftData;
+//   } catch (err) {
+//     console.error('❌ Failed to update shift:', err);
+//     throw err;
+//   }
+// };
 
 //Attendance policy
 
@@ -3227,13 +4463,27 @@ export const fetchCountAttendancePolicy = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Policy Data:', data)
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Attendance Policy:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Attendance Policy:', error)
+//     throw error
+//   }
+// }
 
 
 // ✅ Create Attendance Policy - POST API
@@ -3268,13 +4518,27 @@ export const createAttendancePolicy = async (formData) => {
     // ✅ Parse response
     const data = await res.json()
     console.log('✅ Attendance Policy Created:', data)
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('❌ Error creating attendance policy:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+//     return data
+//   } catch (error) {
+//     console.error('❌ Error creating attendance policy:', error)
+//     throw error
+//   }
+// }
 
 export const fetchAttendancePolicy = async () => {
   try {
@@ -3293,14 +4557,28 @@ export const fetchAttendancePolicy = async () => {
 
     const data = await res.json()
     console.log('Fetched Attendance Policy Data ✅:', data)
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    // return just the array of shifts
-    return data.data
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching atttendance policy ❌:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+    // return just the array of shifts
+//     return data.data
+//   } catch (error) {
+//     console.error('Error fetching atttendance policy ❌:', error)
+//     throw error
+//   }
+// }
 
 export const editAttendancePolicy = async (formData) => {
   try {
@@ -3333,13 +4611,27 @@ export const editAttendancePolicy = async (formData) => {
     const data = await res.json();
 
     console.log("✅ Attendance Policy Updated Successfully:", data);
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data;
-  } catch (err) {
-    console.error('❌ Failed to update attendance policy:', err);
-    throw err;
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
-};
+}
+
+//     return data;
+//   } catch (err) {
+//     console.error('❌ Failed to update attendance policy:', err);
+//     throw err;
+//   }
+// };
 
 //Attendance records
 export const fetchCountAttendanceRecord = async (token) => {
@@ -3366,13 +4658,27 @@ export const fetchCountAttendanceRecord = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Record Data:', data)
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data.data // return only branch array
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Attendance Record:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+//     return data.data // return only branch array
+//   } catch (error) {
+//     console.error('Error fetching Attendance Record:', error)
+//     throw error
+//   }
+// }
 
 
 export const createAttendanceRecord = async (formData) => {
@@ -3410,13 +4716,27 @@ export const createAttendanceRecord = async (formData) => {
     // ✅ Parse backend response
     const data = await res.json();
     console.log('✅ Attendance Record Created:', data);
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    return data;
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('❌ Error creating attendance record:', error);
+    console.error("Error fetching  Data:", error.message);
     throw error;
   }
-};
+}
+
+//     return data;
+//   } catch (error) {
+//     console.error('❌ Error creating attendance record:', error);
+//     throw error;
+//   }
+// };
 
 export const fetchAttendanceRecords = async (token) => {
   try {
@@ -3437,14 +4757,28 @@ export const fetchAttendanceRecords = async (token) => {
 
     const data = await res.json();
     console.log('✅ Fetched Attendance Records:', data);
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    // Return only the array of records
-    return data.data;
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('❌ Error fetching attendance records:', error);
+    console.error("Error fetching  Data:", error.message);
     throw error;
   }
-};
+}
+
+    // Return only the array of records
+//     return data.data;
+//   } catch (error) {
+//     console.error('❌ Error fetching attendance records:', error);
+//     throw error;
+//   }
+// };
 
 
 
@@ -3492,12 +4826,27 @@ export const editAttendanceRecord = async (formData) => {
 
     const data = await res.json()
     console.log('✅ Attendance Record Updated Successfully:', data)
-    return data
-  } catch (err) {
-    console.error('❌ Failed to update attendance record:', err)
-    throw err
+      // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+//     return data
+//   } catch (err) {
+//     console.error('❌ Failed to update attendance record:', err)
+//     throw err
+//   }
+// }
 //Attendance Regularization
 
 export const fetchCountAttendanceRegularization = async (token) => {
@@ -3520,12 +4869,27 @@ export const fetchCountAttendanceRegularization = async (token) => {
 
     const data = await res.json()
     console.log('✅ Fetched Count Attendance Regularization Data:', data)
-    return data.data
+  // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('❌ Error fetching Attendance Regularization Count:', error)
-    throw error
+    console.error("Error fetching  Data:", error.message);
+    throw error;
   }
 }
+
+    //     return data.data
+//   } catch (error) {
+//     console.error('❌ Error fetching Attendance Regularization Count:', error)
+//     throw error
+//   }
+// }
 
 
 export const fetchAttendanceRecordsForAR = async (employeeId, token) => {
@@ -3552,10 +4916,19 @@ export const fetchAttendanceRecordsForAR = async (employeeId, token) => {
 
     const data = await res.json();
     console.log('✅ Fetched Attendance Records For AR:', data);
+// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
 
-    // returns: { success: true, count: <number>, data: [ { _id, displayInfo } ] }
-    return data;
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
+  //   // returns: { success: true, count: <number>, data: [ { _id, displayInfo } ] }
+  //   return data;
+  // } catch (error) {
     console.error('❌ Error fetching Attendance Records For AR:', error);
     return { success: false, data: [] };
   }
@@ -3576,8 +4949,18 @@ export const createAttendanceRegularization = async (payload, token) => {
     })
 
     const data = await res.json()
-    return data
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
+  //   return data
+  // } catch (error) {
     console.error('❌ Error in createAttendanceRegularization:', error)
     return {
       success: false,
@@ -3607,8 +4990,14 @@ export const fetchAttendanceRegularizations = async (token) => {
       throw new Error(`Failed to fetch attendance regularizations: ${errorText}`)
     }
 
-    const data = await res.json()
-    console.log('✅ Attendance Regularizations fetched:', data)
+    const response = await res.json()
+
+    console.log('🔐 Encrypted Response:', response)
+
+    // 🔓 Decrypt ONLY response.data
+    const data = decrypt(response.data)
+
+    console.log('📦 Decrypted Attendance Regularizations:', data)
 
     // return the array safely
     return data?.data || []
@@ -3640,8 +5029,18 @@ export const updateAttendanceRegularization = async (payload, token) => {
     }
 
     console.log('✅ Attendance Regularization updated successfully:', data)
-    return data
+   // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted  Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
+    //   return data
+  // } catch (error) {
     console.error('❌ Error in updateAttendanceRegularization:', error)
     return {
       success: false,
