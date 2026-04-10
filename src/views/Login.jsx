@@ -139,7 +139,7 @@
 //   //     }
 //   //   }
 //   // }
-//   //changes here pooja 
+//   //changes here pooja
 
 //   const onSubmit = async (data) => {
 //   console.log("DATA098", data)
@@ -172,7 +172,6 @@
 //   }
 // }
 
-
 //   return (
 //     <div className='flex bs-full justify-center'>
 //       <div
@@ -192,7 +191,7 @@
 //         </div>
 //         <div className='flex flex-col gap-6 is-full sm:is-auto md:is-full sm:max-is-[400px] md:max-is-[unset] mbs-8 sm:mbs-11 md:mbs-0'>
 //           <div className='flex flex-col gap-1'>
-//             <Typography variant='h4'>{`Welcome to Zobox!`}</Typography>
+//             <Typography variant='h4'>{`Welcome to Jaycon!`}</Typography>
 //             <Typography>Please sign-in to your account and start the adventure</Typography>
 //           </div>
 //           {/* <Alert icon={false} className='bg-[var(--mui-palette-primary-lightOpacity)]'>
@@ -305,8 +304,6 @@
 
 // export default Login
 
-
-
 'use client'
 
 // React Imports
@@ -365,7 +362,11 @@ const MaskImg = styled('img')({
 
 const schema = object({
   email: pipe(string(), minLength(1, 'This field is required'), email('Email is invalid')),
-  password: pipe(string(), nonEmpty('This field is required'), minLength(5, 'Password must be at least 5 characters long'))
+  password: pipe(
+    string(),
+    nonEmpty('This field is required'),
+    minLength(5, 'Password must be at least 5 characters long')
+  )
 })
 
 const Login = ({ mode }) => {
@@ -380,7 +381,11 @@ const Login = ({ mode }) => {
   const hidden = useMediaQuery(theme.breakpoints.down('md'))
   const authBackground = useImageVariant(mode, '/images/pages/auth-mask-light.png', '/images/pages/auth-mask-dark.png')
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
     resolver: valibotResolver(schema),
     defaultValues: { email: 'testadmin@gmail.com', password: '123456' }
   })
@@ -414,25 +419,24 @@ const Login = ({ mode }) => {
       //   }
       // })()
       const errorMessage = (() => {
-  try {
-    const parsed = JSON.parse(res?.error)
+        try {
+          const parsed = JSON.parse(res?.error)
 
-    // Check if parsed.message itself is a JSON string → parse again
-    if (typeof parsed?.message === "string") {
-      try {
-        const inner = JSON.parse(parsed.message)
-        return inner   // { success:false, message:"actual message" }
-      } catch {
-        return parsed  // message is simple string
-      }
-    }
+          // Check if parsed.message itself is a JSON string → parse again
+          if (typeof parsed?.message === 'string') {
+            try {
+              const inner = JSON.parse(parsed.message)
+              return inner // { success:false, message:"actual message" }
+            } catch {
+              return parsed // message is simple string
+            }
+          }
 
-    return parsed
-  } catch {
-    return { message: res?.error || "Login failed" }
-  }
-})()
-
+          return parsed
+        } catch {
+          return { message: res?.error || 'Login failed' }
+        }
+      })()
 
       setErrorState(errorMessage)
     }
@@ -451,26 +455,21 @@ const Login = ({ mode }) => {
       </div>
 
       <div className='flex justify-center items-center bs-full bg-backgroundPaper p-6 md:p-12 md:is-[480px]'>
-
         {/* LOGO */}
         <div className='absolute block-start-5 inline-start-6'>
           <Logo />
         </div>
 
         <div className='flex flex-col gap-6 is-full sm:max-is-[400px] mbs-8'>
-
           <div className='flex flex-col gap-1'>
-            <Typography variant='h4'>Welcome to Zobox!</Typography>
+            <Typography variant='h4'>Welcome to Jaycon!</Typography>
             <Typography>Please sign-in to your account and start the adventure</Typography>
           </div>
 
           {/* 🔥 SHOW BACKEND ERROR HERE */}
-          {errorState?.message && (
-            <Alert severity='error'>{errorState.message}</Alert>
-          )}
+          {errorState?.message && <Alert severity='error'>{errorState.message}</Alert>}
 
           <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6'>
-
             {/* EMAIL FIELD */}
             <Controller
               name='email'
@@ -536,7 +535,6 @@ const Login = ({ mode }) => {
             <Button fullWidth variant='contained' type='submit'>
               Login
             </Button>
-
           </form>
         </div>
       </div>
@@ -545,5 +543,3 @@ const Login = ({ mode }) => {
 }
 
 export default Login
-
-

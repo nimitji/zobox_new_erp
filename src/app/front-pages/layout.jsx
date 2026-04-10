@@ -24,9 +24,9 @@ import '@/app/globals.css'
 import '@assets/iconify-icons/generated-icons.css'
 
 export const metadata = {
-  title: 'Zobox - MUI Next.js Admin Dashboard Template',
+  title: 'Jaycon - MUI Next.js Admin Dashboard Template',
   description:
-    'Zobox - MUI Next.js Admin Dashboard Template - is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.'
+    'Jaycon - MUI Next.js Admin Dashboard Template - is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.'
 }
 
 const Layout = async ({ children }) => {

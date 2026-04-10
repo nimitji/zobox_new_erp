@@ -1,6 +1,3 @@
-
-
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -28,16 +25,13 @@ import dayjs from 'dayjs'
 import { Controller } from 'react-hook-form'
 
 // 🧠 Server Actions
-import { fetchListOfUser, fetchResignation} from '../../../../app/server/actions.js'
+import { fetchListOfUser, fetchResignation } from '../../../../app/server/actions.js'
 
 /* ------------------------ 📁 File Upload Controller ------------------------ */
 const FileUploadController = ({ formData, setFormData, label }) => {
   return (
     <Box>
-      <Typography
-        variant='body2'
-        sx={{ mb: 1, color: 'text.secondary', fontWeight: 500 }}
-      >
+      <Typography variant='body2' sx={{ mb: 1, color: 'text.secondary', fontWeight: 500 }}>
         {label}
       </Typography>
 
@@ -113,7 +107,7 @@ const FileUploadController = ({ formData, setFormData, label }) => {
 }
 
 /* ------------------------------ ✏️ Edit Drawer ------------------------------ */
-const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refreshList}) => {
+const EditDepartment = ({ open, handleClose, selectedDepartment, onSave, refreshList }) => {
   // ✅ Form Data
   const [formData, setFormData] = useState({
     _id: '',
@@ -122,10 +116,10 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
     employeeName: '',
     description: '',
     status: 'Active',
-    resignationDate:'',
-    lastWorkingDay:'',
-    noticePeriod:'',
-    reason:'',
+    resignationDate: '',
+    lastWorkingDay: '',
+    noticePeriod: '',
+    reason: '',
     document: null
   })
 
@@ -217,76 +211,74 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
   //   }
   // }
 
+  const handleSave = async () => {
+    try {
+      let payload
 
- const handleSave = async () => {
-  try {
-    let payload
+      // 🧩 Check if document is a File (user uploaded a new file)
+      const hasFile = formData.document instanceof File
 
-    // 🧩 Check if document is a File (user uploaded a new file)
-    const hasFile = formData.document instanceof File
+      if (hasFile) {
+        // 🟣 If user uploaded a new file → send multipart/form-data
+        const fd = new FormData()
 
-    if (hasFile) {
-      // 🟣 If user uploaded a new file → send multipart/form-data
-      const fd = new FormData()
-
-      Object.entries(formData).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          if (key === 'document' && value instanceof File) {
-            fd.append(key, value)
-          } else {
-            fd.append(key, value)
+        Object.entries(formData).forEach(([key, value]) => {
+          if (value !== null && value !== undefined) {
+            if (key === 'document' && value instanceof File) {
+              fd.append(key, value)
+            } else {
+              fd.append(key, value)
+            }
           }
+        })
+
+        payload = fd
+
+        console.log('📦 Sending multipart/form-data:')
+        for (const [key, val] of fd.entries()) {
+          console.log(`  ${key}:`, val)
         }
+      } else {
+        // 🟢 If no file uploaded → send as JSON object
+        const jsonBody = { ...formData }
+        payload = JSON.stringify(jsonBody)
+
+        console.log('📩 Sending JSON body:', jsonBody)
+      }
+
+      // ✅ Send API request
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jaycon/update-resignation`, {
+        method: 'PUT',
+        body: payload,
+        ...(formData.document instanceof File
+          ? {} // fetch automatically sets headers for FormData
+          : { headers: { 'Content-Type': 'application/json' } })
       })
 
-      payload = fd
+      const data = await res.json()
 
-      console.log('📦 Sending multipart/form-data:')
-      for (const [key, val] of fd.entries()) {
-        console.log(`  ${key}:`, val)
+      setSnackbar({
+        open: true,
+        message: data?.message || 'Resignation updated successfully!',
+        severity: data?.success ? 'success' : 'error'
+      })
+
+      // if (data?.success) handleClose()
+      if (data?.success) {
+        if (typeof refreshList === 'function') {
+          await refreshList() // 🔁 Refresh table automatically
+        }
+        handleClose()
       }
-    } else {
-      // 🟢 If no file uploaded → send as JSON object
-      const jsonBody = { ...formData }
-      payload = JSON.stringify(jsonBody)
-
-      console.log('📩 Sending JSON body:', jsonBody)
+    } catch (error) {
+      console.error('❌ Error saving resignation:', error)
+      setSnackbar({
+        open: true,
+        message: 'Something went wrong!',
+        severity: 'error'
+      })
     }
-
-    // ✅ Send API request
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/zobiz/update-resignation`, {
-      method: 'PUT',
-      body: payload,
-      ...(formData.document instanceof File
-        ? {} // fetch automatically sets headers for FormData
-        : { headers: { 'Content-Type': 'application/json' } })
-    })
-
-    const data = await res.json()
-
-    setSnackbar({
-      open: true,
-      message: data?.message || 'Resignation updated successfully!',
-      severity: data?.success ? 'success' : 'error'
-    })
-
-    // if (data?.success) handleClose()
-    if (data?.success) {
-  if (typeof refreshList === 'function') {
-    await refreshList()   // 🔁 Refresh table automatically
   }
-  handleClose()
-}
-  } catch (error) {
-    console.error('❌ Error saving resignation:', error)
-    setSnackbar({
-      open: true,
-      message: 'Something went wrong!',
-      severity: 'error'
-    })
-  }
-}
-
 
   /* ------------------------------ 🧱 UI Layout ------------------------------ */
   return (
@@ -341,17 +333,11 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label='Resignation Date'
-                value={
-                  formData.resignationDate
-                    ? dayjs(formData.resignationDate)
-                    : null
-                }
+                value={formData.resignationDate ? dayjs(formData.resignationDate) : null}
                 onChange={newValue =>
                   setFormData({
                     ...formData,
-                    resignationDate: newValue
-                      ? newValue.toISOString()
-                      : ''
+                    resignationDate: newValue ? newValue.toISOString() : ''
                   })
                 }
                 enableAccessibleFieldDOMStructure={false}
@@ -381,17 +367,11 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label='Last Working Date'
-                value={
-                  formData.lastWorkingDay
-                    ? dayjs(formData.lastWorkingDay)
-                    : null
-                }
+                value={formData.lastWorkingDay ? dayjs(formData.lastWorkingDay) : null}
                 onChange={newValue =>
                   setFormData({
                     ...formData,
-                    lastWorkingDay: newValue
-                      ? newValue.toISOString()
-                      : ''
+                    lastWorkingDay: newValue ? newValue.toISOString() : ''
                   })
                 }
                 enableAccessibleFieldDOMStructure={false}
@@ -459,11 +439,7 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
             />
 
             {/* 📎 Upload Document */}
-            <FileUploadController
-              formData={formData}
-              setFormData={setFormData}
-              label='Upload Document'
-            />
+            <FileUploadController formData={formData} setFormData={setFormData} label='Upload Document' />
 
             {/* 🔖 Status */}
             <TextField
@@ -508,10 +484,7 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
           severity={snackbar.severity}
           variant='filled'
           sx={{
-            backgroundColor:
-              snackbar.severity === 'success'
-                ? '#2B3380'
-                : '#d32f2f',
+            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#d32f2f',
             color: 'white',
             fontWeight: 500
           }}
@@ -524,7 +497,3 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave ,refresh
 }
 
 export default EditDepartment
-
-
-
-

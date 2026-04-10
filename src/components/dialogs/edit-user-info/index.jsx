@@ -1,7 +1,3 @@
-
-
-
-
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
@@ -73,9 +69,9 @@ const EditUserInfo = ({ open, setOpen }) => {
 
       setUploading(true)
       // const res = await updateUserDetails(userData._id,formData)
-      const API_URL = process.env.NEXT_PUBLIC_API_URL 
+      const API_URL = process.env.NEXT_PUBLIC_API_URL
       // const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      const res = await fetch(`${API_URL}/zobiz/update-user/${userData._id}`, {
+      const res = await fetch(`${API_URL}/jaycon/update-user/${userData._id}`, {
         method: 'PUT',
         body: formData
       })
@@ -135,13 +131,7 @@ const EditUserInfo = ({ open, setOpen }) => {
                 <Button variant='outlined' size='small' onClick={() => fileInputRef.current.click()}>
                   Choose Photo
                 </Button>
-                <input
-                  type='file'
-                  ref={fileInputRef}
-                  hidden
-                  accept='image/*'
-                  onChange={handleFileSelect}
-                />
+                <input type='file' ref={fileInputRef} hidden accept='image/*' onChange={handleFileSelect} />
               </div>
             </div>
 
@@ -259,5 +249,3 @@ const EditUserInfo = ({ open, setOpen }) => {
 }
 
 export default EditUserInfo
-
-

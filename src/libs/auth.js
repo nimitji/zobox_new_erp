@@ -3,7 +3,8 @@ import CredentialProvider from 'next-auth/providers/credentials'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
-import {encrypt,decrypt} from '../utils/crypto'
+
+import { encrypt, decrypt } from '../utils/crypto'
 
 const prisma = new PrismaClient()
 
@@ -124,9 +125,6 @@ const prisma = new PrismaClient()
 //   }
 // }
 
-
-
-
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
 
@@ -135,6 +133,7 @@ export const authOptions = {
       name: 'Credentials',
       type: 'credentials',
       credentials: {},
+
       // async authorize(credentials) {
       //   const { email, password } = credentials
 
@@ -142,11 +141,11 @@ export const authOptions = {
 
       //   try {
       //     // 🔹 Third-party API login
-      //     const res = await fetch("http://localhost:3001/zobiz/erploginusser", {
+      //     const res = await fetch("http://localhost:3001/jaycon/erploginusser", {
       //       method: 'POST',
       //       headers: {
       //         'Content-Type': 'application/json',
-            
+
       //       },
       //       body: JSON.stringify({ email, password })
       //     })
@@ -177,67 +176,67 @@ export const authOptions = {
       //   }
       // }
 
-async authorize(credentials) {
-  const { email, password } = credentials
+      async authorize(credentials) {
+        const { email, password } = credentials
 
-  try {
-       const encryptedData = encrypt(
-      JSON.stringify({ email, password })
-    );
-    const res = await fetch("http://localhost:4002/jaycon/erploginusser", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        data: encryptedData, // ✅ encrypted send
-      })
-    })
+        try {
+          const encryptedData = encrypt(JSON.stringify({ email, password }))
 
-    const data = await res.json()
-    const decryptedPayload= decrypt(data.data)
-     const parsedBody = JSON.parse(decryptedPayload);
+          const res = await fetch('https://jaycon.live.kevalindigital.com/jaycon/erploginusser', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              data: encryptedData // ✅ encrypted send
+            })
+          })
 
-    console.log("BACKEND DATA:", decrypt(parsedBody.name),decrypt(parsedBody.emailid))
+          const data = await res.json()
+          const decryptedPayload = decrypt(data.data)
+          const parsedBody = JSON.parse(decryptedPayload)
 
-    // ❌ ERROR CASE → backend sending 403
-    if (res.status === 403) {
-      throw new Error(JSON.stringify({
-        success: false,
-        message: ndata?.message || 'Invalid credentials'
-      }))
-    }
+          console.log('BACKEND DATA:', decrypt(parsedBody.name), decrypt(parsedBody.emailid))
 
-    // ✔ SUCCESS CASE
-    if (res.status === 200) {
-      return {
-        id: parsedBody._id,
-        name: decrypt(parsedBody.name),
-        email: decrypt(parsedBody.emailid),
-        token: parsedBody.token,
-        typeOfUser:decrypt(parsedBody.typeOfUser)
+          // ❌ ERROR CASE → backend sending 403
+          if (res.status === 403) {
+            throw new Error(
+              JSON.stringify({
+                success: false,
+                message: ndata?.message || 'Invalid credentials'
+              })
+            )
+          }
+
+          // ✔ SUCCESS CASE
+          if (res.status === 200) {
+            return {
+              id: parsedBody._id,
+              name: decrypt(parsedBody.name),
+              email: decrypt(parsedBody.emailid),
+              token: parsedBody.token,
+              typeOfUser: decrypt(parsedBody.typeOfUser)
+            }
+          }
+
+          return null
+        } catch (e) {
+          // If backend has already sent JSON string, forward it cleanly
+          try {
+            const parsed = JSON.parse(e.message)
+
+            throw new Error(JSON.stringify(parsed))
+          } catch {
+            // If error message is plain string, wrap into JSON
+            throw new Error(
+              JSON.stringify({
+                success: false,
+                message: e?.message || 'Login failed'
+              })
+            )
+          }
+        }
       }
-    }
-
-    return null
-  }
-
-  catch (e) {
-    // If backend has already sent JSON string, forward it cleanly
-    try {
-      const parsed = JSON.parse(e.message)
-      throw new Error(JSON.stringify(parsed))
-    } catch {
-      // If error message is plain string, wrap into JSON
-      throw new Error(JSON.stringify({
-        success: false,
-        message: e?.message || "Login failed"
-      }))
-    }
-  }
-}
-
-
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -254,60 +253,56 @@ async authorize(credentials) {
     signIn: '/login'
   },
 
-//   callbacks: {
-//     // 🔹 Save token from authorize into JWT
-     
-//     async jwt({ token, user }) {
-//       console.log("POOJATOKEN123",token,user)
-//       if (user?.token) token.accessToken = user.token
-//       if (user?.name) token.name = user.name
-//       if (user?.typeOfUser) token.typeOfUser = user.typeOfUser
+  //   callbacks: {
+  //     // 🔹 Save token from authorize into JWT
 
-//       console.log("PATANHI",token)
-      
-// return token
-//     },
+  //     async jwt({ token, user }) {
+  //       console.log("POOJATOKEN123",token,user)
+  //       if (user?.token) token.accessToken = user.token
+  //       if (user?.name) token.name = user.name
+  //       if (user?.typeOfUser) token.typeOfUser = user.typeOfUser
 
-//     // 🔹 Expose JWT token in session object
-//     async session({ session, token }) {
-//        console.log("POOJATOKENSESSION",token,session)
+  //       console.log("PATANHI",token)
 
-//       if (session.user) {
-//         session.user.name = token.name
-//         session.user.accessToken = token.accessToken // <- Bearer token here
-//         session.user.typeOfUser = token.typeOfUser;   // ⭐ ADD THIS LINE
-      
+  // return token
+  //     },
 
-//       }
+  //     // 🔹 Expose JWT token in session object
+  //     async session({ session, token }) {
+  //        console.log("POOJATOKENSESSION",token,session)
 
-      
-// return session
-//     }
-//   }
+  //       if (session.user) {
+  //         session.user.name = token.name
+  //         session.user.accessToken = token.accessToken // <- Bearer token here
+  //         session.user.typeOfUser = token.typeOfUser;   // ⭐ ADD THIS LINE
 
-callbacks: {
-  async jwt({ token, user }) {
-    console.log("JWT CALLBACK:", token, user);
+  //       }
 
-    if (user) {
-      token.accessToken = user.token;
-      token.name = user.name;
-      token.typeOfUser = user.typeOfUser;
+  // return session
+  //     }
+  //   }
+
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log('JWT CALLBACK:', token, user)
+
+      if (user) {
+        token.accessToken = user.token
+        token.name = user.name
+        token.typeOfUser = user.typeOfUser
+      }
+
+      return token
+    },
+
+    async session({ session, token }) {
+      console.log('SESSION CALLBACK:', token, session)
+
+      session.user.name = token.name
+      session.user.accessToken = token.accessToken
+      session.user.typeOfUser = token.typeOfUser // ⭐ FIXED
+
+      return session
     }
-
-    return token;
-  },
-
-  async session({ session, token }) {
-    console.log("SESSION CALLBACK:", token, session);
-
-    session.user.name = token.name;
-    session.user.accessToken = token.accessToken;
-    session.user.typeOfUser = token.typeOfUser;   // ⭐ FIXED
-
-    return session;
   }
 }
-
-}
-

@@ -1,6 +1,3 @@
-
-
-
 // 'use client'
 
 // import { useEffect, useState } from 'react'
@@ -116,7 +113,7 @@
 //       const payload = prepareSubmitBody()
 //       console.log('📦 Final Submit Body:', JSON.stringify(payload, null, 2))
 
-//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/zobiz/save-employee-performance-rating`, {
+//       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jaycon/save-employee-performance-rating`, {
 //         method: 'POST',
 //         headers: { 'Content-Type': 'application/json' },
 //         body: JSON.stringify(payload)
@@ -367,8 +364,6 @@
 
 // export default ReviewDetailsPage
 
-
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -391,10 +386,7 @@ import {
 import MuiAlert from '@mui/material/Alert'
 
 // 🧠 API Imports
-import {
-  fetchEmployeeReviewById,
-  fetchIndicatorDetailsEmployeeReview
-} from '../../../../../../app/server/actions'
+import { fetchEmployeeReviewById, fetchIndicatorDetailsEmployeeReview } from '../../../../../../app/server/actions'
 
 // ⭐ Helper for rating stars
 const renderStars = rating => {
@@ -499,14 +491,11 @@ const ReviewDetailsPage = () => {
       const payload = prepareSubmitBody()
       console.log('📦 Final Submit Body:', payload)
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/zobiz/save-employee-performance-rating`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }
-      )
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jaycon/save-employee-performance-rating`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
 
       const data = await res.json()
       console.log('✅ Review submitted:', data)
@@ -544,12 +533,7 @@ const ReviewDetailsPage = () => {
       </Box>
     )
 
-  if (!review)
-    return (
-      <Typography sx={{ p: 4, textAlign: 'center' }}>
-        No review details found for this ID.
-      </Typography>
-    )
+  if (!review) return <Typography sx={{ p: 4, textAlign: 'center' }}>No review details found for this ID.</Typography>
 
   // 🧱 UI
   return (
@@ -634,22 +618,14 @@ const ReviewDetailsPage = () => {
           <Grid item xs={12} sm={3}>
             <Typography fontWeight='500'>Review Date</Typography>
             <Typography variant='h6' fontWeight='bold'>
-              {review.reviewDate
-                ? new Date(review.reviewDate).toLocaleDateString()
-                : '-'}
+              {review.reviewDate ? new Date(review.reviewDate).toLocaleDateString() : '-'}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={3}>
             <Typography fontWeight='500'>Status</Typography>
             <Chip
               label={review.status || 'Pending'}
-              color={
-                review.status === 'Completed'
-                  ? 'success'
-                  : review.status === 'Scheduled'
-                  ? 'info'
-                  : 'warning'
-              }
+              color={review.status === 'Completed' ? 'success' : review.status === 'Scheduled' ? 'info' : 'warning'}
               variant='outlined'
               size='small'
             />
@@ -698,22 +674,11 @@ const ReviewDetailsPage = () => {
                   backgroundColor: '#fcfcfc'
                 }}
               >
-                <Box
-                  display='flex'
-                  justifyContent='space-between'
-                  alignItems='center'
-                  mb={1}
-                >
+                <Box display='flex' justifyContent='space-between' alignItems='center' mb={1}>
                   <Typography fontWeight='600' fontSize='1rem'>
                     {indicator.indicatorName}
                   </Typography>
-                  <Typography
-                    display='flex'
-                    alignItems='center'
-                    gap={0.5}
-                    fontWeight='500'
-                    color='primary.main'
-                  >
+                  <Typography display='flex' alignItems='center' gap={0.5} fontWeight='500' color='primary.main'>
                     {indicator.rating} {renderStars(indicator.rating)}
                   </Typography>
                 </Box>
@@ -736,9 +701,7 @@ const ReviewDetailsPage = () => {
                     { value: 5, label: 'Excellent' }
                   ]}
                   valueLabelDisplay='auto'
-                  onChange={(_, value) =>
-                    handleRatingChange(category, index, value)
-                  }
+                  onChange={(_, value) => handleRatingChange(category, index, value)}
                   sx={{
                     color: 'primary.main',
                     '& .MuiSlider-markLabel': {
@@ -758,9 +721,7 @@ const ReviewDetailsPage = () => {
                   minRows={2}
                   placeholder='Add feedback...'
                   value={indicator.comment}
-                  onChange={e =>
-                    handleCommentChange(category, index, e.target.value)
-                  }
+                  onChange={e => handleCommentChange(category, index, e.target.value)}
                 />
               </Box>
             ))}
@@ -786,9 +747,3 @@ const ReviewDetailsPage = () => {
 }
 
 export default ReviewDetailsPage
-
-
-
-
-
-

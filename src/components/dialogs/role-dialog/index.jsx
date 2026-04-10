@@ -235,7 +235,6 @@
 
 // export default RoleDialog
 
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -273,9 +272,9 @@ const defaultData = [
 ]
 
 const RoleDialog = ({ open, setOpen, title }) => {
-     const { data: session } = useSession()
+  const { data: session } = useSession()
   const token = session?.user?.accessToken
-  console.log("SESSION TOKEN:", token)
+  console.log('SESSION TOKEN:', token)
   const [roleName, setRoleName] = useState(title || '')
   const [description, setDescription] = useState('')
   const [selectedCheckbox, setSelectedCheckbox] = useState([])
@@ -285,9 +284,7 @@ const RoleDialog = ({ open, setOpen, title }) => {
   const handleClose = () => setOpen(false)
 
   const togglePermission = id => {
-    setSelectedCheckbox(prev =>
-      prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
-    )
+    setSelectedCheckbox(prev => (prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]))
   }
 
   const handleSelectAllCheckbox = () => {
@@ -304,9 +301,7 @@ const RoleDialog = ({ open, setOpen, title }) => {
   }
 
   useEffect(() => {
-    setIsIndeterminateCheckbox(
-      selectedCheckbox.length > 0 && selectedCheckbox.length < defaultData.length * 3
-    )
+    setIsIndeterminateCheckbox(selectedCheckbox.length > 0 && selectedCheckbox.length < defaultData.length * 3)
   }, [selectedCheckbox])
 
   const handleSubmit = async () => {
@@ -319,17 +314,16 @@ const RoleDialog = ({ open, setOpen, title }) => {
     try {
       // const token = localStorage.getItem('token') // auth middleware ke liye
       // console.log("TOKEN",token)
-    
 
       const payload = {
         name: roleName,
         description: description,
         permissions: selectedCheckbox
       }
-      console.log("ROLEPERMISSION",payload)
+      console.log('ROLEPERMISSION', payload)
 
       const response = await axios.post(
-        'http://localhost:3001/zobiz/create-role', // 🟢 replace with actual API URL
+        'http://localhost:3001/jaycon/create-role', // 🟢 replace with actual API URL
         payload,
         {
           headers: {
@@ -364,7 +358,7 @@ const RoleDialog = ({ open, setOpen, title }) => {
       <DialogTitle variant='h4' className='text-center'>
         {title ? 'Edit Role' : 'Add Role'}
         {/* <Typography component='span'>Set Role Permissions</Typography> */}
-           <Typography component='span' className='flex flex-col text-center'>
+        <Typography component='span' className='flex flex-col text-center'>
           Set Role Permissions
         </Typography>
       </DialogTitle>
@@ -443,11 +437,7 @@ const RoleDialog = ({ open, setOpen, title }) => {
       </DialogContent>
 
       <DialogActions className='justify-center'>
-        <Button
-          variant='contained'
-          onClick={handleSubmit}
-          disabled={loading}
-        >
+        <Button variant='contained' onClick={handleSubmit} disabled={loading}>
           {loading ? 'Saving...' : 'Submit'}
         </Button>
         <Button variant='tonal' color='secondary' onClick={handleClose}>

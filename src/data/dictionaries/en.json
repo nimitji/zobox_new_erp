@@ -67,6 +67,7 @@
         "hrManagement": "HR Management",
         "branches":"Branches",
         "departments":"Departments",
+        "Hiring": "Hiring",
         "designations":"Designations",
         "documentTypes":"Document Types",
         "employees":"Employees",

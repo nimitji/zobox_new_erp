@@ -40,7 +40,7 @@ import { useSession } from 'next-auth/react'
 //     const fetchRoles = async () => {
 //       setLoading(true)
 //       try {
-//         const response = await axios.get('http://localhost:3001/zobiz/total-role-count', {
+//         const response = await axios.get('http://localhost:3001/jaycon/total-role-count', {
 //           headers: {
 //             // Authorization: `Bearer ${token}`,
 //             token: `${token}`,
@@ -143,7 +143,7 @@ const RoleCards = () => {
     const fetchRoles = async () => {
       setLoading(true)
       try {
-        const response = await axios.get('http://localhost:3001/zobiz/total-role-count', {
+        const response = await axios.get('http://localhost:3001/jaycon/total-role-count', {
           headers: {
             token: `${token}`,
             'Content-Type': 'application/json'
@@ -208,9 +208,7 @@ const RoleCards = () => {
           <Card>
             <CardContent className='flex flex-col gap-4'>
               <div className='flex items-center justify-between'>
-                <Typography className='flex-grow'>
-                  {`Total ${role.totalUsers || 0} users`}
-                </Typography>
+                <Typography className='flex-grow'>{`Total ${role.totalUsers || 0} users`}</Typography>
                 <AvatarGroup total={role.totalUsers || 0}>
                   {(role.avatars || []).map((img, idx) => (
                     <Avatar key={idx} alt={role.title} src={`/images/avatars/${img}`} />
@@ -245,12 +243,7 @@ const RoleCards = () => {
   )
 }
 
-
-
-
 // const RoleCards = () => {
-
-
 
 //   // Vars pooja
 //   const typographyProps = {

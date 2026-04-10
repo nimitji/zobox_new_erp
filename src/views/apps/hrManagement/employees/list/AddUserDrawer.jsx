@@ -1,6 +1,3 @@
- 
-
-
 // 'use client'
 
 // import { useState, useEffect } from 'react'
@@ -151,7 +148,6 @@
 //     loadDesignations()
 //   }, [selectedDepartment])
 
-
 //   // Fetch Users
 // useEffect(() => {
 //   const loadUsers = async () => {
@@ -289,7 +285,7 @@
 //                  <MenuItem value='company'>Elementz</MenuItem>
 //                  <MenuItem value='enterprise'>MANAGE</MenuItem>
 //                  <MenuItem value='team'>NOT INT</MenuItem>
-//                   <MenuItem value='team'>Zobox</MenuItem>
+//                   <MenuItem value='team'>Jaycon</MenuItem>
 //                    <MenuItem value='team'>LEFT</MenuItem>
 //                </CustomTextField>
 //              )}
@@ -380,8 +376,6 @@
 //             )}
 //           />
 
-      
-
 // <LocalizationProvider dateAdapter={AdapterDayjs}>
 //   <Controller
 //     name='dateOfJoining'
@@ -409,9 +403,7 @@
 //   />
 // </LocalizationProvider>
 
-
 // {/* //Users */}
-
 
 // <Controller
 //   name="reportingManager"
@@ -441,7 +433,6 @@
 //   )}
 // />
 
-
 //    <Controller
 //              name='email'
 //              control={control}
@@ -457,11 +448,6 @@
 //                />
 //              )}
 //            />
-
-
-
-
-     
 
 //                 <CustomTextField
 //              label='Contact'
@@ -549,7 +535,7 @@
 //                >
 //                  <MenuItem value='Male'>Male</MenuItem>
 //                  <MenuItem value='Female'>Female</MenuItem>
-                
+
 //                </CustomTextField>
 //              )}
 //            />
@@ -572,11 +558,10 @@
 //                >
 //                  <MenuItem value='Married'>Married</MenuItem>
 //                  <MenuItem value='Un-married'>Un-married</MenuItem>
-                
+
 //                </CustomTextField>
 //              )}
 //            />
-
 
 //                 <Controller
 //             name='bloodGroup'
@@ -594,7 +579,6 @@
 //             )}
 //           />
 
-
 //         <CustomTextField
 //              label='Emergency Number'
 //              type='number'
@@ -603,8 +587,6 @@
 //              value={formData.emergencyNumber}
 //              onChange={e => setFormData({ ...formData, emergencyNumber: e.target.value })}
 //            />
-
-            
 
 //           {/* Status */}
 //           <Controller
@@ -656,7 +638,6 @@
 // }
 
 // export default AddUserDrawer
-
 
 'use client'
 
@@ -736,7 +717,7 @@ const AddUserDrawer = props => {
       martialStatus: '',
       bloodGroup: '',
       emergencyNumber: '',
-     status: 'Active'
+      status: 'Active'
     }
   })
 
@@ -761,7 +742,9 @@ const AddUserDrawer = props => {
       }
     }
     load()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [])
 
   // load departments
@@ -782,7 +765,9 @@ const AddUserDrawer = props => {
       }
     }
     load()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [])
 
   // load designations based on selected department id
@@ -810,7 +795,9 @@ const AddUserDrawer = props => {
       }
     }
     load()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [selectedDepartment])
 
   // load users (reporting managers)
@@ -831,7 +818,9 @@ const AddUserDrawer = props => {
       }
     }
     load()
-    return () => { mounted = false }
+    return () => {
+      mounted = false
+    }
   }, [])
 
   const handleReset = () => {
@@ -927,7 +916,7 @@ const AddUserDrawer = props => {
                 <MenuItem value='Elementz'>Elementz</MenuItem>
                 <MenuItem value='MANAGE'>MANAGE</MenuItem>
                 <MenuItem value='NOT INT'>NOT INT</MenuItem>
-                <MenuItem value='Zobox'>Zobox</MenuItem>
+                <MenuItem value='Jaycon'>Jaycon</MenuItem>
                 <MenuItem value='LEFT'>LEFT</MenuItem>
               </CustomTextField>
             )}
@@ -943,7 +932,11 @@ const AddUserDrawer = props => {
                 {loadingRoles ? (
                   <MenuItem disabled>Loading roles...</MenuItem>
                 ) : roles.length > 0 ? (
-                  roles.map(r => <MenuItem key={r._id} value={r._id}>{r.name}</MenuItem>)
+                  roles.map(r => (
+                    <MenuItem key={r._id} value={r._id}>
+                      {r.name}
+                    </MenuItem>
+                  ))
                 ) : (
                   <MenuItem disabled>No Roles found</MenuItem>
                 )}
@@ -961,7 +954,11 @@ const AddUserDrawer = props => {
                 {loadingDepartments ? (
                   <MenuItem disabled>Loading departments...</MenuItem>
                 ) : departments.length > 0 ? (
-                  departments.map(d => <MenuItem key={d._id} value={d._id}>{d.departmentName}</MenuItem>)
+                  departments.map(d => (
+                    <MenuItem key={d._id} value={d._id}>
+                      {d.departmentName}
+                    </MenuItem>
+                  ))
                 ) : (
                   <MenuItem disabled>No Departments found</MenuItem>
                 )}
@@ -984,7 +981,11 @@ const AddUserDrawer = props => {
                 {loadingDesignations ? (
                   <MenuItem disabled>Loading designations...</MenuItem>
                 ) : designations.length > 0 ? (
-                  designations.map(d => <MenuItem key={d._id} value={d._id}>{d.name}</MenuItem>)
+                  designations.map(d => (
+                    <MenuItem key={d._id} value={d._id}>
+                      {d.name}
+                    </MenuItem>
+                  ))
                 ) : (
                   <MenuItem disabled>No Designations found</MenuItem>
                 )}
@@ -1026,7 +1027,11 @@ const AddUserDrawer = props => {
                 {loadingUsers ? (
                   <MenuItem disabled>Loading users...</MenuItem>
                 ) : users.length > 0 ? (
-                  users.map(u => <MenuItem key={u._id} value={u._id}>{u.username}</MenuItem>)
+                  users.map(u => (
+                    <MenuItem key={u._id} value={u._id}>
+                      {u.username}
+                    </MenuItem>
+                  ))
                 ) : (
                   <MenuItem disabled>No Users found</MenuItem>
                 )}
@@ -1057,9 +1062,7 @@ const AddUserDrawer = props => {
           <Controller
             name='panNumber'
             control={control}
-            render={({ field }) => (
-              <CustomTextField {...field} fullWidth label='PAN Number' placeholder='AAACS8577K' />
-            )}
+            render={({ field }) => <CustomTextField {...field} fullWidth label='PAN Number' placeholder='AAACS8577K' />}
           />
 
           {/* Aadhar */}
@@ -1123,9 +1126,7 @@ const AddUserDrawer = props => {
           <Controller
             name='bloodGroup'
             control={control}
-            render={({ field }) => (
-              <CustomTextField {...field} fullWidth label='Blood Group' placeholder='O+' />
-            )}
+            render={({ field }) => <CustomTextField {...field} fullWidth label='Blood Group' placeholder='O+' />}
           />
 
           {/* Emergency Number */}
@@ -1138,7 +1139,7 @@ const AddUserDrawer = props => {
           />
 
           {/* Description */}
-     
+
           {/* Status */}
           <Controller
             name='status'
@@ -1153,8 +1154,12 @@ const AddUserDrawer = props => {
 
           {/* Actions */}
           <div className='flex items-center gap-4'>
-            <Button variant='contained' type='submit'>Submit</Button>
-            <Button variant='tonal' color='error' onClick={handleReset}>Cancel</Button>
+            <Button variant='contained' type='submit'>
+              Submit
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleReset}>
+              Cancel
+            </Button>
           </div>
         </form>
       </Drawer>
@@ -1170,7 +1175,11 @@ const AddUserDrawer = props => {
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           variant='filled'
-          sx={{ width: '100%', backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F', color: 'white' }}
+          sx={{
+            width: '100%',
+            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
+            color: 'white'
+          }}
         >
           {snackbar.message}
         </MuiAlert>
@@ -1180,4 +1189,3 @@ const AddUserDrawer = props => {
 }
 
 export default AddUserDrawer
-

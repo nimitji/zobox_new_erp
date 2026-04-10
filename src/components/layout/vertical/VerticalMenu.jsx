@@ -77,7 +77,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           <MenuItem href={`/${locale}/dashboards/logistics`}>{dictionary['navigation'].logistics}</MenuItem> */}
         </SubMenu>
         {/* changes here pooja  */}
-      
+
 
          <MenuSection label={dictionary['navigation'].modules}>
           {/* <SubMenu label={dictionary['navigation'].sales} icon={<i className='tabler-sales' />}> */}
@@ -86,13 +86,13 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
                    <SubMenu label={dictionary['navigation'].b2rBuyers}>
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].addGstBuyer}</MenuItem>
               <MenuItem href={`/${locale}/apps/ecommerce/products/add`}>{dictionary['navigation'].addNonGstBuyer}</MenuItem>
-            
+
             </SubMenu>
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].b2cCustomers}</MenuItem>
-           
+
                  <SubMenu label={dictionary['navigation'].serviceCustomers}>
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].addCustomer}</MenuItem>
-           
+
             </SubMenu>
             </SubMenu> */}
             {/* <SubMenu label={dictionary['navigation'].salesData}>
@@ -101,15 +101,15 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
 
                  <SubMenu label={dictionary['navigation'].serviceSales}>
               <MenuItem href={`/${locale}/apps/ecommerce/products/list`}>{dictionary['navigation'].createServiceInvoice}</MenuItem>
-           
+
             </SubMenu>
-           
+
             </SubMenu> */}
                {/* <SubMenu label={dictionary['navigation'].salesBatch}>
               <MenuItem href={`/${locale}/apps/ecommerce/orders/list`}>{dictionary['navigation'].createBatch}</MenuItem>
-             
+
             </SubMenu> */}
-          
+
             {/* <MenuItem href={`/${locale}/apps/ecommerce/sales-invoices`}>
               {dictionary['navigation'].salesInvoices}
             </MenuItem>
@@ -129,7 +129,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
              <SubMenu label={dictionary['navigation'].requisitions} >
             <MenuItem href={`/${locale}/apps/academy/dashboard`}>{dictionary['navigation'].createReqsition}</MenuItem>
             <MenuItem href={`/${locale}/apps/academy/my-courses`}>{dictionary['navigation'].myRequisitions}</MenuItem>
-          
+
           </SubMenu>
              <SubMenu label={dictionary['navigation'].purchases} >
             <MenuItem href={`/${locale}/apps/academy/dashboard`}>{dictionary['navigation'].dashboard}</MenuItem>
@@ -146,12 +146,12 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             </MenuItem>
           </SubMenu>
 
-          
-        
+
+
             <MenuItem href={`/${locale}/apps/academy/my-courses`}>{dictionary['navigation'].reports}</MenuItem>
-         
+
           </SubMenu> */}
-{/*         
+{/*
           <MenuItem href={`/${locale}/apps/orders`} icon={<i className='tabler-orders-icon' />}>
             {dictionary['navigation'].ordersdata}
           </MenuItem> */}
@@ -164,12 +164,12 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
            {/* <MenuItem href={`/${locale}/apps/crm`} icon={<i className='tabler-crm-icon' />}>
             {dictionary['navigation'].crm}
           </MenuItem> */}
-          
+
           <SubMenu label={dictionary['navigation'].hrm} icon={<i className='tabler-hrm-icon' />}>
             <SubMenu label={dictionary['navigation'].staff} icon={<i className='tabler-saff' />}>
             <MenuItem href={`/${locale}/apps/roles`}>{dictionary['navigation'].roles}</MenuItem>
 
-          
+
           </SubMenu>
 
            <SubMenu label={dictionary['navigation'].hrManagement} icon={<i className='tabler-hr-management' />}>
@@ -189,7 +189,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/hrManagement/performance/employeeGoals`}>{dictionary['navigation'].employeeGoals}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/performance/reviewCycles`}>{dictionary['navigation'].reviewCycles}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/performance/employeeReviews`}>{dictionary['navigation'].employeeReviews}</MenuItem>
-          
+
           </SubMenu>
             <MenuItem href={`/${locale}/apps/hrManagement/resignations`}>{dictionary['navigation'].resignations}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/terminations`}>{dictionary['navigation'].terminations}</MenuItem>
@@ -197,6 +197,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/hrManagement/trips`}>{dictionary['navigation'].trips}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/complaints`}>{dictionary['navigation'].complaints}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/transfers`}>{dictionary['navigation'].transfers}</MenuItem>
+             <MenuItem href={`/${locale}/apps/hrManagement/Hiring`}>{dictionary['navigation'].Hiring}</MenuItem>
              <MenuItem href={`/${locale}/apps/hrManagement/holidays`}>{dictionary['navigation'].holidays}</MenuItem>
             <MenuItem href={`/${locale}/apps/hrManagement/announcements`}>{dictionary['navigation'].announcements}</MenuItem>
               {/* <SubMenu label={dictionary['navigation'].assetManagements} >
@@ -236,7 +237,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
              {/* <MenuItem href={`/${locale}/apps/calendar`} icon={<i className='tabler-calendar' />}>
             {dictionary['navigation'].calendars}
           </MenuItem> */}
-        
+
            <SubMenu label={dictionary['navigation'].leaveManagement} icon={<i className='tabler-leave-management' />}>
             <MenuItem href={`/${locale}/apps/leaveManagement/leavetypes`}>{dictionary['navigation'].leaveTypes}</MenuItem>
             <MenuItem href={`/${locale}/apps/leaveManagement/leavepolicies`}>{dictionary['navigation'].leavePolicies}</MenuItem>
@@ -251,8 +252,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
           </SubMenu>
            {/* <SubMenu label={dictionary['navigation'].timeTracking} icon={<i className='tabler-time-tracking' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].timeEntries}</MenuItem>
-          
-          
+
+
           </SubMenu> */}
 
            <SubMenu label={dictionary['navigation'].payrollManagement} icon={<i className='tabler-payroll-management' />}>
@@ -266,8 +267,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
 
 
           </SubMenu>
-           
-           
+
+
             <MenuItem href={`/${locale}/apps/permissions`} icon={<i className='tabler-permissions-icon' />}>
             {dictionary['navigation'].permissionsdata}
           </MenuItem>
@@ -280,12 +281,12 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             <MenuItem href={`/${locale}/apps/tracking`} icon={<i className='tabler-tracking-icon' />}>
             {dictionary['navigation'].tracking}
           </MenuItem>
-        
+
 
         </MenuSection>
-    
+
       </Menu>
-  
+
     </ScrollWrapper>
   )
 }
@@ -457,7 +458,7 @@ export default VerticalMenu
 //            <MenuItem href={`/${locale}/apps/crm`} icon={<i className='tabler-crm-icon' />}>
 //             {dictionary['navigation'].crm}
 //           </MenuItem>
-          
+
 //           <SubMenu label={dictionary['navigation'].hrm} icon={<i className='tabler-hrm-icon' />}>
 //             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].list}</MenuItem>
 //             <MenuItem

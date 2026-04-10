@@ -1,6 +1,3 @@
-
-
-
 // 'use client'
 
 // import { useEffect, useState, useMemo } from 'react'
@@ -43,7 +40,6 @@
 // import CustomTextField from '@core/components/mui/TextField'
 // import CustomAvatar from '@core/components/mui/Avatar'
 // import ExportButton from '../../../../../@menu/components/tables/ExportButton'
-
 
 // // Utils
 // import { getInitials } from '@/utils/getInitials'
@@ -94,7 +90,7 @@
 
 //   // ====== Avatar Helper ======
 //   const getAvatar = ({ avatar, fullName }) => {
-//     const fallback = 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+//     const fallback = 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
 //     const src = avatar || fallback
 //     return <CustomAvatar src={src} size={34} alt={fullName || 'User'} />
 //   }
@@ -125,7 +121,7 @@
 //         const photoUrl =
 //           Array.isArray(row?.original?.Photo) && row.original.Photo.length > 0
 //             ? row.original.Photo[0]
-//             : 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+//             : 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
 
 //         const fullName = row?.original?.EMPLOYEENAME || '—'
 //         const empId = row?.original?.EMPLOYEEID || ''
@@ -250,7 +246,6 @@
 //   <i className='tabler-eye text-textSecondary' />
 // </IconButton>
 
-
 //                 {/* <IconButton>
 //             <Link href={getLocalizedUrl(`/apps/hrManagement/employees/edit?_id=${row.original._id}`, locale)} className='flex'>
 //               <i className='tabler-edit' />
@@ -271,7 +266,6 @@
 //   <i className='tabler-edit text-textSecondary' />
 // </IconButton>
 
-     
 //         </div>
 //       )
 //     })
@@ -508,7 +502,7 @@
 //   // ===============================
 //   const refreshUsers = async () => {
 //     try {
-// const json = await fetchEmployeeData()      
+// const json = await fetchEmployeeData()
 // // const json = await res.json()
 //       setData(json)
 //       setFilteredData(json)
@@ -519,7 +513,7 @@
 
 //   // Avatar helper
 //   const getAvatar = ({ avatar, fullName }) => {
-//     const fallback = 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+//     const fallback = 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
 //     const src = avatar || fallback
 //     return <CustomAvatar src={src} size={34} alt={fullName || 'User'} />
 //   }
@@ -550,7 +544,7 @@
 //           const photoUrl =
 //             Array.isArray(row.original?.Photo) && row.original.Photo.length > 0
 //               ? row.original.Photo[0]
-//               : 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+//               : 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
 
 //           const fullName = row.original?.EMPLOYEENAME || '—'
 //           const empId = row.original?.EMPLOYEEID || ''
@@ -831,23 +825,13 @@
 
 // export default UserListTable
 
-
 'use client'
 
 import { useEffect, useState, useMemo } from 'react'
 import { useParams } from 'next/navigation'
 
 // MUI Imports
-import {
-  Card,
-  Button,
-  Typography,
-  Chip,
-  Checkbox,
-  IconButton,
-  TablePagination,
-  MenuItem
-} from '@mui/material'
+import { Card, Button, Typography, Chip, Checkbox, IconButton, TablePagination, MenuItem } from '@mui/material'
 
 import { styled } from '@mui/material/styles'
 
@@ -934,13 +918,13 @@ const UserListTable = ({ tableData = [] }) => {
       setData(json)
       setFilteredData(json)
     } catch (err) {
-      console.error("User refresh error:", err)
+      console.error('User refresh error:', err)
     }
   }
 
   // Avatar helper
   const getAvatar = ({ avatar, fullName }) => {
-    const fallback = 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+    const fallback = 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
     const src = avatar || fallback
     return <CustomAvatar src={src} size={34} alt={fullName || 'User'} />
   }
@@ -971,7 +955,7 @@ const UserListTable = ({ tableData = [] }) => {
           const photoUrl =
             Array.isArray(row.original?.Photo) && row.original.Photo.length > 0
               ? row.original.Photo[0]
-              : 'https://storage.googleapis.com/zobizproductphotos/banners/user.png'
+              : 'https://storage.googleapis.com/jayconproductphotos/banners/user.png'
 
           const fullName = row.original?.EMPLOYEENAME || '—'
           const empId = row.original?.EMPLOYEEID || ''
@@ -1027,15 +1011,7 @@ const UserListTable = ({ tableData = [] }) => {
         cell: ({ row }) => {
           const status = row.original?.status || 'Inactive'
           const chipColor = userStatusObj[status] || 'secondary'
-          return (
-            <Chip
-              variant='tonal'
-              label={status}
-              size='small'
-              color={chipColor}
-              className='capitalize'
-            />
-          )
+          return <Chip variant='tonal' label={status} size='small' color={chipColor} className='capitalize' />
         }
       }),
 
@@ -1046,10 +1022,7 @@ const UserListTable = ({ tableData = [] }) => {
           if (!dateStr) return null
 
           const parts = dateStr.split('-')
-          const date =
-            parts[2]?.length === 4
-              ? new Date(parts[2], parts[1] - 1, parts[0])
-              : new Date(dateStr)
+          const date = parts[2]?.length === 4 ? new Date(parts[2], parts[1] - 1, parts[0]) : new Date(dateStr)
 
           return isNaN(date.getTime()) ? null : date
         },
@@ -1138,7 +1111,6 @@ const UserListTable = ({ tableData = [] }) => {
   return (
     <>
       <Card>
-
         <div className='flex justify-between flex-col md:flex-row p-6 border-bs gap-4'>
           <CustomTextField
             select
@@ -1160,11 +1132,7 @@ const UserListTable = ({ tableData = [] }) => {
 
             <ExportButton filteredData={filteredDatas} />
 
-            <Button
-              variant='contained'
-              startIcon={<i className='tabler-plus' />}
-              onClick={() => setAddUserOpen(true)}
-            >
+            <Button variant='contained' startIcon={<i className='tabler-plus' />} onClick={() => setAddUserOpen(true)}>
               Add New User
             </Button>
           </div>
@@ -1189,9 +1157,7 @@ const UserListTable = ({ tableData = [] }) => {
                           {{
                             asc: <i className='tabler-chevron-up text-xl' />,
                             desc: <i className='tabler-chevron-down text-xl' />
-                          }[
-                            header.column.getIsSorted()
-                          ] ?? null}
+                          }[header.column.getIsSorted()] ?? null}
                         </div>
                       )}
                     </th>
@@ -1214,9 +1180,7 @@ const UserListTable = ({ tableData = [] }) => {
                   .map(row => (
                     <tr key={row.id} className={classnames({ selected: row.getIsSelected() })}>
                       {row.getVisibleCells().map(cell => (
-                        <td key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
+                        <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                       ))}
                     </tr>
                   ))
@@ -1238,7 +1202,7 @@ const UserListTable = ({ tableData = [] }) => {
         open={addUserOpen}
         handleClose={() => {
           setAddUserOpen(false)
-          refreshUsers()    // 🔥 Refresh after adding user
+          refreshUsers() // 🔥 Refresh after adding user
         }}
         userData={data}
         setData={setData}
@@ -1249,10 +1213,3 @@ const UserListTable = ({ tableData = [] }) => {
 }
 
 export default UserListTable
-
-
-
-
-
-
-

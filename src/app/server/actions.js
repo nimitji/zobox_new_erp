@@ -15,6 +15,7 @@ import { db as profileData } from '@/fake-db/pages/userProfile'
 import { db as faqData } from '@/fake-db/pages/faq'
 import { db as pricingData } from '@/fake-db/pages/pricing'
 import { db as statisticsData } from '@/fake-db/pages/widgetExamples'
+import { encrypt, decrypt } from '../../utils/crypto'
 
 export const getEcommerceData = async () => {
   return eCommerceData
@@ -39,11 +40,10 @@ export const getUserDatas = async () => {
 // src/app/server/actions.js
 
 export const getUserData = async () => {
-  const res = await fetch(`${process.env.API_URL}/zobiz/fetch-role`, {
+  const res = await fetch(`${process.env.API_URL}/jaycon/fetch-role`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-     
+      'Content-Type': 'application/json'
     },
     cache: 'no-store' // ensures fresh data every request
   })
@@ -56,13 +56,12 @@ export const getUserData = async () => {
 
   const data = await res.json()
 
-  console.log("DEBUG",data)
-  
-return data?.data || [] // adjust if your backend wraps response differently
+  console.log('DEBUG', data)
+
+  return data?.data || [] // adjust if your backend wraps response differently
 }
 
-
-export const createBranch = async (formData) => {
+export const createBranch = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = {
@@ -81,9 +80,9 @@ export const createBranch = async (formData) => {
       status: formData.status
     }
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-branch`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -100,21 +99,18 @@ console.log("TODAYDEBUG",formData,payload)
 
     const branchData = await res.json()
 
-    console.log("DEBUG createBranch:", branchData)
-    
-return branchData
+    console.log('DEBUG createBranch:', branchData)
+
+    return branchData
   } catch (err) {
     console.error('Failed to create branch:', err)
     throw err
   }
 }
 
-
-
-
 export const fetchBranches = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-branch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -129,10 +125,12 @@ export const fetchBranches = async () => {
     }
 
     const data = await res.json()
+    const decryptedPayload = decrypt(data.data)
+    const parsedBody = JSON.parse(decryptedPayload)
 
-    console.log('Fetched Branch Data:', data)
-    
-return data.data // return only branch array
+    return parsedBody // return only branch array
+
+    //return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching branches:', error)
     throw error
@@ -141,7 +139,7 @@ return data.data // return only branch array
 
 export const fetchCountBranches = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-branch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -156,24 +154,24 @@ export const fetchCountBranches = async () => {
     }
 
     const data = await res.json()
+    const decryptedPayload = decrypt(data.data)
+    const parsedBody = JSON.parse(decryptedPayload)
 
-    console.log('Fetched Count Branch Data:', data)
-    
-return data.data // return only branch array
+    return parsedBody // return only branch array
   } catch (error) {
     console.error('Error fetching branches:', error)
     throw error
   }
 }
 
-export const createDepartment = async (formData) => {
+export const createDepartment = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-department`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-department`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -190,9 +188,9 @@ console.log("TODAYDEBUG",formData,payload)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createDepartment:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -201,7 +199,7 @@ return departmentData
 
 export const fetchCountDepartments = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-department`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-department`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -218,8 +216,8 @@ export const fetchCountDepartments = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Department:', error)
     throw error
@@ -228,7 +226,7 @@ return data.data // return only branch array
 
 export const fetchDepartments = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-department`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-department`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -245,18 +243,17 @@ export const fetchDepartments = async () => {
     const data = await res.json()
 
     console.log('Fetched Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching departments:', error)
     throw error
   }
 }
 
-
 export const fetchListOfBranch = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-branch`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-branch`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -273,22 +270,22 @@ export const fetchListOfBranch = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const editDepartment = async (formData) => {
+export const editDepartment = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-department-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-department-details`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -305,21 +302,20 @@ export const editDepartment = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateDeaprtment:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateDeaprtment:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update department:', err)
     throw err
   }
 }
 
-
-export const editBranch = async (formData) => {
+export const editBranch = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = {
-      _id:formData._id,
+      _id: formData._id,
       branchName: formData.branchName, // ya koi aur field jo branch ka name ho
       address: {
         Plot: formData.Plot, // yahan form me Plot field nahi hai, address ka pura text use kar sakte ho
@@ -335,9 +331,9 @@ export const editBranch = async (formData) => {
       status: formData.status
     }
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-branch-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-branch-details`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -354,9 +350,9 @@ console.log("TODAYDEBUG",formData,payload)
 
     const branchData = await res.json()
 
-    console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+    console.log('DEBUG updateBranch:', branchData)
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
@@ -365,7 +361,7 @@ return branchData
 
 export const fetchListOfDepartment = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-department`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-department`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -382,22 +378,22 @@ export const fetchListOfDepartment = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const createDesignation = async (formData) => {
+export const createDesignation = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-designation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-designation`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -414,9 +410,9 @@ console.log("TODAYDEBUG",formData,payload)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createDepartment:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -425,7 +421,7 @@ return departmentData
 
 export const fetchCountDesignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-designation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-designation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -442,8 +438,8 @@ export const fetchCountDesignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Department:', error)
     throw error
@@ -452,7 +448,7 @@ return data.data // return only branch array
 
 export const fetchDesignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-designation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -469,22 +465,22 @@ export const fetchDesignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching departments:', error)
     throw error
   }
 }
 
-export const editDesignation = async (formData) => {
+export const editDesignation = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-designation-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-designation-details`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -501,23 +497,23 @@ console.log("TODAYDEBUG",formData,payload)
 
     const branchData = await res.json()
 
-    console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+    console.log('DEBUG updateBranch:', branchData)
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
   }
 }
 
-export const createDocuments = async (formData) => {
+export const createDocuments = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-document-data`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-document-data`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -534,9 +530,9 @@ console.log("TODAYDEBUG",formData,payload)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createDepartment:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -545,7 +541,7 @@ return departmentData
 
 export const fetchCountDocument = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-document`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-document`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -562,8 +558,8 @@ export const fetchCountDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Document Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Document:', error)
     throw error
@@ -572,7 +568,7 @@ return data.data // return only branch array
 
 export const fetchDocument = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-document-data`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-document-data`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -589,22 +585,22 @@ export const fetchDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Document Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching documents:', error)
     throw error
   }
 }
 
-export const editDocument = async (formData) => {
+export const editDocument = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-document-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-document-details`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -621,19 +617,18 @@ console.log("TODAYDEBUG",formData,payload)
 
     const branchData = await res.json()
 
-    console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+    console.log('DEBUG updateBranch:', branchData)
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
   }
 }
 
-
 export const fetchListOfRole = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-role-list`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-role-list`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -650,8 +645,8 @@ export const fetchListOfRole = async () => {
     const data = await res.json()
 
     console.log(' DataPOOJA:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -660,7 +655,7 @@ return data.data // return only branch array
 
 export const fetchListOfDesignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-designation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-designation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -677,17 +672,17 @@ export const fetchListOfDesignation = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment) => {
+export const fetchListOfDesignationBasedOnDepartment = async selectedDepartment => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designations-by-department/${selectedDepartment}`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-designations-by-department/${selectedDepartment}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -704,17 +699,17 @@ export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const fetchListOfUser= async () => {
+export const fetchListOfUser = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-users`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-users`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -731,18 +726,17 @@ export const fetchListOfUser= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-
-export const fetchListOfAwardTypes= async () => {
+export const fetchListOfAwardTypes = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-award-types`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-award-types`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -759,22 +753,22 @@ export const fetchListOfAwardTypes= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const createEmployee = async (formData) => {
+export const createEmployee = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-employee`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -791,9 +785,9 @@ console.log("TODAYDEBUG",formData,payload)
 
     const employeeData = await res.json()
 
-    console.log("DEBUG createDepartment:", employeeData)
-    
-return employeeData
+    console.log('DEBUG createDepartment:', employeeData)
+
+    return employeeData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -802,7 +796,7 @@ return employeeData
 
 export const fetchEmployeeData = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-employee-details`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -819,8 +813,8 @@ export const fetchEmployeeData = async () => {
     const data = await res.json()
 
     console.log('Fetched Users Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching users:', error)
     throw error
@@ -829,25 +823,31 @@ return data.data // return only branch array
 
 // app/api/user.js
 
-export const changeUserPassword = async (_id, passworddata ) => {
+export const changeUserPassword = async (_id, passworddata) => {
   try {
-   let payload ={password:passworddata}
-    console.log('POOJA',`${process.env.API_URL}`, payload)
-    const res = await fetch(`${process.env.API_URL}/zobiz/change-password/${_id}`, {
+    let payload = { password: passworddata }
+
+    console.log('POOJA', `${process.env.API_URL}`, payload)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/change-password/${_id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body:JSON.stringify( payload)
+      body: JSON.stringify(payload)
     })
-console.log("pooja",res)
+
+    console.log('pooja', res)
+
     // If server sends invalid JSON or fails
     if (!res.ok) {
       throw new Error(`Request failed with status ${res.status}`)
     }
 
     const result = await res.json()
+
     return result
   } catch (error) {
     console.error('❌ changeUserPassword error:', error)
+
     return {
       success: false,
       message: 'Server error while changing password.'
@@ -855,89 +855,94 @@ console.log("pooja",res)
   }
 }
 
-
 export const updateUserAddress = async (userId, addressData) => {
   try {
-    console.log("PIHU",userId, addressData)
-   
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-address/${userId}`, {
+    console.log('PIHU', userId, addressData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-address/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(addressData)
     })
 
     const result = await res.json()
+
     return result
   } catch (err) {
     console.error('❌ updateUserAddress error:', err)
+
     return { success: false, message: 'Network or server error' }
   }
 }
 
 export const updateUserPermanentAddress = async (userId, addressData) => {
   try {
-    console.log("PIHU",userId, addressData)
-   
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-permanent-address/${userId}`, {
+    console.log('PIHU', userId, addressData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-permanent-address/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(addressData)
     })
 
     const result = await res.json()
+
     return result
   } catch (err) {
     console.error('❌ updateUserAddress error:', err)
+
     return { success: false, message: 'Network or server error' }
   }
 }
 
 export const updateUserBankDetails = async (userId, bank) => {
   try {
-    console.log("PIHU")
-   
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-user-bank/${userId}`, {
+    console.log('PIHU')
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-user-bank/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(bank)
     })
 
     const result = await res.json()
+
     return result
   } catch (err) {
     console.error('❌ updateUserAddress error:', err)
+
     return { success: false, message: 'Network or server error' }
   }
 }
 
 export const updateUserFamilyDetails = async (userId, family) => {
   try {
-    console.log("PIHU")
-   
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-user-family-details/${userId}`, {
+    console.log('PIHU')
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-user-family-details/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(family)
     })
 
     const result = await res.json()
+
     return result
   } catch (err) {
     console.error('❌ updateUserAddress error:', err)
+
     return { success: false, message: 'Network or server error' }
   }
 }
 
-
-
-export const createAwardTypes = async (formData) => {
+export const createAwardTypes = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-     console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-award-types`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-award-types`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -954,9 +959,9 @@ export const createAwardTypes = async (formData) => {
 
     const awardTypesData = await res.json()
 
-    console.log("DEBUG createDepartment:", awardTypesData)
-    
-return awardTypesData
+    console.log('DEBUG createDepartment:', awardTypesData)
+
+    return awardTypesData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -965,7 +970,7 @@ return awardTypesData
 
 export const fetchCountAwardTypes = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-award-types`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-award-types`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -982,8 +987,8 @@ export const fetchCountAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award Types Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Award Types:', error)
     throw error
@@ -992,14 +997,15 @@ return data.data // return only branch array
 
 export const fetchAwardTypes = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-types`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-award-types`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1010,22 +1016,22 @@ export const fetchAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Award Types Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award types:', error)
     throw error
   }
 }
 
-export const editAwardTypes = async (formData) => {
+export const editAwardTypes = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-award-types`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-award-types`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -1042,33 +1048,34 @@ console.log("TODAYDEBUG",formData,payload)
 
     const awardTypesData = await res.json()
 
-    console.log("DEBUG update Award Types:", awardTypesData)
-    
-return awardTypesData
+    console.log('DEBUG update Award Types:', awardTypesData)
+
+    return awardTypesData
   } catch (err) {
     console.error('Failed to update awad types:', err)
     throw err
   }
 }
 
-
-
-export const createAward = async (formData) => {
+export const createAward = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
-  for (let pair of formData.entries()) {
+    console.log('TODAYDEBUG', formData, payload)
+
+    for (let pair of formData.entries()) {
       console.log(pair[0] + ':', pair[1])
     }
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-award`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-award`, {
       method: 'POST',
+
       // headers: {
       //   'Content-Type': 'application/json'
       // },
-      body: payload,
+      body: payload
+
       // cache: 'no-store'
     })
 
@@ -1080,20 +1087,18 @@ console.log("TODAYDEBUG",formData,payload)
 
     const awardData = await res.json()
 
-    console.log("DEBUG createAward:", awardData)
-    
-return awardData
+    console.log('DEBUG createAward:', awardData)
+
+    return awardData
   } catch (err) {
     console.error('Failed to create award:', err)
     throw err
   }
 }
 
-
-
 export const fetchCountAward = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-award`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-award`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1110,24 +1115,25 @@ export const fetchCountAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award ', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
-    console.error('Error fetching Award:',error)
+    console.error('Error fetching Award:', error)
     throw error
   }
 }
 
 export const fetchAward = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-details`,{
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-award-details`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1138,25 +1144,25 @@ export const fetchAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award ', error)
     throw error
   }
 }
 
-
-export const fetchUserDesignation = async (id) => {
+export const fetchUserDesignation = async id => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designation-of-user/${id}`,{
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-designation-of-user/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1167,17 +1173,17 @@ export const fetchUserDesignation = async (id) => {
     const data = await res.json()
 
     console.log('Fetched user designation  Data:', data)
-    
-return data// return only branch array
+
+    return data // return only branch array
   } catch (error) {
     console.error('Error fetching user designation ', error)
     throw error
   }
 }
 
-export const fetchListOfNewDesignation= async () => {
+export const fetchListOfNewDesignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-new-designation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-new-designation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1194,21 +1200,19 @@ export const fetchListOfNewDesignation= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data // return only branch array
+
+    return data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-
-
 // export const updateUserDetails = async (userId, formData) => {
 //   try {
 //     console.log("PIHU")
-   
-//     const res = await fetch(`${process.env.API_URL}/zobiz/update-user/${userId}`, {
+
+//     const res = await fetch(`${process.env.API_URL}/jaycon/update-user/${userId}`, {
 //       method: 'PUT',
 //       // headers: { 'Content-Type': 'application/json' },
 //       body: formData
@@ -1224,7 +1228,7 @@ return data // return only branch array
 
 export const fetchCountUser = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-employee`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1241,8 +1245,8 @@ export const fetchCountUser = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Employee Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Employee:', error)
     throw error
@@ -1256,10 +1260,10 @@ return data.data // return only branch array
 
 // console.log("TODAYDEBUG",formData,payload)
 
-//     const res = await fetch(`${process.env.API_URL}/zobiz/create-promotions`, {
+//     const res = await fetch(`${process.env.API_URL}/jaycon/create-promotions`, {
 //       method: 'POST',
 //       body: payload
-      
+
 //     })
 
 //     if (!res.ok) {
@@ -1271,7 +1275,7 @@ return data.data // return only branch array
 //     const departmentData = await res.json()
 
 //     console.log("DEBUG createDepartment:", departmentData)
-    
+
 // return departmentData
 //   } catch (err) {
 //     console.error('Failed to create department:', err)
@@ -1279,7 +1283,7 @@ return data.data // return only branch array
 //   }
 // }
 
-export const createPromotions = async (formData) => {
+export const createPromotions = async formData => {
   try {
     // 🧠 Create a FormData object (for file + text upload)
     const form = new FormData()
@@ -1289,39 +1293,40 @@ export const createPromotions = async (formData) => {
       if (value !== undefined && value !== null) {
         // If it's an object (like FileList), handle accordingly
         if (Array.isArray(value)) {
-          value.forEach((v) => form.append(key, v))
+          value.forEach(v => form.append(key, v))
         } else {
           form.append(key, value)
         }
       }
     })
 
-    console.log("📤 Sending Promotion Data:", Object.fromEntries(form.entries()))
+    console.log('📤 Sending Promotion Data:', Object.fromEntries(form.entries()))
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-promotions`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-promotions`, {
       method: 'POST',
       body: form // ✅ send FormData (no need for Content-Type header)
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create promotion: ${errorText}`)
     }
 
     const data = await res.json()
-    console.log("✅ Promotion Created:", data)
-    return data
 
+    console.log('✅ Promotion Created:', data)
+
+    return data
   } catch (err) {
     console.error('❌ Failed to create promotion:', err)
     throw err
   }
 }
 
-
 export const fetchCountPromotion = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-promotions`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-promotions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1338,8 +1343,8 @@ export const fetchCountPromotion = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Promotion Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Promotion:', error)
     throw error
@@ -1348,14 +1353,15 @@ return data.data // return only branch array
 
 export const fetchPromotions = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/get-promotions`,{
+    const res = await fetch(`${process.env.API_URL}/jaycon/get-promotions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1366,26 +1372,22 @@ export const fetchPromotions = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award ', error)
     throw error
   }
 }
 
-
-
-
-
-export const createCategoryIndicator = async (formData) => {
+export const createCategoryIndicator = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator-category`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-indicator-category`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1402,19 +1404,18 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createCategoryIndicator:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createCategoryIndicator:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create category indicator:', err)
     throw err
   }
 }
 
-
 export const fetchCountCategoryIndicator = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-indicator-category`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-indicator-category`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1431,19 +1432,17 @@ export const fetchCountCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Category Indicator Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Category Indicator:', error)
     throw error
   }
 }
 
-
-
 export const fetchCategoryIndicator = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-category`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-indicator-category`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1460,23 +1459,22 @@ export const fetchCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category indicator Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching category indicator:', error)
     throw error
   }
 }
 
-
-export const editCategoryIndicator = async (formData) => {
+export const editCategoryIndicator = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicatorcategory`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-indicatorcategory`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -1493,19 +1491,20 @@ export const editCategoryIndicator = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateCategoryIndicator:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateCategoryIndicator:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update category indicator:', err)
     throw err
   }
 }
+
 //Inndicator
 
 export const fetchListOfCategoryIndicator = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-indicator-category`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-indicator-category`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1522,22 +1521,22 @@ export const fetchListOfCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const createIndicator = async (formData) => {
+export const createIndicator = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-indicator`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1554,9 +1553,9 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createIndicator:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createIndicator:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create indicator:', err)
     throw err
@@ -1565,7 +1564,7 @@ return departmentData
 
 export const fetchIndicator = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-indicator-details`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1582,17 +1581,18 @@ export const fetchIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only indicator array
+
+    return data.data // return only indicator array
   } catch (error) {
     console.error('Error fetching  indicator:', error)
     throw error
   }
 }
+
 // app/server/actions.js
 // export const fetchIndicator = async () => {
 //   try {
-//     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+//     const res = await fetch(`${process.env.API_URL}/jaycon/fetch-indicator-details`, {
 //       method: 'GET',
 //       headers: { 'Content-Type': 'application/json' },
 //       cache: 'no-store' // ensures latest data
@@ -1622,7 +1622,7 @@ return data.data // return only indicator array
 // app/server/actions.js
 // export const fetchIndicator = async () => {
 //   try {
-//     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details`, {
+//     const res = await fetch(`${process.env.API_URL}/jaycon/fetch-indicator-details`, {
 //       method: 'GET',
 //       headers: { 'Content-Type': 'application/json' },
 //       cache: 'no-store'
@@ -1658,11 +1658,9 @@ return data.data // return only indicator array
 //   }
 // }
 
-
-
 export const fetchCountIndicator = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-indicator`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-indicator`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1679,22 +1677,22 @@ export const fetchCountIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  Indicator Data:', data)
-    
-return data.data // return only indicator array
+
+    return data.data // return only indicator array
   } catch (error) {
     console.error('Error fetching  Indicator:', error)
     throw error
   }
 }
 
-export const editIndicator = async (formData) => {
+export const editIndicator = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicator`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-indicator`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -1711,24 +1709,23 @@ export const editIndicator = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateIndicator:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateIndicator:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update indicator:', err)
     throw err
   }
 }
 
-
-export const createGoalType = async (formData) => {
+export const createGoalType = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-goal-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-goal-type`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1745,9 +1742,9 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createGoalType:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createGoalType:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create GoalType:', err)
     throw err
@@ -1756,7 +1753,7 @@ return departmentData
 
 export const fetchGoalType = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-goal-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-goal-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1773,8 +1770,8 @@ export const fetchGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  GoalType:', error)
     throw error
@@ -1783,7 +1780,7 @@ return data.data // return only GoalType array
 
 export const fetchCountGoalType = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-goal-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-goal-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1800,22 +1797,22 @@ export const fetchCountGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  GoalType Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  GoalType:', error)
     throw error
   }
 }
 
-export const editGoalType = async (formData) => {
+export const editGoalType = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-goaltype`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-goaltype`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -1832,9 +1829,9 @@ export const editGoalType = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateGoalType:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateGoalType:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update GoalType:', err)
     throw err
@@ -1843,7 +1840,7 @@ return departmentData
 
 export const fetchListOfGoalType = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-goal-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-goal-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1860,22 +1857,22 @@ export const fetchListOfGoalType = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const createEmployeeGoal = async (formData) => {
+export const createEmployeeGoal = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-goal`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-employee-goal`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -1891,9 +1888,9 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG create employee Goal:", departmentData)
-    
-return departmentData
+    console.log('DEBUG create employee Goal:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create  employee Goal:', err)
     throw err
@@ -1902,7 +1899,7 @@ return departmentData
 
 export const fetchCountEmployeeGoal = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-goal`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-employee-goal`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1919,8 +1916,8 @@ export const fetchCountEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee goal Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  employee goal:', error)
     throw error
@@ -1929,7 +1926,7 @@ return data.data // return only GoalType array
 
 export const fetchEmployeeGoal = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-goals`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-employee-goals`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -1946,21 +1943,22 @@ export const fetchEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only EmployeeGoal array
+
+    return data.data // return only EmployeeGoal array
   } catch (error) {
     console.error('Error fetching  EmployeeGoal:', error)
     throw error
   }
 }
-export const editEmployeeGoal = async (formData) => {
+
+export const editEmployeeGoal = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-employee-goal`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-employee-goal`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -1977,9 +1975,9 @@ export const editEmployeeGoal = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateEmployeeGoal:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateEmployeeGoal:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update EmployeeGoal:', err)
     throw err
@@ -1987,14 +1985,14 @@ return departmentData
 }
 
 //Review Cycle APIS
-export const createReviewCycle = async (formData) => {
+export const createReviewCycle = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-review-cycle`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -2011,9 +2009,9 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG createReviewCycle:", departmentData)
-    
-return departmentData
+    console.log('DEBUG createReviewCycle:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create ReviewCycle:', err)
     throw err
@@ -2022,7 +2020,7 @@ return departmentData
 
 export const fetchReviewCycle = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-review-cycle`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2039,8 +2037,8 @@ export const fetchReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only ReviewCycle array
+
+    return data.data // return only ReviewCycle array
   } catch (error) {
     console.error('Error fetching  ReviewCycle:', error)
     throw error
@@ -2049,7 +2047,7 @@ return data.data // return only ReviewCycle array
 
 export const fetchCountReviewCycle = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-review-cycle`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2066,22 +2064,22 @@ export const fetchCountReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  ReviewCycle Data:', data)
-    
-return data.data // return only ReviewCycle array
+
+    return data.data // return only ReviewCycle array
   } catch (error) {
     console.error('Error fetching  ReviewCycle:', error)
     throw error
   }
 }
 
-export const editReviewCycle = async (formData) => {
+export const editReviewCycle = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log('TODAYDEBUG', formData, payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-review-cycle`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -2098,19 +2096,20 @@ export const editReviewCycle = async (formData) => {
 
     const departmentData = await res.json()
 
-    console.log("DEBUG updateReviewCycle:", departmentData)
-    
-return departmentData
+    console.log('DEBUG updateReviewCycle:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update ReviewCycle:', err)
     throw err
   }
 }
+
 //Employee Review Cycle
 
 export const fetchListOfEmployeeReviewCycle = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-review-cycle`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2127,8 +2126,8 @@ export const fetchListOfEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -2137,7 +2136,7 @@ return data.data // return only category indicator array
 
 export const fetchCountEmployeeReviewCycle = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-employee-review-cycle`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2154,22 +2153,22 @@ export const fetchCountEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee review cycle Data:', data)
-    
-return data.data // return only Employee Review cycle array
+
+    return data.data // return only Employee Review cycle array
   } catch (error) {
     console.error('Error fetching  Employee Review cycle:', error)
     throw error
   }
 }
 
-export const createEmployeeReviewCycle = async (formData) => {
+export const createEmployeeReviewCycle = async formData => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log('TODAYDEBUG', formData, process.env.API_URL)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-employee-review-cycle`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -2185,9 +2184,9 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
 
     const departmentData = await res.json()
 
-    console.log("DEBUG create employee review cycle:", departmentData)
-    
-return departmentData
+    console.log('DEBUG create employee review cycle:', departmentData)
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create  employee review cycle:', err)
     throw err
@@ -2196,7 +2195,7 @@ return departmentData
 
 export const fetchEmployeeReviewCycle = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-review-cycle`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-employee-review-cycle`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2213,20 +2212,20 @@ export const fetchEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only EmployeeReviewCycle array
+
+    return data.data // return only EmployeeReviewCycle array
   } catch (error) {
     console.error('Error fetching  EmployeeReviewCycle:', error)
     throw error
   }
 }
 
-
 // 🧠 Fetch single employee review details by ID
-export const fetchEmployeeReviewById = async (id) => {
+export const fetchEmployeeReviewById = async id => {
   try {
-    console.log("POOJAIDS",id)
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-review/${id}`, {
+    console.log('POOJAIDS', id)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-employee-review/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2236,6 +2235,7 @@ export const fetchEmployeeReviewById = async (id) => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch review details: ${errorText}`)
     }
 
@@ -2255,12 +2255,9 @@ export const fetchEmployeeReviewById = async (id) => {
   }
 }
 
-
 export const fetchIndicatorDetailsEmployeeReview = async () => {
   try {
-   
-
-    const res = await fetch(`${ process.env.API_URL }/zobiz/fetch-indicator-details-employee-review`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-indicator-details-employee-review`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2270,10 +2267,12 @@ export const fetchIndicatorDetailsEmployeeReview = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch indicator details: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Fetched Indicator Details:', data)
 
     // return only array for easy usage
@@ -2286,36 +2285,43 @@ export const fetchIndicatorDetailsEmployeeReview = async () => {
 
 export async function fetchDepartmentsByBranch(branchId) {
   try {
-    console.log("TESTDATA",branchId)
-    const res = await fetch(`${process.env.API_URL}/zobiz/departments/byBranch/${branchId}`, {
+    console.log('TESTDATA', branchId)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/departments/byBranch/${branchId}`, {
       cache: 'no-store'
     })
+
     const data = await res.json()
+
     return data // { success: true, data: [ { _id, departmentName } ] }
   } catch (error) {
     console.error('Error fetching departments by branch:', error)
+
     return { success: false, data: [] }
   }
 }
 
 export async function fetchDesignationsByDepartment(departmentId) {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/designations/byDepartment/${departmentId}`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/designations/byDepartment/${departmentId}`, {
       cache: 'no-store'
     })
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
+
     return data
   } catch (error) {
     console.error('Error fetching designations by department:', error)
+
     return { success: false, data: [] }
   }
 }
 
-//Resignation 
+//Resignation
 export const fetchCountResignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-resignation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-resignation`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2332,32 +2338,34 @@ export const fetchCountResignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Resignations Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Resignations:', error)
     throw error
   }
 }
 
-
-export const createResignation = async (formData) => {
+export const createResignation = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-resignation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-resignation`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create resignation: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ createResignation Response:", result)
+
+    console.log('✅ createResignation Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create resignation:', err)
@@ -2367,14 +2375,15 @@ export const createResignation = async (formData) => {
 
 export const fetchResignation = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-resignations`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-resignations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2385,29 +2394,31 @@ export const fetchResignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Resignation Data:', data)
-    
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Resignations:', error)
     throw error
   }
 }
 
-export const updateResignation = async (formData) =>  {
+export const updateResignation = async formData => {
   try {
+    console.log('NPRSTEST', formData)
 
-    console.log("NPRSTEST",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-resignation`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-resignation`, {
       method: 'PUT',
       body: formData
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to update resignation: ${errorText}`)
     }
 
     const data = await res.json()
+
     return data
   } catch (err) {
     console.error('Error updating resignation:', err)
@@ -2418,7 +2429,7 @@ export const updateResignation = async (formData) =>  {
 //Termination
 export const fetchCountTermination = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-termination`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-termination`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2435,31 +2446,34 @@ export const fetchCountTermination = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Terminations Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Terminations:', error)
     throw error
   }
 }
 
-export const createTermination = async (formData) => {
+export const createTermination = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-termination`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-termination`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create termination: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ createTermination Response:", result)
+
+    console.log('✅ createTermination Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create termination:', err)
@@ -2469,14 +2483,15 @@ export const createTermination = async (formData) => {
 
 export const fetchTermination = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-terminations`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-terminations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2487,8 +2502,8 @@ export const fetchTermination = async () => {
     const data = await res.json()
 
     console.log('Fetched Termination Data:', data)
-   
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Terminations:', error)
     throw error
@@ -2498,7 +2513,7 @@ export const fetchTermination = async () => {
 //Warning
 export const fetchCountWarning = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-warning`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-warning`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2515,32 +2530,36 @@ export const fetchCountWarning = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Warnings Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Warnings:', error)
     throw error
   }
 }
 
-export const createWarning = async (formData) => {
+export const createWarning = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-warning`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-warning`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create warning: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Warning Response:", result)
+
+    console.log('✅ create  Warning Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create warning:', err)
@@ -2550,14 +2569,15 @@ export const createWarning = async (formData) => {
 
 export const fetchWarning = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-warnings`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-warnings`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+
+    console.log('DEBUG', res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2568,20 +2588,18 @@ export const fetchWarning = async () => {
     const data = await res.json()
 
     console.log('Fetched Warning Data:', data)
-   
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Warnings:', error)
     throw error
   }
 }
 
-
-
 //Trip
 export const fetchCountTrip = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-trip`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-trip`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2598,32 +2616,36 @@ export const fetchCountTrip = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Trips Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Trips:', error)
     throw error
   }
 }
 
-export const createTrip= async (formData) => {
+export const createTrip = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-trip`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-trip`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create trip: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Trip Response:", result)
+
+    console.log('✅ create  Trip Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create trip:', err)
@@ -2633,7 +2655,7 @@ export const createTrip= async (formData) => {
 
 export const fetchTrips = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-trips`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-trips`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -2641,21 +2663,25 @@ export const fetchTrips = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch trips: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Trips:', data)
+
     return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Trips:', error)
     throw error
   }
 }
+
 //Complaint
 export const fetchCountComplaint = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-complaint`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-complaint`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2672,32 +2698,36 @@ export const fetchCountComplaint = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Complaints Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Complaints:', error)
     throw error
   }
 }
 
-export const createComplaint= async (formData) => {
+export const createComplaint = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-complaint`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-complaint`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create complaint: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Complaint Response:", result)
+
+    console.log('✅ create  Complaint Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create complaint:', err)
@@ -2707,7 +2737,7 @@ export const createComplaint= async (formData) => {
 
 export const fetchComplaints = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-complaints`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-complaints`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -2715,21 +2745,25 @@ export const fetchComplaints = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch complaints: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Complaints:', data)
+
     return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Complaints:', error)
     throw error
   }
 }
+
 //Transfer
 export const fetchCountTransfer = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-transfer`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-transfer`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2746,31 +2780,36 @@ export const fetchCountTransfer = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Transfer Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Transfer:', error)
     throw error
   }
 }
-export const createTransfer= async (formData) => {
+
+export const createTransfer = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-transfer`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-transfer`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create transfer: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Transfer Response:", result)
+
+    console.log('✅ create  Transfer Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create transfer:', err)
@@ -2780,7 +2819,7 @@ export const createTransfer= async (formData) => {
 
 export const fetchTransfers = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-transfers`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-transfers`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -2788,21 +2827,25 @@ export const fetchTransfers = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch transfers: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Transfers:', data)
+
     return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Transfers:', error)
     throw error
   }
 }
+
 //Holidays
 export const fetchCountHolidays = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-holidays`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-holidays`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2819,32 +2862,36 @@ export const fetchCountHolidays = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Holidays Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Holidays:', error)
     throw error
   }
 }
 
-export const createHolidays= async (formData) => {
+export const createHolidays = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-holiday`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-holiday`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create holiday: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Holiday Response:", result)
+
+    console.log('✅ create  Holiday Response:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create holiday:', err)
@@ -2852,9 +2899,33 @@ export const createHolidays= async (formData) => {
   }
 }
 
+export const fetchHiring = async () => {
+  try {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-holidays`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      cache: 'no-store'
+    })
+
+    if (!res.ok) {
+      throw new Error('Failed to fetch hiring data')
+    }
+
+    const data = await res.json()
+
+    return data.data
+  } catch (error) {
+    console.error('Error fetching hiring:', error)
+
+    return []
+  }
+}
+
 export const fetchHolidays = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-holidays`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-holidays`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -2862,11 +2933,14 @@ export const fetchHolidays = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch holidays: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Holidays:', data)
+
     return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Holidays:', error)
@@ -2877,7 +2951,7 @@ export const fetchHolidays = async () => {
 //Announcement
 export const fetchCountAnnouncement = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-announcement`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-announcement`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2894,33 +2968,36 @@ export const fetchCountAnnouncement = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Announcements Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Announcements:', error)
     throw error
   }
 }
 
-
-export const createAnnouncements= async (formData) => {
+export const createAnnouncements = async formData => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-announcement`, {
+    console.log('POOJAFORMDATA', formData)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-announcement`, {
       method: 'POST',
       body: formData, // send raw FormData
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     // 🧾 Handle errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create Announcements: ${errorText}`)
     }
 
     const result = await res.json()
-    console.log("✅ create  Holiday Announcements:", result)
+
+    console.log('✅ create  Holiday Announcements:', result)
+
     return result
   } catch (err) {
     console.error('❌ Failed to create Announcements:', err)
@@ -2928,10 +3005,9 @@ export const createAnnouncements= async (formData) => {
   }
 }
 
-
 export const fetchAnnouncements = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-announcements`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-announcements`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       cache: 'no-store'
@@ -2939,11 +3015,14 @@ export const fetchAnnouncements = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch announcements: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Announcements:', data)
+
     return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Announcements:', error)
@@ -2954,7 +3033,7 @@ export const fetchAnnouncements = async () => {
 //Attendancemanagemet  Shift
 export const fetchCountShift = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-shift`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-shift`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2971,19 +3050,17 @@ export const fetchCountShift = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Shift Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Shift:', error)
     throw error
   }
 }
 
-
-
-export  const createShift =async (payload) =>{
+export const createShift = async payload => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-shift`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-shift`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -3002,6 +3079,7 @@ export  const createShift =async (payload) =>{
     return data
   } catch (error) {
     console.error('Error in createDepartment:', error)
+
     return {
       success: false,
       message: error.message || 'Something went wrong'
@@ -3009,10 +3087,9 @@ export  const createShift =async (payload) =>{
   }
 }
 
-
 export const fetchShift = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-shift`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-shift`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -3022,10 +3099,12 @@ export const fetchShift = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch shifts: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Shifts Data ✅:', data)
 
     // return just the array of shifts
@@ -3036,8 +3115,7 @@ export const fetchShift = async () => {
   }
 }
 
-
-export const editShift = async (formData) => {
+export const editShift = async formData => {
   try {
     // Prepare payload directly from formData
     const payload = {
@@ -3056,40 +3134,41 @@ export const editShift = async (formData) => {
       gracePeriod: formData.gracePeriod,
       isNightShift: formData.isNightShift,
       status: formData.status
-    };
+    }
 
-    console.log("🟡 Sending update shift payload:", payload);
+    console.log('🟡 Sending update shift payload:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-shift`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-attendance-shift`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to update shift: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to update shift: ${errorText}`)
     }
 
-    const shiftData = await res.json();
+    const shiftData = await res.json()
 
-    console.log("✅ Updated Shift Response:", shiftData);
+    console.log('✅ Updated Shift Response:', shiftData)
 
-    return shiftData;
+    return shiftData
   } catch (err) {
-    console.error('❌ Failed to update shift:', err);
-    throw err;
+    console.error('❌ Failed to update shift:', err)
+    throw err
   }
-};
+}
 
 //Attendance policy
 
 export const fetchCountAttendancePolicy = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-attendance-policy`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -3106,17 +3185,16 @@ export const fetchCountAttendancePolicy = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Policy Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Attendance Policy:', error)
     throw error
   }
 }
 
-
 // ✅ Create Attendance Policy - POST API
-export const createAttendancePolicy = async (formData) => {
+export const createAttendancePolicy = async formData => {
   try {
     // 🧩 Prepare payload — ensure numeric fields are numbers
     const payload = {
@@ -3129,7 +3207,7 @@ export const createAttendancePolicy = async (formData) => {
 
     console.log('🟢 Sending Attendance Policy Payload:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-attendance-policy`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -3141,11 +3219,13 @@ export const createAttendancePolicy = async (formData) => {
     // ❌ Handle server errors
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to create attendance policy: ${errorText}`)
     }
 
     // ✅ Parse response
     const data = await res.json()
+
     console.log('✅ Attendance Policy Created:', data)
 
     return data
@@ -3157,7 +3237,7 @@ export const createAttendancePolicy = async (formData) => {
 
 export const fetchAttendancePolicy = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-attendance-policy`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -3167,10 +3247,12 @@ export const fetchAttendancePolicy = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch atttendance policy: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Attendance Policy Data ✅:', data)
 
     // return just the array of shifts
@@ -3181,7 +3263,7 @@ export const fetchAttendancePolicy = async () => {
   }
 }
 
-export const editAttendancePolicy = async (formData) => {
+export const editAttendancePolicy = async formData => {
   try {
     // 🧩 Prepare payload directly from formData
     const payload = {
@@ -3191,47 +3273,47 @@ export const editAttendancePolicy = async (formData) => {
       lateArrivalGrace: Number(formData.lateArrivalGrace),
       earlyDeparture: Number(formData.earlyDeparture),
       status: formData.status
-    };
+    }
 
-    console.log("🟡 Sending Attendance Policy Update Payload:", payload);
+    console.log('🟡 Sending Attendance Policy Update Payload:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-attendance-policy`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to update attendance policy: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to update attendance policy: ${errorText}`)
     }
 
-    const data = await res.json();
+    const data = await res.json()
 
-    console.log("✅ Attendance Policy Updated Successfully:", data);
+    console.log('✅ Attendance Policy Updated Successfully:', data)
 
-    return data;
+    return data
   } catch (err) {
-    console.error('❌ Failed to update attendance policy:', err);
-    throw err;
+    console.error('❌ Failed to update attendance policy:', err)
+    throw err
   }
-};
+}
 
 //Attendance records
-export const fetchCountAttendanceRecord = async (token) => {
+export const fetchCountAttendanceRecord = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchCountAttendanceRecord')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-records`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-attendance-records`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3245,89 +3327,91 @@ export const fetchCountAttendanceRecord = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Record Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Attendance Record:', error)
     throw error
   }
 }
 
-
-export const createAttendanceRecord = async (formData) => {
+export const createAttendanceRecord = async formData => {
   try {
     // 🧩 Prepare payload to match backend expectations
     const payload = {
-      employees: formData.employees,                                // employee ObjectId
-      date: formData.date,                                          // ISO date string (YYYY-MM-DD)
-      clockIn: formData.clockIn,                                    // HH:mm
-      clockOut: formData.clockOut,                                  // HH:mm
-      breakHours: formData.breakHours,                              // number or string
-      status: formData.status,                                      // Present/Absent/etc.
-      isHoliday: formData.isHoliday,                                // boolean
-      notes: formData.notes                                         // string
-    };
+      employees: formData.employees, // employee ObjectId
+      date: formData.date, // ISO date string (YYYY-MM-DD)
+      clockIn: formData.clockIn, // HH:mm
+      clockOut: formData.clockOut, // HH:mm
+      breakHours: formData.breakHours, // number or string
+      status: formData.status, // Present/Absent/etc.
+      isHoliday: formData.isHoliday, // boolean
+      notes: formData.notes // string
+    }
 
-    console.log('🟢 Sending Attendance Record Payload:', payload);
+    console.log('🟢 Sending Attendance Record Payload:', payload)
 
     // 📨 Send POST request to backend API
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-record`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-attendance-record`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
       cache: 'no-store' // ensures fresh API call
-    });
+    })
 
     // ❌ Handle HTTP-level errors
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to create attendance record: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create attendance record: ${errorText}`)
     }
 
     // ✅ Parse backend response
-    const data = await res.json();
-    console.log('✅ Attendance Record Created:', data);
+    const data = await res.json()
 
-    return data;
+    console.log('✅ Attendance Record Created:', data)
+
+    return data
   } catch (error) {
-    console.error('❌ Error creating attendance record:', error);
-    throw error;
+    console.error('❌ Error creating attendance record:', error)
+    throw error
   }
-};
+}
 
-export const fetchAttendanceRecords = async (token) => {
+export const fetchAttendanceRecords = async token => {
   try {
     if (!token) throw new Error('Token missing for fetchAttendanceRegularizations')
-    const res = await fetch(`${process.env.API_URL}/zobiz/get-attendance-records`, {
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/get-attendance-records`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token
+        token: token
       },
       cache: 'no-store' // always get latest records
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch attendance records: ${errorText}`)
     }
 
-    const data = await res.json();
-    console.log('✅ Fetched Attendance Records:', data);
+    const data = await res.json()
+
+    console.log('✅ Fetched Attendance Records:', data)
 
     // Return only the array of records
-    return data.data;
+    return data.data
   } catch (error) {
-    console.error('❌ Error fetching attendance records:', error);
-    throw error;
+    console.error('❌ Error fetching attendance records:', error)
+    throw error
   }
-};
+}
 
-
-
-export const editAttendanceRecord = async (formData) => {
+export const editAttendanceRecord = async formData => {
   try {
     // 🧩 Prepare payload from formData
     const payload = {
@@ -3346,10 +3430,11 @@ export const editAttendanceRecord = async (formData) => {
     console.log('🟡 Sending Attendance Record Update Payload:', payload)
 
     // ✅ API call
-    const res = await fetch(`${process.env.API_URL}/zobiz/edit-attendance-record`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/edit-attendance-record`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
+
         // If your backend uses auth middleware, uncomment below:
         // 'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
@@ -3366,39 +3451,47 @@ export const editAttendanceRecord = async (formData) => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to update attendance record: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Attendance Record Updated Successfully:', data)
+
     return data
   } catch (err) {
     console.error('❌ Failed to update attendance record:', err)
     throw err
   }
 }
+
 //Attendance Regularization
 
-export const fetchCountAttendanceRegularization = async (token) => {
+export const fetchCountAttendanceRegularization = async token => {
   try {
     if (!token) throw new Error('Token missing for fetchCountAttendanceRegularization')
-    console.log("TOKEN",token)
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-regularization`, {
+    console.log('TOKEN', token)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-attendance-regularization`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token // ✅ your backend expects token here, not Bearer
+        token: token // ✅ your backend expects token here, not Bearer
       },
       cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch regularization count: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Fetched Count Attendance Regularization Data:', data)
+
     return data.data
   } catch (error) {
     console.error('❌ Error fetching Attendance Regularization Count:', error)
@@ -3406,45 +3499,47 @@ export const fetchCountAttendanceRegularization = async (token) => {
   }
 }
 
-
 export const fetchAttendanceRecordsForAR = async (employeeId, token) => {
   try {
-    if (!employeeId) throw new Error('Employee ID missing for fetchAttendanceRecordsForAR');
-    if (!token) throw new Error('Token missing for fetchAttendanceRecordsForAR');
+    if (!employeeId) throw new Error('Employee ID missing for fetchAttendanceRecordsForAR')
+    if (!token) throw new Error('Token missing for fetchAttendanceRecordsForAR')
 
-    console.log("📩 Fetching Attendance Records For:", employeeId);
-    console.log("🔑 Token:", token);
+    console.log('📩 Fetching Attendance Records For:', employeeId)
+    console.log('🔑 Token:', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-records-for-ar/${employeeId}`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-attendance-records-for-ar/${employeeId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token // ✅ Backend expects token here (not Bearer)
+        token: token // ✅ Backend expects token here (not Bearer)
       },
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch attendance records: ${errorText}`)
     }
 
-    const data = await res.json();
-    console.log('✅ Fetched Attendance Records For AR:', data);
+    const data = await res.json()
+
+    console.log('✅ Fetched Attendance Records For AR:', data)
 
     // returns: { success: true, count: <number>, data: [ { _id, displayInfo } ] }
-    return data;
+    return data
   } catch (error) {
-    console.error('❌ Error fetching Attendance Records For AR:', error);
-    return { success: false, data: [] };
+    console.error('❌ Error fetching Attendance Records For AR:', error)
+
+    return { success: false, data: [] }
   }
-};
+}
 
 export const createAttendanceRegularization = async (payload, token) => {
   try {
     if (!token) throw new Error('Token missing for createAttendanceRegularization')
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-attendance-regularization`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-attendance-regularization`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -3455,9 +3550,11 @@ export const createAttendanceRegularization = async (payload, token) => {
     })
 
     const data = await res.json()
+
     return data
   } catch (error) {
     console.error('❌ Error in createAttendanceRegularization:', error)
+
     return {
       success: false,
       message: error.message || 'Something went wrong while creating regularization request'
@@ -3465,28 +3562,29 @@ export const createAttendanceRegularization = async (payload, token) => {
   }
 }
 
-
-export const fetchAttendanceRegularizations = async (token) => {
+export const fetchAttendanceRegularizations = async token => {
   try {
     if (!token) throw new Error('Token missing for fetchAttendanceRegularizations')
 
     console.log('🔹 Fetching Attendance Regularizations with token:', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-attendance-regularizations`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-attendance-regularizations`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token, // ✅ backend expects token here (not Bearer)
+        token: token // ✅ backend expects token here (not Bearer)
       },
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch attendance regularizations: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Attendance Regularizations fetched:', data)
 
     // return the array safely
@@ -3501,7 +3599,7 @@ export const updateAttendanceRegularization = async (payload, token) => {
   try {
     if (!token) throw new Error('Token missing for updateAttendanceRegularization')
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-attendance-regularization`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-attendance-regularization`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -3519,9 +3617,11 @@ export const updateAttendanceRegularization = async (payload, token) => {
     }
 
     console.log('✅ Attendance Regularization updated successfully:', data)
+
     return data
   } catch (error) {
     console.error('❌ Error in updateAttendanceRegularization:', error)
+
     return {
       success: false,
       message: error.message || 'Something went wrong while updating attendance regularization'
@@ -3533,120 +3633,172 @@ export const updateAttendanceRegularization = async (payload, token) => {
 
 export const fetchCountSalaryComponent = async () => {
   try {
-  
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-salarycomponent-count`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-salarycomponent-count`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      
+        'Content-Type': 'application/json'
       },
       cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch salary component count: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Fetched Count Salary Component Data:', data)
-    return data.data
+
+    //     return data.data
+    //   } catch (error) {
+    //     console.error('❌ Error fetching Salary Component Count:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountSalaryComponent Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching Salary Component Count:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-
-export const createSalaryComponent = async (formData) => {
+export const createSalaryComponent = async formData => {
   try {
-  
-
     // 📨 Send POST request to backend API
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-salary-component`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-salary-component`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(formData),
       cache: 'no-store' // ensures fresh API call
-    });
+    })
 
     // ❌ Handle HTTP-level errors
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to create salary component: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to create salary component: ${errorText}`)
     }
 
     // ✅ Parse backend response
-    const data = await res.json();
-    console.log('✅Salary component Created:', data);
+    const data = await res.json()
 
-    return data;
+    console.log('✅Salary component Created:', data)
+
+    //     return data
+    //   } catch (error) {
+    //     console.error('❌ Error creating Salary Component:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of createSalaryComponent Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error creating Salary Component:', error);
-    throw error;
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
-};
+}
 
 export const fetchSalaryComponent = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-salary-component`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-salary-component`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // always get latest records
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to fetch attendance records: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to fetch attendance records: ${errorText}`)
     }
 
-    const data = await res.json();
-    console.log('✅ Fetched Attendance Records:', data);
+    const data = await res.json()
 
-    // Return only the array of records
-    return data.data;
+    console.log('✅ Fetched Attendance Records:', data)
+
+    //     // Return only the array of records
+    //     return data.data
+    //   } catch (error) {
+    //     console.error('❌ Error fetching attendance records:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of SalaryComponent Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching attendance records:', error);
-    throw error;
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
-};
+}
 
-export const editSararyComponent = async (formData) => {
+export const editSararyComponent = async formData => {
   try {
-   
-const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-salary-component`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(formData),
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to update salary component: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to update salary component: ${errorText}`)
     }
 
-    const data = await res.json();
+    const data = await res.json()
 
-    console.log("✅ Salary  Component Updated Successfully:", data);
+    console.log('✅ Salary  Component Updated Successfully:', data)
 
-    return data;
-  } catch (err) {
-    console.error('❌ Failed to update salary component:', err);
-    throw err;
+    //
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of EditSalaryComponent Data:', parsedBody)
+
+    return parsedBody // final usable data
+  } catch (error) {
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
-};
+}
 
 // export const fetchListOfSalaryComponent = async () => {
 //   try {
-//     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-salary-component`, {
+//     const res = await fetch(`${process.env.API_URL}/jaycon/list-of-salary-component`, {
 //       method: 'GET',
 //       headers: {
 //         'Content-Type': 'application/json'
@@ -3663,8 +3815,8 @@ const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, 
 //     const data = await res.json()
 
 //     console.log(' Data:', data)
-    
-// return data.data 
+
+// return data.data
 //   } catch (error) {
 //     console.error('Error fetching:', error)
 //     throw error
@@ -3673,7 +3825,9 @@ const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, 
 
 export const fetchListOfSalaryComponent = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-salary-component`, {
+    console.log('🔹 Fetching Salary Components...')
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-salary-component`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -3681,43 +3835,86 @@ export const fetchListOfSalaryComponent = async () => {
       cache: 'no-store'
     })
 
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
+
+    // ❌ API error
     if (!res.ok) {
-      const errorText = await res.text()
-      throw new Error(`Failed to fetch salary component: ${errorText}`)
+      return {
+        success: false,
+        message: data?.message || 'Failed to fetch salary components',
+        data: []
+      }
     }
 
-    const data = await res.json()
-    console.log('✅ Salary Component API Response:', data)
+    // ✅ Decrypt block (FIXED POSITION)
+    let parsedBody = data
 
-    // If backend returns { success: true, data: [...] }
-    if (data?.data && Array.isArray(data.data)) {
-      return data.data
+    if (data?.data && typeof data.data === 'string') {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
     }
 
-    // If backend directly returns array
-    if (Array.isArray(data)) {
-      return data
+    console.log('✅ Salary Component API Response:', parsedBody)
+
+    // ✅ Handle different structures
+    if (parsedBody?.data && Array.isArray(parsedBody.data)) {
+      return {
+        success: true,
+        message: 'Data fetched successfully',
+        data: parsedBody.data
+      }
     }
 
-    console.warn('⚠️ Unexpected salary component response structure:', data)
-    return []
+    if (Array.isArray(parsedBody)) {
+      return {
+        success: true,
+        message: 'Data fetched successfully',
+        data: parsedBody
+      }
+    }
+
+    console.warn('⚠️ Unexpected salary component response structure:', parsedBody)
+
+    return {
+      success: true,
+      message: 'No data found',
+      data: []
+    }
   } catch (error) {
     console.error('❌ Error fetching salary components:', error)
-    return []
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while fetching salary components',
+      data: []
+    }
   }
 }
 
-export const fetchCountEmployeeSalary = async (token) => {
+export const fetchCountEmployeeSalary = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchCountEmployeeSalary')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-salary`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-employee-salary`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3731,16 +3928,34 @@ export const fetchCountEmployeeSalary = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Employee Salary Data:', data)
-    
-return data.data // return only branch array
+
+    //
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountEmployeeSalary Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching Emloyee Salary:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
+
 export const createEmployeeSalary = async (formData, token) => {
   try {
-    // 🧩 Prepare payload matching backend expectations
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for createEmployeeSalary'
+      }
+    }
+
+    // 🧩 Prepare payload
     const payload = {
       employee: formData.employee,
       basicSalary: formData.basicSalary,
@@ -3748,140 +3963,205 @@ export const createEmployeeSalary = async (formData, token) => {
       fixedSalary: formData.fixedSalary,
       grossSalary: formData.grossSalary,
       annualSalary: formData.annualSalary,
-      isHraFixed:formData.isHraFixed,
-      hraFixedAmount:formData.hraFixedAmount,
-      isNAPS:formData.isNAPS,
-      isNAPS:formData.isNAPS,
+      isHraFixed: formData.isHraFixed,
+      hraFixedAmount: formData.hraFixedAmount,
+      isNAPS: formData.isNAPS, // ✅ fixed
       status: formData.status,
       notes: formData.notes,
-      employeeStatus:formData.employeeStatus
-    };
+      employeeStatus: formData.employeeStatus
+    }
 
-    console.log('🟢 Sending Salary Payload:', payload);
+    console.log('📤 CREATE EMPLOYEE SALARY PAYLOAD:', payload)
 
-    // 📨 Send POST request to backend API
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-salary`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-employee-salary`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'token': token // ✅ added auth token
+        token
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
-    });
+    })
 
-    // ❌ Handle HTTP-level errors
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to create employee salary: ${errorText}`);
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
     }
 
-    // ✅ Parse backend response
-    const data = await res.json();
-    console.log('✅ Employee Salary Created:', data);
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to create employee salary'
+      }
+    }
 
-    return data;
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Employee Salary created successfully:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || data?.message || 'Employee salary created successfully',
+      data: parsedBody
+    }
   } catch (error) {
-    console.error('❌ Error creating employee salary:', error);
-    throw error;
+    console.error('❌ Error creating employee salary:', error)
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while creating employee salary'
+    }
   }
-};
+}
 
-
-export const fetchEmployeeSalary = async (token) => {
+export const fetchEmployeeSalary = async token => {
   try {
     if (!token) throw new Error('Token missing for fetchEmployeeSalary')
 
     console.log('🔹 Fetching Employee Salary with token:', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-salary`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-employee-salary`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token, // ✅ backend expects token here (not Bearer)
+        token: token // ✅ backend expects token here (not Bearer)
       },
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to employee salary: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Employee Salary fetched:', data)
 
-    // return the array safely
-    return data || []
+    //     // return the array safely
+    //     return data || []
+    //   } catch (error) {
+    //     console.error('❌ Error fetching employee salary:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of EmployeeSalary Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching employee salary:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
 export const updateEmployeeSalary = async (payload, token) => {
   try {
-    if (!token) throw new Error('Token missing for updateEmployeeSalary')
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for updateEmployeeSalary'
+      }
+    }
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-employee-salary`, {
+    console.log('📤 UPDATE EMPLOYEE SALARY PAYLOAD:', payload)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-employee-salary`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        token: token // ✅ backend expects 'token' header
+        token
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
     })
 
-    // ✅ handle response
-    const data = await res.json()
+    let data = {}
 
-    // if (!res.ok) {
-    //   throw new Error(data.message || 'Failed to update employee salary')
-    // }
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
 
-    console.log('✅ Employee Salary updated successfully:', data)
-    // return data
-
-      if (!res.ok) {
+    // ❌ API error
+    if (!res.ok) {
       return {
         success: false,
-        message: data?.message || "Failed to update employee salary"
+        message: data?.message || 'Failed to update employee salary'
       }
     }
-console.log("testdebug",{
-      success: true,
-      message: data?.message || "Employee salary updated successfully!"
-    })
-    // SUCCESS case
+
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Employee Salary updated successfully:', parsedBody)
+
     return {
       success: true,
-      message: data?.message || "Employee salary updated successfully!"
+      message: parsedBody?.message || data?.message || 'Employee salary updated successfully',
+      data: parsedBody
     }
-   
   } catch (error) {
     console.error('❌ Error in updateEmployeeSalary:', error)
+
     return {
       success: false,
-      message: error.message || 'Something went wrong while updating employee salary'
+      message: error?.message || 'Something went wrong while updating employee salary'
     }
   }
 }
 
 //Advance Salary Request
 
-export const fetchCountSalaryAdvanceRequest = async (token) => {
+export const fetchCountSalaryAdvanceRequest = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-advance-request`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-advance-request`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3895,164 +4175,296 @@ export const fetchCountSalaryAdvanceRequest = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Salary Advance Request Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching Salary Advance Request:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountSalaryAdvanceRequest Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching Salary Advance Request:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
-
 
 export const createAdvanceSalaryRequest = async (formData, token) => {
   try {
-    // 🧩 Prepare payload matching backend expectations
-    const payload = {
-      employee: formData.employee,
-      requestedAmount: formData.requestedAmount,
-       status: formData.status,
-      notes: formData.notes
-    };
-
-    console.log('🟢 Sending Salary advance Payload:', payload);
-
-    // 📨 Send POST request to backend API
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-advance-request`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'token': token // ✅ added auth token
-      },
-      body: JSON.stringify(payload),
-      cache: 'no-store'
-    });
-
-    // ❌ Handle HTTP-level errors
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to create employee salary advance request: ${errorText}`);
-    }
-
-    // ✅ Parse backend response
-    const data = await res.json();
-    console.log('✅ Employee Salary  advance requested Created:', data);
-
-    return data;
-  } catch (error) {
-    console.error('❌ Error creating employee salary request:', error);
-    throw error;
-  }
-};
-
-
-export const updateAdvanceSalaryRequest = async (payload, token) => {
-  try {
-    if (!token) throw new Error('Token missing for updateSalaryRequest')
-      console.log("DADADADADADA",payload)
-
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-advance-request`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        token: token // ✅ backend expects 'token' header
-      },
-      body: JSON.stringify(payload),
-      cache: 'no-store'
-    })
-
-    // ✅ handle response
-    const data = await res.json()
-
-    // if (!res.ok) {
-    //   throw new Error(data.message || 'Failed to update employee salary')
-    // }
-
-    console.log('✅ Employee Salary Advance Request updated successfully:', data)
-    // return data
-
-      if (!res.ok) {
+    // ✅ Token check
+    if (!token) {
       return {
         success: false,
-        message: data?.message || "Failed to update employee salary advance request"
+        message: 'Token missing for createAdvanceSalaryRequest'
       }
     }
 
-    // SUCCESS case
+    // 🧩 Prepare payload
+    const payload = {
+      employee: formData.employee,
+      requestedAmount: formData.requestedAmount,
+      status: formData.status,
+      notes: formData.notes
+    }
+
+    console.log('📤 CREATE ADVANCE SALARY PAYLOAD:', payload)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-advance-request`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
+
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to create employee salary advance request'
+      }
+    }
+
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Employee Salary Advance Request created:', parsedBody)
+
     return {
       success: true,
-      message: data?.message || "Employee salary advance request updated successfully!"
+      message: parsedBody?.message || data?.message || 'Employee salary advance request created successfully',
+      data: parsedBody
     }
-   
   } catch (error) {
-    console.error('❌ Error in updateSalaryRequest:', error)
+    console.error('❌ Error creating employee salary request:', error)
+
     return {
       success: false,
-      message: error.message || 'Something went wrong while updating employee salary request'
+      message: error?.message || 'Something went wrong while creating salary advance request'
     }
   }
 }
 
-export const fetchSalaryAdvanceRequest = async (token) => {
+export const updateAdvanceSalaryRequest = async (payload, token) => {
   try {
-    if (!token) throw new Error('Token missing for fetchSalaryAdvanceRequest')
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for updateAdvanceSalaryRequest'
+      }
+    }
 
-    console.log('🔹 Fetching Employee Salary with token:', token)
+    console.log('📤 UPDATE ADVANCE SALARY PAYLOAD:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-advance-requests`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-advance-request`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
+
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
+
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to update employee salary advance request'
+      }
+    }
+
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Employee Salary Advance Request updated:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || data?.message || 'Employee salary advance request updated successfully',
+      data: parsedBody
+    }
+  } catch (error) {
+    console.error('❌ Error in updateAdvanceSalaryRequest:', error)
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while updating employee salary advance request'
+    }
+  }
+}
+
+export const fetchSalaryAdvanceRequest = async token => {
+  try {
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for fetchSalaryAdvanceRequest',
+        data: []
+      }
+    }
+
+    console.log('🔹 Fetching Salary Advance Requests with token:', token)
+
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-advance-requests`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'token': token, // ✅ backend expects token here (not Bearer)
+        token
       },
-      cache: 'no-store',
+      cache: 'no-store'
     })
 
-    if (!res.ok) {
-      const errorText = await res.text()
-      throw new Error(`Failed to employee salary advance: ${errorText}`)
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
     }
 
-    const data = await res.json()
-    console.log('✅ Employee Salary advance fetched:', data)
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to fetch salary advance requests',
+        data: []
+      }
+    }
 
-    // return the array safely
-    return data || []
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Salary advance requests fetched:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || 'Data fetched successfully',
+      data: parsedBody?.data || parsedBody || []
+    }
   } catch (error) {
-    console.error('❌ Error fetching employee salary advance:', error)
-    throw error
+    console.error('❌ Error fetching salary advance requests:', error)
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while fetching salary advance requests',
+      data: []
+    }
   }
 }
-
 
 export const fetchCountLeaveType = async () => {
   try {
-  
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-leave-type`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      
+        'Content-Type': 'application/json'
       },
       cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch leave type count: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Fetched Count Leave Type Data:', data)
-    return data.data
+
+    //     return data.data
+    //   } catch (error) {
+    //     console.error('❌ Error fetching Leave Type Count:', error)
+    //     throw error
+    //   }
+    // }
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountLeaveType Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching Leave Type Count:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-export  const createLeaveType =async (payload) =>{
+export const createLeaveType = async payload => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-leave-type`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -4063,24 +4475,39 @@ export  const createLeaveType =async (payload) =>{
     // Parse the response
     const data = await res.json()
 
-    // Optional: handle bad status codes
-    if (!res.ok) {
-      throw new Error(data.message || 'Failed to create leaveType')
-    }
+    //     // Optional: handle bad status codes
+    //     if (!res.ok) {
+    //       throw new Error(data.message || 'Failed to create leaveType')
+    //     }
 
-    return data
+    //     return data
+    //   } catch (error) {
+    //     console.error('Error in createLeaveType:', error)
+
+    //     return {
+    //       success: false,
+    //       message: error.message || 'Something went wrong'
+    //     }
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of createLeaveType Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error in createLeaveType:', error)
-    return {
-      success: false,
-      message: error.message || 'Something went wrong'
-    }
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
 }
 
 export const fetchLeaveType = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-leave-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -4090,22 +4517,37 @@ export const fetchLeaveType = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch leave type: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Leave Type Data ✅:', data)
 
-    // return just the array of shifts
-    return data.data
+    //     // return just the array of shifts
+    //     return data.data
+    //   } catch (error) {
+    //     console.error('Error fetching leave Type ❌:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of LeaveType Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching leave Type ❌:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-export const editLeaveType = async (formData) => {
+export const editLeaveType = async formData => {
   try {
     // Prepare payload directly from formData
     const payload = {
@@ -4115,40 +4557,53 @@ export const editLeaveType = async (formData) => {
       maxDays: formData.maxDays,
       isPaidStaus: formData.isPaidStaus,
       status: formData.status
-     
-    };
+    }
 
-    console.log("🟡 Sending update leave type payload:", payload);
+    console.log('🟡 Sending update leave type payload:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-leave-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-leave-type`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to update leave type: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to update leave type: ${errorText}`)
     }
 
-    const leaveTypeData = await res.json();
+    const leaveTypeData = await res.json()
 
-    console.log("✅ Updated leave type:", leaveTypeData);
+    console.log('✅ Updated leave type:', leaveTypeData)
 
-    return leaveTypeData;
-  } catch (err) {
-    console.error('❌ Failed to update leave type:', err);
-    throw err;
+    //     return leaveTypeData
+    //   } catch (err) {
+    //     console.error('❌ Failed to update leave type:', err)
+    //     throw err
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(leaveTypeData.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of editLeaveType Data:', parsedBody)
+
+    return parsedBody // final usable data
+  } catch (error) {
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
-};
+}
 
-
-export const fetchListOfLeaveType= async () => {
+export const fetchListOfLeaveType = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-list-leave-type`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-list-leave-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -4165,47 +4620,74 @@ export const fetchListOfLeaveType= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of ListOfLeaveType Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
-
 
 //Leave Policy
 
 export const fetchCountLeavePolicy = async () => {
   try {
-  
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-leave-policy`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
-      
+        'Content-Type': 'application/json'
       },
       cache: 'no-store'
     })
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch leave policy count: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('✅ Fetched Count Leave Policy Data:', data)
-    return data.data
+
+    //     return data.data
+    //   } catch (error) {
+    //     console.error('❌ Error fetching Leave Policy Count:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountLeavePolicy Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching Leave Policy Count:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-export  const createLeavePolicy =async (payload) =>{
+export const createLeavePolicy = async payload => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/create-leave-policy`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -4217,23 +4699,38 @@ export  const createLeavePolicy =async (payload) =>{
     const data = await res.json()
 
     // Optional: handle bad status codes
-    if (!res.ok) {
-      throw new Error(data.message || 'Failed to create leave policy')
-    }
+    //     if (!res.ok) {
+    //       throw new Error(data.message || 'Failed to create leave policy')
+    //     }
 
-    return data
+    //     return data
+    //   } catch (error) {
+    //     console.error('Error in createLeavePolicy:', error)
+
+    //     return {
+    //       success: false,
+    //       message: error.message || 'Something went wrong'
+    //     }
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of payload Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error in createLeavePolicy:', error)
-    return {
-      success: false,
-      message: error.message || 'Something went wrong'
-    }
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
 }
 
 export const fetchLeavePolicy = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-policies`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-leave-policies`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -4243,79 +4740,101 @@ export const fetchLeavePolicy = async () => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(`Failed to fetch leave policy: ${errorText}`)
     }
 
     const data = await res.json()
+
     console.log('Fetched Leave Policy Data ✅:', data)
 
     // return just the array of shifts
-    return data.data
+    //   // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of LeavePolicy Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching leave Policy ❌:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-export const editLeavePolicy = async (formData) => {
+export const editLeavePolicy = async formData => {
   try {
     // Prepare payload directly from formData
     const payload = {
-        _id:formData._id,
-        policyName: formData.policyName,
-        description: formData.description,
-        leaveType: formData.leaveType,
-        accuralType: formData.accuralType,
-        accuralRates: formData.accuralRates,
-        carryForwardLimit: formData.carryForwardLimit,
-        minDays: formData.minDays,
-        maxDays: formData.maxDays,
-        isRequired: formData.isRequired,
-        status: formData.status
-     
-    };
+      _id: formData._id,
+      policyName: formData.policyName,
+      description: formData.description,
+      leaveType: formData.leaveType,
+      accuralType: formData.accuralType,
+      accuralRates: formData.accuralRates,
+      carryForwardLimit: formData.carryForwardLimit,
+      minDays: formData.minDays,
+      maxDays: formData.maxDays,
+      isRequired: formData.isRequired,
+      status: formData.status
+    }
 
-    console.log("🟡 Sending update leave policy payload:", payload);
+    console.log('🟡 Sending update leave policy payload:', payload)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/update-leave-policy`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-leave-policy`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload),
       cache: 'no-store'
-    });
+    })
 
     if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(`Failed to update leave policy: ${errorText}`);
+      const errorText = await res.text()
+
+      throw new Error(`Failed to update leave policy: ${errorText}`)
     }
 
-    const leavePolicyData = await res.json();
+    const leavePolicyData = await res.json()
 
-    console.log("✅ Updated leave policy:", leavePolicyData);
+    console.log('✅ Updated leave policy:', leavePolicyData)
 
-    return leavePolicyData;
-  } catch (err) {
-    console.error('❌ Failed to update leave policy:', err);
-    throw err;
+    //     return leavePolicyData
+    //   } catch (err) {
+    //     console.error('❌ Failed to update leave policy:', err)
+    //     throw err
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(leavePolicyData.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of  leavePolicyData:', parsedBody)
+
+    return parsedBody // final usable data
+  } catch (error) {
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
-};
+}
 
 //Leave Application
 
-export const fetchCountLeaveApplication = async (token) => {
+export const fetchCountLeaveApplication = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-application`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-leave-application`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4329,68 +4848,115 @@ export const fetchCountLeaveApplication = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Leave Application Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching Leave Application:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountLeaveApplication Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching Leave Application:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-
 export const createLeaveApplication = async (formData, token) => {
   try {
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for createLeaveApplication'
+      }
+    }
+
     const payload = new FormData()
 
     payload.append('employee', formData.employee)
     payload.append('leaveType', formData.leaveType)
     payload.append('startDate', formData.startDate)
     payload.append('endDate', formData.endDate)
-   
     payload.append('reason', formData.reason)
     payload.append('status', formData.status)
 
     // ✅ FILE / ATTACHMENT
     if (formData.attachments) {
-      // FileUploadController single file de raha hai
       payload.append('attachments', formData.attachments)
     }
 
     console.log('🟢 Sending Leave Application FormData')
 
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/create-leave-application`,
-      {
-        method: 'POST',
-        headers: {
-          token // ✅ AUTH ONLY
-        },
-        body: payload,
-        cache: 'no-store'
-      }
-    )
+    const res = await fetch(`${process.env.API_URL}/mm/create-leave-application`, {
+      method: 'POST',
+      headers: {
+        token // ❗ only token (no Content-Type)
+      },
+      body: payload,
+      cache: 'no-store'
+    })
 
-    if (!res.ok) {
-      const errorText = await res.text()
-      throw new Error(`Failed to create leave application: ${errorText}`)
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
     }
 
-    const data = await res.json()
-    console.log('✅ Leave application created:', data)
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to create leave application'
+      }
+    }
 
-    return data
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Leave application created successfully:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || data?.message || 'Leave application created successfully',
+      data: parsedBody
+    }
   } catch (error) {
     console.error('❌ Error creating leave application:', error)
-    throw error
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while creating leave application'
+    }
   }
 }
 
-
-
-
 export const updateLeaveApplication = async (payload, token) => {
   try {
+    // ✅ Token check
     if (!token) {
       return {
         success: false,
@@ -4398,28 +4964,27 @@ export const updateLeaveApplication = async (payload, token) => {
       }
     }
 
-    console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
+    console.log('📤 UPDATE LEAVE APPLICATION PAYLOAD:', payload)
 
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/update-leave-application`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token // ✅ backend expects token header
-        },
-        body: JSON.stringify(payload),
-        cache: 'no-store'
-      }
-    )
+    const res = await fetch(`${process.env.API_URL}/mm/update-leave-application`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
 
     let data = {}
+
     try {
       data = await res.json()
     } catch (err) {
-      // backend did not return JSON
+      console.warn('⚠️ Response is not JSON')
     }
 
+    // ❌ API error
     if (!res.ok) {
       return {
         success: false,
@@ -4427,31 +4992,44 @@ export const updateLeaveApplication = async (payload, token) => {
       }
     }
 
-    console.log('✅ Leave Application updated successfully:', data)
+    // ✅ Decrypt block (added)
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Leave Application updated successfully:', parsedBody)
 
     return {
       success: true,
-      message: data?.message || 'Leave application updated successfully'
+      message: parsedBody?.message || data?.message || 'Leave application updated successfully',
+      data: parsedBody
     }
   } catch (error) {
     console.error('❌ Error in updateLeaveApplication:', error)
 
     return {
       success: false,
-      message:
-        error?.message ||
-        'Something went wrong while updating employee leave application'
+      message: error?.message || 'Something went wrong while updating employee leave application'
     }
   }
 }
 
-
-
-export const fetchLeaveApplication = async (token) => {
+export const fetchLeaveApplication = async token => {
   try {
     if (!token) throw new Error('Token missing')
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-application`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-leave-application`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -4462,35 +5040,49 @@ export const fetchLeaveApplication = async (token) => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(errorText)
     }
 
     const json = await res.json()
+
     console.log('✅ Leave Application API:', json)
 
-    // ✅ IMPORTANT
-    return json?.data || []
+    //     // ✅ IMPORTANT
+    //     return json?.data || []
+    //   } catch (error) {
+    //     console.error('❌ Error fetching leave application:', error)
 
+    //     return []
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(json.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of LeaveApplication Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching leave application:', error)
-    return []
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
 }
 
-
 //Leave Balances
 
-export const fetchCountLeaveBalance = async (token) => {
+export const fetchCountLeaveBalance = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchLeaveBalnce')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-balance`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-leave-balance`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4504,50 +5096,105 @@ export const fetchCountLeaveBalance = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Leave Balance Data:', data)
-    
-return data.data // return only branch array
+
+    // return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching Leave Balance:', error)
+    //     throw error
+    //   }
+    // }// ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountLeaveBalance Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching Leave Balance:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
 export const createLeaveBalance = async (formData, token) => {
   try {
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/create-leave-balance`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // ✅ MUST
-          token:token     // ✅ Better than custom token
-        },
-        body: JSON.stringify({
-          employee: formData.employee,
-          leaveType: formData.leaveType,
-          year: formData.year,
-          allocatedDays: formData.allocatedDays,
-          carriedForwardDays: formData.carriedForwardDays,
-          manualAdustment: formData.manualAdustment,
-          reason: formData.reason
-        }),
-        cache: 'no-store'
+    // ✅ Token check
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for createLeaveBalance'
       }
-    )
-
-    if (!res.ok) {
-      const errorText = await res.text()
-      throw new Error(errorText)
     }
 
-    return await res.json()
+    console.log('📤 CREATE LEAVE BALANCE PAYLOAD:', formData)
+
+    const res = await fetch(`${process.env.API_URL}/mm/create-leave-balance`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify({
+        employee: formData.employee,
+        leaveType: formData.leaveType,
+        year: formData.year,
+        allocatedDays: formData.allocatedDays,
+        carriedForwardDays: formData.carriedForwardDays,
+        manualAdustment: formData.manualAdustment,
+        reason: formData.reason
+      }),
+      cache: 'no-store'
+    })
+
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
+
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to create leave balance'
+      }
+    }
+
+    // ✅ Decrypt block
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Leave Balance created successfully:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || data?.message || 'Leave balance created successfully',
+      data: parsedBody
+    }
   } catch (error) {
     console.error('❌ Error creating leave balance:', error)
-    throw error
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while creating leave balance'
+    }
   }
 }
-
-
 
 export const updateLeaveBalance = async (payload, token) => {
   try {
@@ -4560,26 +5207,25 @@ export const updateLeaveBalance = async (payload, token) => {
 
     console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
 
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/update-leave-balance`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token // ✅ backend expects token header
-        },
-        body: JSON.stringify(payload),
-        cache: 'no-store'
-      }
-    )
+    const res = await fetch(`${process.env.API_URL}/mm/update-leave-balance`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
 
     let data = {}
+
     try {
       data = await res.json()
     } catch (err) {
-      // backend did not return JSON
+      console.warn('⚠️ Response is not JSON')
     }
 
+    // ❌ API error
     if (!res.ok) {
       return {
         success: false,
@@ -4587,29 +5233,44 @@ export const updateLeaveBalance = async (payload, token) => {
       }
     }
 
-    console.log('✅ Leave Balance updated successfully:', data)
+    // ✅ Decrypt block (added)
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Leave Balance updated successfully:', parsedBody)
 
     return {
       success: true,
-      message: data?.message || 'Leave balance updated successfully'
+      message: parsedBody?.message || data?.message || 'Leave balance updated successfully',
+      data: parsedBody
     }
   } catch (error) {
     console.error('❌ Error in updateLeaveBalance:', error)
 
     return {
       success: false,
-      message:
-        error?.message ||
-        'Something went wrong while updating employee leave balance'
+      message: error?.message || 'Something went wrong while updating employee leave balance'
     }
   }
 }
 
-export const fetchLeaveBalance = async (token) => {
+export const fetchLeaveBalance = async token => {
   try {
     if (!token) throw new Error('Token missing')
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-leave-balance`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-leave-balance`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -4620,25 +5281,41 @@ export const fetchLeaveBalance = async (token) => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(errorText)
     }
 
     const json = await res.json()
+
     console.log('✅ Leave Balance API:', json)
 
-    // ✅ IMPORTANT
-    return json?.data || []
+    //     // ✅ IMPORTANT
+    //     return json?.data || []
+    //   } catch (error) {
+    //     console.error('❌ Error fetching leave balance:', error)
 
+    //     return []
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(json.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of LeaveBalance Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching leave balance:', error)
-    return []
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
 }
 
 //NAPSNATS
-export const fetchListOfNapsNatsUser= async (status) => {
+export const fetchListOfNapsNatsUser = async status => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/list-of-napsnats-user?status=${status}`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/list-of-napsnats-user?status=${status}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -4655,26 +5332,38 @@ export const fetchListOfNapsNatsUser= async (status) => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of ListOfNapsNatsUser Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
-
-export const fetchCountNapsNats = async (token) => {
+export const fetchCountNapsNats = async token => {
   try {
-   
     if (!token) throw new Error('Token missing for fetchNapsNats')
-    console.log("TOKEN",token)
+    console.log('TOKEN', token)
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/total-count-naps-nats`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/total-count-naps-nats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        token: token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4688,49 +5377,98 @@ export const fetchCountNapsNats = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Naps Nats Data:', data)
-    
-return data.data // return only branch array
+
+    //
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of CountNapsNats Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('Error fetching Naps Nats:', error)
+    console.error('Error fetching List of Branch Data:', error.message)
     throw error
   }
 }
 
 export const createNapsNats = async (formData, token) => {
   try {
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/create-naps-nats`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json', // ✅ MUST
-          token:token     // ✅ Better than custom token
-        },
-        body: JSON.stringify({
-          employee: formData.employee,
-          napsNatsStatus: formData.napsNatsStatus,
-          deductionForThisMonth:formData.deductionForThisMonth,
-          amount: formData.amount,
-          status:formData.status
-         
-        }),
-        cache: 'no-store'
+    if (!token) {
+      return {
+        success: false,
+        message: 'Token missing for createNapsNats'
       }
-    )
-
-    if (!res.ok) {
-      const errorText = await res.text()
-      throw new Error(errorText)
     }
 
-    return await res.json()
+    console.log('📤 CREATE NAPS/NATS PAYLOAD:', formData)
+
+    const res = await fetch(`${process.env.API_URL}/mm/create-naps-nats`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify({
+        employee: formData.employee,
+        napsNatsStatus: formData.napsNatsStatus,
+        deductionForThisMonth: formData.deductionForThisMonth,
+        amount: formData.amount,
+        status: formData.status
+      }),
+      cache: 'no-store'
+    })
+
+    let data = {}
+
+    try {
+      data = await res.json()
+    } catch (err) {
+      console.warn('⚠️ Response is not JSON')
+    }
+
+    // ❌ API error
+    if (!res.ok) {
+      return {
+        success: false,
+        message: data?.message || 'Failed to create Naps/Nats'
+      }
+    }
+
+    // ✅ Decrypt block (same as update)
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Naps/Nats created successfully:', parsedBody)
+
+    return {
+      success: true,
+      message: parsedBody?.message || data?.message || 'Naps/Nats created successfully',
+      data: parsedBody
+    }
   } catch (error) {
     console.error('❌ Error creating naps nats:', error)
-    throw error
+
+    return {
+      success: false,
+      message: error?.message || 'Something went wrong while creating Naps/Nats'
+    }
   }
 }
-
-
 
 export const updateNapsNats = async (payload, token) => {
   try {
@@ -4741,58 +5479,73 @@ export const updateNapsNats = async (payload, token) => {
       }
     }
 
-    console.log('📤 UPDATE LEAVE PAYLOAD:', payload)
+    console.log('📤 UPDATE NAPS/NATS PAYLOAD:', payload)
 
-    const res = await fetch(
-      `${process.env.API_URL}/zobiz/update-naps-nats`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          token // ✅ backend expects token header
-        },
-        body: JSON.stringify(payload),
-        cache: 'no-store'
-      }
-    )
+    const res = await fetch(`${process.env.API_URL}/jaycon/update-naps-nats`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        token
+      },
+      body: JSON.stringify(payload),
+      cache: 'no-store'
+    })
 
     let data = {}
+
     try {
       data = await res.json()
     } catch (err) {
-      // backend did not return JSON
+      console.warn('⚠️ Response is not JSON')
     }
 
+    // ❌ API error case
     if (!res.ok) {
       return {
         success: false,
-        message: data?.message || 'Failed to update naps/nats'
+        message: data?.message || 'Failed to update Naps/Nats'
       }
     }
 
-    console.log('✅ Naps/Nats updated successfully:', data)
+    // ✅ Decrypt the response (YOUR CODE ADDED HERE)
+    let parsedBody = data
+
+    if (data?.data) {
+      try {
+        const decryptedPayload = decrypt(data.data)
+
+        const parsed = JSON.parse(decryptedPayload)
+
+        console.log('🔓 Decrypted Response:', parsed)
+
+        parsedBody = parsed
+      } catch (error) {
+        console.warn('⚠️ Decryption failed, using raw data')
+      }
+    }
+
+    console.log('✅ Naps/Nats updated successfully:', parsedBody)
 
     return {
       success: true,
-      message: data?.message || 'Naps/Nats updated successfully'
+      message: parsedBody?.message || data?.message || 'Naps/Nats updated successfully',
+      data: parsedBody
     }
   } catch (error) {
     console.error('❌ Error in updateNapsNats:', error)
 
     return {
       success: false,
-      message:
-        error?.message ||
-        'Something went wrong while updating naps/nats'
+      message: error?.message || 'Something went wrong while updating Naps/Nats'
     }
   }
 }
 
-export const fetchNapsNats = async (token) => {
+export const fetchNapsNats = async token => {
   try {
     if (!token) throw new Error('Token missing')
 
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-naps-nats`, {
+    const res = await fetch(`${process.env.API_URL}/jaycon/fetch-naps-nats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -4803,22 +5556,36 @@ export const fetchNapsNats = async (token) => {
 
     if (!res.ok) {
       const errorText = await res.text()
+
       throw new Error(errorText)
     }
 
     const json = await res.json()
+
     console.log('✅ Naps/Nats API:', json)
 
-    // ✅ IMPORTANT
-    return json?.data || []
+    //     // ✅ IMPORTANT
+    //     return json?.data || []
+    //   } catch (error) {
+    //     console.error('❌ Error fetching naps/nats:', error)
 
+    //     return []
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(json.data)
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload)
+
+    console.log('Decrypted List of NapNats Data:', parsedBody)
+
+    return parsedBody // final usable data
   } catch (error) {
-    console.error('❌ Error fetching naps/nats:', error)
-    return []
+    console.error('Error fetching List of Branch Data:', error.message)
+    throw error
   }
 }
-
-
 
 export const getPermissionsData = async () => {
   return permissionData

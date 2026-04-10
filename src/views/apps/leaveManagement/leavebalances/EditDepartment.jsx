@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -22,19 +20,12 @@ import { useForm, Controller } from 'react-hook-form'
 import CustomTextField from '@core/components/mui/TextField'
 
 // APIs
-import {
-  fetchListOfUser,
-  fetchListOfLeaveType
-} from '../../../../app/server/actions.js'
+import { fetchListOfUser, fetchListOfLeaveType } from '../../../../app/server/actions.js'
 
 const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
   const { data: session } = useSession()
 
-  const {
-    control,
-    handleSubmit,
-    reset
-  } = useForm({
+  const { control, handleSubmit, reset } = useForm({
     defaultValues: {
       employee: '',
       leaveType: '',
@@ -91,26 +82,23 @@ const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
   /* ✅ SUBMIT */
   const onSubmit = async data => {
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/zobiz/update-leave-balance`,
-        {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            token: `${session?.user?.accessToken}`
-          },
-          body: JSON.stringify({
-            _id: selectedDepartment._id,
-            employee: data.employee,
-            leaveType: data.leaveType,
-            year: data.year,
-            allocatedDays: data.allocatedDays,
-            carriedForwardDays: data.carriedForwardDays,
-            manualAdustment: data.manualAdustment,
-            reason: data.reason
-          })
-        }
-      )
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jaycon/update-leave-balance`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          token: `${session?.user?.accessToken}`
+        },
+        body: JSON.stringify({
+          _id: selectedDepartment._id,
+          employee: data.employee,
+          leaveType: data.leaveType,
+          year: data.year,
+          allocatedDays: data.allocatedDays,
+          carriedForwardDays: data.carriedForwardDays,
+          manualAdustment: data.manualAdustment,
+          reason: data.reason
+        })
+      })
 
       const response = await res.json()
 
@@ -153,14 +141,15 @@ const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
 
         {/* FORM */}
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
-
           <Controller
             name='employee'
             control={control}
             render={({ field }) => (
               <CustomTextField {...field} value={field.value ?? ''} select fullWidth label='Employee'>
                 {users.map(u => (
-                  <MenuItem key={u._id} value={u._id}>{u.username}</MenuItem>
+                  <MenuItem key={u._id} value={u._id}>
+                    {u.username}
+                  </MenuItem>
                 ))}
               </CustomTextField>
             )}
@@ -172,7 +161,9 @@ const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
             render={({ field }) => (
               <CustomTextField {...field} value={field.value ?? ''} select fullWidth label='Leave Type'>
                 {leaveTypes.map(l => (
-                  <MenuItem key={l._id} value={l._id}>{l.leaveTypeName}</MenuItem>
+                  <MenuItem key={l._id} value={l._id}>
+                    {l.leaveTypeName}
+                  </MenuItem>
                 ))}
               </CustomTextField>
             )}
@@ -188,9 +179,7 @@ const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
               key={f.name}
               name={f.name}
               control={control}
-              render={({ field }) => (
-                <CustomTextField {...field} value={field.value ?? ''} fullWidth label={f.label} />
-              )}
+              render={({ field }) => <CustomTextField {...field} value={field.value ?? ''} fullWidth label={f.label} />}
             />
           ))}
 
@@ -198,46 +187,51 @@ const EditDepartment = ({ open, handleClose, selectedDepartment }) => {
             name='reason'
             control={control}
             render={({ field }) => (
-              <CustomTextField {...field} value={field.value ?? ''} fullWidth multiline rows={3} label='Adjustment Reason' />
+              <CustomTextField
+                {...field}
+                value={field.value ?? ''}
+                fullWidth
+                multiline
+                rows={3}
+                label='Adjustment Reason'
+              />
             )}
           />
 
           <div className='flex gap-4'>
-            <Button type='submit' variant='contained'>Update</Button>
-            <Button variant='tonal' color='error' onClick={handleClose}>Cancel</Button>
+            <Button type='submit' variant='contained'>
+              Update
+            </Button>
+            <Button variant='tonal' color='error' onClick={handleClose}>
+              Cancel
+            </Button>
           </div>
         </form>
       </Drawer>
 
       {/* SNACKBAR */}
-       <Snackbar
-                  open={snackbar.open}
-                  autoHideDuration={3000}
-                  onClose={() => setSnackbar({ ...snackbar, open: false })}
-                  anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // ✅ LEFT TOP
-                >
-                  <Alert
-                    onClose={() => setSnackbar({ ...snackbar, open: false })}
-                    severity={snackbar.severity}
-                    variant='filled'
-                    sx={{
-                      width: '100%',
-                      backgroundColor:
-                        snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
-                      color: 'white',
-                      fontWeight: 500
-                    }}
-                  >
-                    {snackbar.message}
-                  </Alert>
-                </Snackbar>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // ✅ LEFT TOP
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant='filled'
+          sx={{
+            width: '100%',
+            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
+            color: 'white',
+            fontWeight: 500
+          }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
 
 export default EditDepartment
-
-
-
-
-

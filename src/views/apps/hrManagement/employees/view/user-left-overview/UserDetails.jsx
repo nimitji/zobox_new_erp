@@ -1,5 +1,3 @@
-
-
 'use client'
 
 // MUI Imports
@@ -44,7 +42,7 @@ const UserDetails = () => {
     AADHARCARD,
     DATEOFBIRTH,
     AGE,
-    ZOBOXEXPERIENCE,
+    JayconEXPERIENCE,
     EMERGENCYNUMBER,
     MARITALSTATUS,
     GENDER,
@@ -80,18 +78,9 @@ const UserDetails = () => {
               />
               <Typography variant='h5'>{EMPLOYEENAME || '—'}</Typography>
             </div>
-            <Chip
-              label={DESIGNATION || '—'}
-              color='secondary'
-              size='small'
-              variant='tonal'
-            />
+            <Chip label={DESIGNATION || '—'} color='secondary' size='small' variant='tonal' />
           </div>
-
-        
-            </div>
-      
-       
+        </div>
 
         {/* ===== Detailed Info ===== */}
         <div>
@@ -100,7 +89,7 @@ const UserDetails = () => {
           <div className='flex flex-col gap-2'>
             <DetailRow label='EmployeeId' value={EMPLOYEEID} />
             <DetailRow label='Company Status' value={companyNameStatus} />
-             <DetailRow label='Job Location' value={JOBLOCATION} />
+            <DetailRow label='Job Location' value={JOBLOCATION} />
             <DetailRow label='Department' value={DEPARTMENT} />
             <DetailRow label='Designation' value={DESIGNATION} />
             <DetailRow label='Email' value={EMAILID} />
@@ -111,7 +100,7 @@ const UserDetails = () => {
             <DetailRow label='Aadhar Number' value={AADHARCARD} />
             <DetailRow label='Date Of Birth' value={DATEOFBIRTH} />
             <DetailRow label='Age' value={AGE} />
-            <DetailRow label='Zobox Experience' value={ZOBOXEXPERIENCE} />
+            <DetailRow label='Jaycon Experience' value={JayconEXPERIENCE} />
             <DetailRow label='Emergency' value={EMERGENCYNUMBER} />
             <DetailRow label='Martial Status' value={MARITALSTATUS} />
             <DetailRow label='Gender' value={GENDER} />
@@ -119,8 +108,6 @@ const UserDetails = () => {
             <DetailRow label='Status' value={status} />
           </div>
         </div>
-
-     
       </CardContent>
     </Card>
   )
@@ -137,4 +124,3 @@ const DetailRow = ({ label, value }) => (
 )
 
 export default UserDetails
-

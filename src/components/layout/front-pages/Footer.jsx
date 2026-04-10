@@ -173,8 +173,8 @@ const Footer = ({ mode }) => {
             <span>{`© ${new Date().getFullYear()}, Made with `}</span>
             <span>{`❤️`}</span>
             <span>{` by `}</span>
-            <Link href='https://zobox.com/' target='_blank' className='font-medium text-white'>
-              ZOBOX
+            <Link href='https://Jaycon.com/' target='_blank' className='font-medium text-white'>
+              Jaycon
             </Link>
           </Typography>
           <div className='flex gap-1.5 items-center'>

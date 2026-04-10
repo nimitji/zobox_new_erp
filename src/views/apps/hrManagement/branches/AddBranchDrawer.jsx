@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import { useState } from 'react'
@@ -109,33 +107,33 @@ const AddBranchDrawer = props => {
     <>
       <Drawer
         open={open}
-        anchor="right"
-        variant="temporary"
+        anchor='right'
+        variant='temporary'
         onClose={handleReset}
         ModalProps={{ keepMounted: true }}
         sx={{ '& .MuiDrawer-paper': { width: { xs: 300, sm: 400 } } }}
       >
-        <div className="flex items-center justify-between plb-5 pli-6">
-          <Typography variant="h5">Add Branch</Typography>
-          <IconButton size="small" onClick={handleReset}>
-            <i className="tabler-x text-2xl text-textPrimary" />
+        <div className='flex items-center justify-between plb-5 pli-6'>
+          <Typography variant='h5'>Add Branch</Typography>
+          <IconButton size='small' onClick={handleReset}>
+            <i className='tabler-x text-2xl text-textPrimary' />
           </IconButton>
         </div>
         <Divider />
 
         {/* 🧾 Form Section */}
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6 p-6">
+          <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
             <Controller
-              name="branchName"
+              name='branchName'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="Branch Name"
-                  placeholder="Noida Sector 63"
+                  label='Branch Name'
+                  placeholder='Noida Sector 63'
                   error={!!errors.branchName}
                   helperText={errors.branchName && 'This field is required.'}
                 />
@@ -143,15 +141,15 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="Plot"
+              name='Plot'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="Address"
-                  placeholder="218, E-Block Noida Sector 63"
+                  label='Address'
+                  placeholder='218, E-Block Noida Sector 63'
                   error={!!errors.Plot}
                   helperText={errors.Plot && 'This field is required.'}
                 />
@@ -159,15 +157,15 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="City"
+              name='City'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="City"
-                  placeholder="Noida"
+                  label='City'
+                  placeholder='Noida'
                   error={!!errors.City}
                   helperText={errors.City && 'This field is required.'}
                 />
@@ -175,15 +173,15 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="State"
+              name='State'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="State/Province"
-                  placeholder="Uttar Pradesh"
+                  label='State/Province'
+                  placeholder='Uttar Pradesh'
                   error={!!errors.State}
                   helperText={errors.State && 'This field is required.'}
                 />
@@ -191,26 +189,26 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="Country"
+              name='Country'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <CustomTextField select fullWidth label="Select Country" {...field}>
-                  <MenuItem value="India">India</MenuItem>
+                <CustomTextField select fullWidth label='Select Country' {...field}>
+                  <MenuItem value='India'>India</MenuItem>
                 </CustomTextField>
               )}
             />
 
             <Controller
-              name="Pincode"
+              name='Pincode'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="ZIP / Postal Code"
-                  placeholder="201301"
+                  label='ZIP / Postal Code'
+                  placeholder='201301'
                   error={!!errors.Pincode}
                   helperText={errors.Pincode && 'This field is required.'}
                 />
@@ -218,7 +216,7 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="phone"
+              name='phone'
               control={control}
               rules={{
                 required: true,
@@ -231,9 +229,9 @@ const AddBranchDrawer = props => {
                 <CustomTextField
                   {...field}
                   fullWidth
-                  label="Contact Number"
-                  type="number"
-                  placeholder="9876543210"
+                  label='Contact Number'
+                  type='number'
+                  placeholder='9876543210'
                   error={!!errors.phone}
                   helperText={errors.phone && errors.phone.message}
                 />
@@ -241,7 +239,7 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="emailid"
+              name='emailid'
               control={control}
               rules={{
                 required: true,
@@ -254,9 +252,9 @@ const AddBranchDrawer = props => {
                 <CustomTextField
                   {...field}
                   fullWidth
-                  type="email"
-                  label="Email"
-                  placeholder="admin@zobox.in"
+                  type='email'
+                  label='Email'
+                  placeholder='admin@Jaycon.in'
                   error={!!errors.emailid}
                   helperText={errors.emailid && errors.emailid.message}
                 />
@@ -264,23 +262,23 @@ const AddBranchDrawer = props => {
             />
 
             <Controller
-              name="status"
+              name='status'
               control={control}
               rules={{ required: true }}
               render={({ field }) => (
-                <CustomTextField select fullWidth label="Select Status" {...field}>
-                  <MenuItem value="Active">Active</MenuItem>
-                  <MenuItem value="Inactive">Inactive</MenuItem>
+                <CustomTextField select fullWidth label='Select Status' {...field}>
+                  <MenuItem value='Active'>Active</MenuItem>
+                  <MenuItem value='Inactive'>Inactive</MenuItem>
                 </CustomTextField>
               )}
             />
 
             {/* ✅ Action Buttons */}
-            <div className="flex items-center gap-4">
-              <Button variant="contained" type="submit">
+            <div className='flex items-center gap-4'>
+              <Button variant='contained' type='submit'>
                 Submit
               </Button>
-              <Button variant="tonal" color="error" onClick={handleReset}>
+              <Button variant='tonal' color='error' onClick={handleReset}>
                 Cancel
               </Button>
             </div>
@@ -298,7 +296,7 @@ const AddBranchDrawer = props => {
         <MuiAlert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
-          variant="filled"
+          variant='filled'
           sx={{
             width: '100%',
             backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
@@ -314,6 +312,3 @@ const AddBranchDrawer = props => {
 }
 
 export default AddBranchDrawer
-
-
-

@@ -36,7 +36,7 @@
 // const Logo = props => {
 //   return (
 //     <video
-//       src="https://storage.googleapis.com/zobizproductphotos/banners/fabyoh/zoboxlogo.mp4"
+//       src="https://storage.googleapis.com/jayconproductphotos/banners/fabyoh/Jayconlogo.mp4"
 //       autoPlay
 //       loop
 //       muted
@@ -47,11 +47,11 @@
 //   )
 // }
 
-const Logo = (props) => {
+const Logo = props => {
   return (
     <img
-      src="https://storage.googleapis.com/zobizproductphotos/banners/zoboxlogo.png"
-      alt="Zobox Logo"
+      src='https://storage.googleapis.com/membersdata/membersdata/l1.jpeg'
+      alt='Jaycon Logo'
       width={200}
       height={50}
       style={{ objectFit: 'contain' }} // poora image dikhega
@@ -60,10 +60,4 @@ const Logo = (props) => {
   )
 }
 
-
-
-
 export default Logo
-
-
-

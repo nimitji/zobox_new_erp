@@ -1,5 +1,3 @@
-
-
 // 'use client'
 
 // // MUI Imports
@@ -44,7 +42,7 @@
 //     AADHARCARD,
 //     DATEOFBIRTH,
 //     AGE,
-//     ZOBOXEXPERIENCE,
+//     JayconEXPERIENCE,
 //     EMERGENCYNUMBER,
 //     MARITALSTATUS,
 //     GENDER,
@@ -88,10 +86,7 @@
 //             />
 //           </div>
 
-        
 //             </div>
-      
-       
 
 //         {/* ===== Detailed Info ===== */}
 //         <div>
@@ -111,7 +106,7 @@
 //             <DetailRow label='Aadhar Number' value={AADHARCARD} />
 //             <DetailRow label='Date Of Birth' value={DATEOFBIRTH} />
 //             <DetailRow label='Age' value={AGE} />
-//             <DetailRow label='Zobox Experience' value={ZOBOXEXPERIENCE} />
+//             <DetailRow label='Jaycon Experience' value={JayconEXPERIENCE} />
 //             <DetailRow label='Emergency' value={EMERGENCYNUMBER} />
 //             <DetailRow label='Martial Status' value={MARITALSTATUS} />
 //             <DetailRow label='Gender' value={GENDER} />
@@ -120,7 +115,6 @@
 //           </div>
 //         </div>
 
-     
 //       </CardContent>
 //     </Card>
 //   )
@@ -137,7 +131,6 @@
 // )
 
 // export default UserDetails
-
 
 'use client'
 
@@ -177,7 +170,7 @@ const UserDetails = () => {
     AADHARCARD,
     DATEOFBIRTH,
     AGE,
-    ZOBOXEXPERIENCE,
+    JayconEXPERIENCE,
     EMERGENCYNUMBER,
     MARITALSTATUS,
     GENDER,
@@ -214,13 +207,7 @@ const UserDetails = () => {
           <Typography variant='h5' sx={{ fontWeight: 600 }}>
             {EMPLOYEENAME || '—'}
           </Typography>
-          <Chip
-            label={DESIGNATION || '—'}
-            color='secondary'
-            size='small'
-            variant='tonal'
-            sx={{ mt: 1 }}
-          />
+          <Chip label={DESIGNATION || '—'} color='secondary' size='small' variant='tonal' sx={{ mt: 1 }} />
           <Typography variant='body2' sx={{ mt: 0.5 }} color='text.secondary'>
             {DEPARTMENT || '—'} • {JOBLOCATION || '—'}
           </Typography>
@@ -242,7 +229,7 @@ const UserDetails = () => {
               <DetailRow label='Department' value={DEPARTMENT} />
               <DetailRow label='Designation' value={DESIGNATION} />
               <DetailRow label='Date of Joining' value={DATEOFJOINING} />
-              <DetailRow label='Zobox Experience' value={ZOBOXEXPERIENCE} />
+              <DetailRow label='Jaycon Experience' value={JayconEXPERIENCE} />
               <DetailRow label='Reporting Manager' value={REPORTINGMANAGER} />
             </Grid>
 
@@ -303,5 +290,3 @@ const DetailRow = ({ label, value }) => (
 )
 
 export default UserDetails
-
-

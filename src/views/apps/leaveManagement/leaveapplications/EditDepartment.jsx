@@ -1,5 +1,3 @@
-
-
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -31,10 +29,7 @@ import CustomTextField from '@core/components/mui/TextField'
 import FileUploadController from '../../../../components/fileUploadController'
 
 // APIs
-import {
-  fetchListOfUser,
-  fetchListOfLeaveType
-} from '../../../../app/server/actions.js'
+import { fetchListOfUser, fetchListOfLeaveType } from '../../../../app/server/actions.js'
 
 const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   const { data: session } = useSession()
@@ -91,12 +86,8 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
     reset({
       employee: selectedDepartment.employeeId || '',
       leaveType: selectedDepartment.leaveTypeId || '',
-      startDate: selectedDepartment.startDate
-        ? dayjs(selectedDepartment.startDate)
-        : null,
-      endDate: selectedDepartment.endDate
-        ? dayjs(selectedDepartment.endDate)
-        : null,
+      startDate: selectedDepartment.startDate ? dayjs(selectedDepartment.startDate) : null,
+      endDate: selectedDepartment.endDate ? dayjs(selectedDepartment.endDate) : null,
       reason: selectedDepartment.reason || '',
       status: selectedDepartment.status || 'Pending',
       attachments: '' // 🔥 Important: keep empty (handled in submit)
@@ -135,58 +126,45 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
   // }
 
   const onSubmit = async data => {
-  const token = session?.user?.accessToken
-  if (!token) return
+    const token = session?.user?.accessToken
+    if (!token) return
 
-  const formData = new FormData()
+    const formData = new FormData()
 
-  formData.append('_id', selectedDepartment._id)
-  formData.append('employee', data.employee)
-  formData.append('leaveType', data.leaveType)
-  formData.append(
-    'startDate',
-    data.startDate ? dayjs(data.startDate).format('YYYY-MM-DD') : ''
-  )
-  formData.append(
-    'endDate',
-    data.endDate ? dayjs(data.endDate).format('YYYY-MM-DD') : ''
-  )
-  formData.append('reason', data.reason)
-  formData.append('status', data.status)
+    formData.append('_id', selectedDepartment._id)
+    formData.append('employee', data.employee)
+    formData.append('leaveType', data.leaveType)
+    formData.append('startDate', data.startDate ? dayjs(data.startDate).format('YYYY-MM-DD') : '')
+    formData.append('endDate', data.endDate ? dayjs(data.endDate).format('YYYY-MM-DD') : '')
+    formData.append('reason', data.reason)
+    formData.append('status', data.status)
 
-  // ✅ IF NEW FILE SELECTED
-  if (data.attachments instanceof File) {
-    formData.append('attachments', data.attachments)
-  } else {
-    // ✅ KEEP OLD FILE
-    formData.append('attachments', selectedDepartment.attachments || '')
-  }
+    // ✅ IF NEW FILE SELECTED
+    if (data.attachments instanceof File) {
+      formData.append('attachments', data.attachments)
+    } else {
+      // ✅ KEEP OLD FILE
+      formData.append('attachments', selectedDepartment.attachments || '')
+    }
 
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/zobiz/update-leave-application`,
-    {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/jaycon/update-leave-application`, {
       method: 'PUT',
       headers: {
         token // ✅ DO NOT set Content-Type manually
       },
       body: formData
-    }
-  )
+    })
 
-  const response = await res.json()
+    const response = await res.json()
 
-  setSnackbar({
-    open: true,
-    message: response.message || 'Leave updated successfully',
-    severity: response.success ? 'success' : 'error'
-  })
+    setSnackbar({
+      open: true,
+      message: response.message || 'Leave updated successfully',
+      severity: response.success ? 'success' : 'error'
+    })
 
-  if (response.success) handleClose()
-}
-
-
-
-
+    if (response.success) handleClose()
+  }
 
   return (
     <>
@@ -208,7 +186,6 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
 
         {/* FORM */}
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 p-6'>
-
           {/* Employee */}
           <Controller
             name='employee'
@@ -251,11 +228,7 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
                 render={({ field }) => (
                   <DatePicker
                     enableAccessibleFieldDOMStructure={false}
-                    label={
-                      name
-                        .replace(/([A-Z])/g, ' $1')
-                        .replace(/^./, c => c.toUpperCase())
-                    }
+                    label={name.replace(/([A-Z])/g, ' $1').replace(/^./, c => c.toUpperCase())}
                     value={field.value}
                     onChange={field.onChange}
                     slots={{ textField: CustomTextField }}
@@ -269,9 +242,7 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
           <Controller
             name='reason'
             control={control}
-            render={({ field }) => (
-              <CustomTextField fullWidth label='Reason' {...field} />
-            )}
+            render={({ field }) => <CustomTextField fullWidth label='Reason' {...field} />}
           />
 
           {/* Status */}
@@ -308,39 +279,38 @@ const EditDepartment = ({ open, handleClose, selectedDepartment, onSave }) => {
           />
 
           <div className='flex gap-4'>
-            <Button type='submit' variant='contained'>Update</Button>
+            <Button type='submit' variant='contained'>
+              Update
+            </Button>
             <Button variant='tonal' color='error' onClick={handleClose}>
               Cancel
             </Button>
           </div>
-
         </form>
       </Drawer>
 
-        <Snackbar
-            open={snackbar.open}
-            autoHideDuration={3000}
-            onClose={() => setSnackbar({ ...snackbar, open: false })}
-            anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // ✅ LEFT TOP
-          >
-            <Alert
-              onClose={() => setSnackbar({ ...snackbar, open: false })}
-              severity={snackbar.severity}
-              variant='filled'
-              sx={{
-                width: '100%',
-                backgroundColor:
-                  snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
-                color: 'white',
-                fontWeight: 500
-              }}
-            >
-              {snackbar.message}
-            </Alert>
-          </Snackbar>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={3000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }} // ✅ LEFT TOP
+      >
+        <Alert
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant='filled'
+          sx={{
+            width: '100%',
+            backgroundColor: snackbar.severity === 'success' ? '#2B3380' : '#D32F2F',
+            color: 'white',
+            fontWeight: 500
+          }}
+        >
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </>
   )
 }
 
 export default EditDepartment
-
