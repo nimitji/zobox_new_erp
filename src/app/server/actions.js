@@ -15,7 +15,7 @@ import { db as profileData } from '@/fake-db/pages/userProfile'
 import { db as faqData } from '@/fake-db/pages/faq'
 import { db as pricingData } from '@/fake-db/pages/pricing'
 import { db as statisticsData } from '@/fake-db/pages/widgetExamples'
-import { encrypt ,decrypt } from '@/utils/crypto'
+import { encrypt, decrypt } from '@/utils/crypto'
 
 export const getEcommerceData = async () => {
   return eCommerceData
@@ -44,7 +44,7 @@ export const getUserData = async () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-     
+
     },
     cache: 'no-store' // ensures fresh data every request
   })
@@ -57,9 +57,9 @@ export const getUserData = async () => {
 
   const data = await res.json()
 
-  console.log("DEBUG",data)
-  
-return data?.data || [] // adjust if your backend wraps response differently
+  console.log("DEBUG", data)
+
+  return data?.data || [] // adjust if your backend wraps response differently
 }
 
 
@@ -82,9 +82,9 @@ export const createBranch = async (formData) => {
       status: formData.status
     }
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
-//  const encryptedData = encrypt(JSON.stringify(payload));
+    //  const encryptedData = encrypt(JSON.stringify(payload));
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-branch`, {
       method: 'POST',
@@ -106,26 +106,26 @@ console.log("TODAYDEBUG",formData,payload)
     const branchData = await res.json()
 
     console.log("DEBUG createBranch:", branchData)
-    
-return branchData
+
+    return branchData
   } catch (err) {
     console.error('Failed to create branch:', err)
     throw err
   }
 }
 
-
-
-
+// --------------fetchBranches---------------//
 export const fetchBranches = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-branch`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      cache: 'no-store' // ensures latest data
-    })
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-branch`,
+      // const res = await fetch(`https://jaycon.live.kevalindigital.com/jaycon/fetch-branch`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: 'no-store' // ensures latest data
+      })
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -133,20 +133,39 @@ export const fetchBranches = async () => {
       throw new Error(`Failed to fetch branches: ${errorText}`)
     }
 
-    const data = await res.json()
+    //     const data = await res.json()
 
-    console.log('Fetched Branch Data:', data)
-       
-    // const decryptedPayload= decrypt(data.data)
-    //  const parsedBody = JSON.parse(decryptedPayload);
-    
-return data.data // return only branch array
+    //     console.log('Fetched Branch Data:', data)
+
+    //     // const decryptedPayload= decrypt(data.data)
+    //     //  const parsedBody = JSON.parse(decryptedPayload);
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching branches:', error)
+    //     throw error
+    //   }
+    // }
+    const data = await res.json();
+
+    console.log("Fetched Encrypted Branch Data:", data);
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted Branch Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching branches:', error)
-    throw error
+    console.error("Error fetching branch data:", error.message);
+    throw error;
   }
 }
 
+// ------fetch count branches----//
 export const fetchCountBranches = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-branch`, {
@@ -160,28 +179,47 @@ export const fetchCountBranches = async () => {
     if (!res.ok) {
       const errorText = await res.text()
 
-      throw new Error(`Failed to fetch branches: ${errorText}`)
+      throw new Error(`Failed to fetch branch count: ${errorText}`)
     }
 
-    const data = await res.json()
-    // const decryptedPayload= decrypt(data.data)
-    //  const parsedBody = JSON.parse(decryptedPayload);
+    //     const data = await res.json()
+    //     // const decryptedPayload= decrypt(data.data)
+    //     //  const parsedBody = JSON.parse(decryptedPayload);
 
-    // console.log('Fetched Count Branch Data:', data)
-    
-return data.data // return only branch array
+    //     // console.log('Fetched Count Branch Data:', data)
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching branches:', error)
+    //     throw error
+    //   }
+    // }
+    const data = await res.json();
+
+    console.log("Fetched Encrypted Branch Count Data:", data);
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted Branch Count Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching branches:', error)
-    throw error
+    console.error("Error fetching branch count:", error.message);
+    throw error;
   }
 }
 
+// ---create department---//
 export const createDepartment = async (formData) => {
   try {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-department`, {
       method: 'POST',
@@ -199,16 +237,31 @@ console.log("TODAYDEBUG",formData,payload)
     }
 
     const departmentData = await res.json()
-
     console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
-  } catch (err) {
-    console.error('Failed to create department:', err)
-    throw err
+
+    //     return departmentData
+    //   } catch (err) {
+    //     console.error('Failed to create department:', err)
+    //     throw err
+    //   }
+    // }
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted Create Department Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching Create Department Data:", error.message);
+    throw error;
   }
 }
 
+//----count depatrment----//
 export const fetchCountDepartments = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-department`, {
@@ -228,11 +281,26 @@ export const fetchCountDepartments = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Department Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching Department:', error)
+    //     throw error
+    //   }
+    // }
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted Branch Count Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching Department:', error)
-    throw error
+    console.error("Error fetching department count:", error.message);
+    throw error;
   }
 }
 
@@ -255,11 +323,26 @@ export const fetchDepartments = async () => {
     const data = await res.json()
 
     console.log('Fetched Department Data:', data)
-    
-return data.data // return only branch array
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching departments:', error)
+    //     throw error
+    //   }
+    // }
+
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted Department Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching departments:', error)
-    throw error
+    console.error("Error fetching Department data:", error.message);
+    throw error;
   }
 }
 
@@ -282,12 +365,26 @@ export const fetchListOfBranch = async () => {
 
     const data = await res.json()
 
-    console.log(' Data:', data)
-    
-return data.data // return only branch array
+    console.log('List of Branch Data:', data)
+
+    //     return data.data // return only branch array
+    //   } catch (error) {
+    //     console.error('Error fetching:', error)
+    //     throw error
+    //   }
+    // }
+    // ✅ Decrypt the response
+    const decryptedPayload = decrypt(data.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted List of Branch Data:", parsedBody);
+
+    return parsedBody; // final usable data
   } catch (error) {
-    console.error('Error fetching:', error)
-    throw error
+    console.error("Error fetching List of Branch Data:", error.message);
+    throw error;
   }
 }
 
@@ -296,7 +393,7 @@ export const editDepartment = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-department-details`, {
       method: 'PUT',
@@ -316,11 +413,25 @@ export const editDepartment = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateDeaprtment:", departmentData)
-    
-return departmentData
-  } catch (err) {
-    console.error('Failed to update department:', err)
-    throw err
+
+//     return departmentData
+//   } catch (err) {
+//     console.error('Failed to update department:', err)
+//     throw err
+//   }
+// }
+ // ✅ Decrypt the response
+    const decryptedPayload = decrypt(departmentData.data);
+
+    // ✅ Convert decrypted string → JSON
+    const parsedBody = JSON.parse(decryptedPayload);
+
+    console.log("Decrypted List of Branch Data:", parsedBody);
+
+    return parsedBody; // final usable data
+  } catch (error) {
+    console.error("Error fetching List of Branch Data:", error.message);
+    throw error;
   }
 }
 
@@ -329,7 +440,7 @@ export const editBranch = async (formData) => {
   try {
     // Map form fields to backend expected structure
     const payload = {
-      _id:formData._id,
+      _id: formData._id,
       branchName: formData.branchName, // ya koi aur field jo branch ka name ho
       address: {
         Plot: formData.Plot, // yahan form me Plot field nahi hai, address ka pura text use kar sakte ho
@@ -345,7 +456,7 @@ export const editBranch = async (formData) => {
       status: formData.status
     }
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-branch-details`, {
       method: 'PUT',
@@ -365,8 +476,8 @@ console.log("TODAYDEBUG",formData,payload)
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
@@ -392,8 +503,8 @@ export const fetchListOfDepartment = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -405,7 +516,7 @@ export const createDesignation = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-designation`, {
       method: 'POST',
@@ -425,8 +536,8 @@ console.log("TODAYDEBUG",formData,payload)
     const departmentData = await res.json()
 
     console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -452,8 +563,8 @@ export const fetchCountDesignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Department:', error)
     throw error
@@ -479,8 +590,8 @@ export const fetchDesignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Department Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching departments:', error)
     throw error
@@ -492,7 +603,7 @@ export const editDesignation = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-designation-details`, {
       method: 'PUT',
@@ -512,8 +623,8 @@ console.log("TODAYDEBUG",formData,payload)
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
@@ -525,7 +636,7 @@ export const createDocuments = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-document-data`, {
       method: 'POST',
@@ -545,8 +656,8 @@ console.log("TODAYDEBUG",formData,payload)
     const departmentData = await res.json()
 
     console.log("DEBUG createDepartment:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -572,8 +683,8 @@ export const fetchCountDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Document Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Document:', error)
     throw error
@@ -599,8 +710,8 @@ export const fetchDocument = async () => {
     const data = await res.json()
 
     console.log('Fetched Document Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching documents:', error)
     throw error
@@ -612,7 +723,7 @@ export const editDocument = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-document-details`, {
       method: 'PUT',
@@ -632,8 +743,8 @@ console.log("TODAYDEBUG",formData,payload)
     const branchData = await res.json()
 
     console.log("DEBUG updateBranch:", branchData)
-    
-return branchData
+
+    return branchData
   } catch (err) {
     console.error('Failed to update branch:', err)
     throw err
@@ -660,8 +771,8 @@ export const fetchListOfRole = async () => {
     const data = await res.json()
 
     console.log(' DataPOOJA:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -687,8 +798,8 @@ export const fetchListOfDesignation = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -714,15 +825,15 @@ export const fetchListOfDesignationBasedOnDepartment = async (selectedDepartment
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
   }
 }
 
-export const fetchListOfUser= async () => {
+export const fetchListOfUser = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-users`, {
       method: 'GET',
@@ -741,8 +852,8 @@ export const fetchListOfUser= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -750,7 +861,7 @@ return data.data // return only branch array
 }
 
 
-export const fetchListOfAwardTypes= async () => {
+export const fetchListOfAwardTypes = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-award-types`, {
       method: 'GET',
@@ -769,8 +880,8 @@ export const fetchListOfAwardTypes= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -782,7 +893,7 @@ export const createEmployee = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-employee`, {
       method: 'POST',
@@ -802,8 +913,8 @@ console.log("TODAYDEBUG",formData,payload)
     const employeeData = await res.json()
 
     console.log("DEBUG createDepartment:", employeeData)
-    
-return employeeData
+
+    return employeeData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -829,8 +940,8 @@ export const fetchEmployeeData = async () => {
     const data = await res.json()
 
     console.log('Fetched Users Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching users:', error)
     throw error
@@ -839,16 +950,16 @@ return data.data // return only branch array
 
 // app/api/user.js
 
-export const changeUserPassword = async (_id, passworddata ) => {
+export const changeUserPassword = async (_id, passworddata) => {
   try {
-   let payload ={password:passworddata}
-    console.log('POOJA',`${process.env.API_URL}`, payload)
+    let payload = { password: passworddata }
+    console.log('POOJA', `${process.env.API_URL}`, payload)
     const res = await fetch(`${process.env.API_URL}/zobiz/change-password/${_id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body:JSON.stringify( payload)
+      body: JSON.stringify(payload)
     })
-console.log("pooja",res)
+    console.log("pooja", res)
     // If server sends invalid JSON or fails
     if (!res.ok) {
       throw new Error(`Request failed with status ${res.status}`)
@@ -868,8 +979,8 @@ console.log("pooja",res)
 
 export const updateUserAddress = async (userId, addressData) => {
   try {
-    console.log("PIHU",userId, addressData)
-   
+    console.log("PIHU", userId, addressData)
+
     const res = await fetch(`${process.env.API_URL}/zobiz/update-address/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -886,8 +997,8 @@ export const updateUserAddress = async (userId, addressData) => {
 
 export const updateUserPermanentAddress = async (userId, addressData) => {
   try {
-    console.log("PIHU",userId, addressData)
-   
+    console.log("PIHU", userId, addressData)
+
     const res = await fetch(`${process.env.API_URL}/zobiz/update-permanent-address/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -905,7 +1016,7 @@ export const updateUserPermanentAddress = async (userId, addressData) => {
 export const updateUserBankDetails = async (userId, bank) => {
   try {
     console.log("PIHU")
-   
+
     const res = await fetch(`${process.env.API_URL}/zobiz/update-user-bank/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -923,7 +1034,7 @@ export const updateUserBankDetails = async (userId, bank) => {
 export const updateUserFamilyDetails = async (userId, family) => {
   try {
     console.log("PIHU")
-   
+
     const res = await fetch(`${process.env.API_URL}/zobiz/update-user-family-details/${userId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -945,7 +1056,7 @@ export const createAwardTypes = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-     console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-award-types`, {
       method: 'POST',
@@ -965,8 +1076,8 @@ export const createAwardTypes = async (formData) => {
     const awardTypesData = await res.json()
 
     console.log("DEBUG createDepartment:", awardTypesData)
-    
-return awardTypesData
+
+    return awardTypesData
   } catch (err) {
     console.error('Failed to create department:', err)
     throw err
@@ -992,8 +1103,8 @@ export const fetchCountAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award Types Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Award Types:', error)
     throw error
@@ -1009,7 +1120,7 @@ export const fetchAwardTypes = async () => {
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1020,8 +1131,8 @@ export const fetchAwardTypes = async () => {
     const data = await res.json()
 
     console.log('Fetched Award Types Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award types:', error)
     throw error
@@ -1033,7 +1144,7 @@ export const editAwardTypes = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-award-types`, {
       method: 'PUT',
@@ -1053,8 +1164,8 @@ console.log("TODAYDEBUG",formData,payload)
     const awardTypesData = await res.json()
 
     console.log("DEBUG update Award Types:", awardTypesData)
-    
-return awardTypesData
+
+    return awardTypesData
   } catch (err) {
     console.error('Failed to update awad types:', err)
     throw err
@@ -1068,8 +1179,8 @@ export const createAward = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,payload)
-  for (let pair of formData.entries()) {
+    console.log("TODAYDEBUG", formData, payload)
+    for (let pair of formData.entries()) {
       console.log(pair[0] + ':', pair[1])
     }
 
@@ -1091,8 +1202,8 @@ console.log("TODAYDEBUG",formData,payload)
     const awardData = await res.json()
 
     console.log("DEBUG createAward:", awardData)
-    
-return awardData
+
+    return awardData
   } catch (err) {
     console.error('Failed to create award:', err)
     throw err
@@ -1120,24 +1231,24 @@ export const fetchCountAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Award ', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
-    console.error('Error fetching Award:',error)
+    console.error('Error fetching Award:', error)
     throw error
   }
 }
 
 export const fetchAward = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-details`,{
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-award-details`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1148,8 +1259,8 @@ export const fetchAward = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award ', error)
     throw error
@@ -1159,14 +1270,14 @@ return data.data // return only branch array
 
 export const fetchUserDesignation = async (id) => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designation-of-user/${id}`,{
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-designation-of-user/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1177,15 +1288,15 @@ export const fetchUserDesignation = async (id) => {
     const data = await res.json()
 
     console.log('Fetched user designation  Data:', data)
-    
-return data// return only branch array
+
+    return data// return only branch array
   } catch (error) {
     console.error('Error fetching user designation ', error)
     throw error
   }
 }
 
-export const fetchListOfNewDesignation= async () => {
+export const fetchListOfNewDesignation = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-new-designation`, {
       method: 'GET',
@@ -1204,8 +1315,8 @@ export const fetchListOfNewDesignation= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data // return only branch array
+
+    return data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -1217,7 +1328,7 @@ return data // return only branch array
 // export const updateUserDetails = async (userId, formData) => {
 //   try {
 //     console.log("PIHU")
-   
+
 //     const res = await fetch(`${process.env.API_URL}/zobiz/update-user/${userId}`, {
 //       method: 'PUT',
 //       // headers: { 'Content-Type': 'application/json' },
@@ -1251,8 +1362,8 @@ export const fetchCountUser = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Employee Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Employee:', error)
     throw error
@@ -1269,7 +1380,7 @@ return data.data // return only branch array
 //     const res = await fetch(`${process.env.API_URL}/zobiz/create-promotions`, {
 //       method: 'POST',
 //       body: payload
-      
+
 //     })
 
 //     if (!res.ok) {
@@ -1281,7 +1392,7 @@ return data.data // return only branch array
 //     const departmentData = await res.json()
 
 //     console.log("DEBUG createDepartment:", departmentData)
-    
+
 // return departmentData
 //   } catch (err) {
 //     console.error('Failed to create department:', err)
@@ -1348,8 +1459,8 @@ export const fetchCountPromotion = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Promotion Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Promotion:', error)
     throw error
@@ -1358,14 +1469,14 @@ return data.data // return only branch array
 
 export const fetchPromotions = async () => {
   try {
-    const res = await fetch(`${process.env.API_URL}/zobiz/get-promotions`,{
+    const res = await fetch(`${process.env.API_URL}/zobiz/get-promotions`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -1376,8 +1487,8 @@ export const fetchPromotions = async () => {
     const data = await res.json()
 
     console.log('Fetched Award  Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching award ', error)
     throw error
@@ -1393,7 +1504,7 @@ export const createCategoryIndicator = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator-category`, {
       method: 'POST',
@@ -1413,8 +1524,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG createCategoryIndicator:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create category indicator:', err)
     throw err
@@ -1441,8 +1552,8 @@ export const fetchCountCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Category Indicator Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Category Indicator:', error)
     throw error
@@ -1470,8 +1581,8 @@ export const fetchCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category indicator Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching category indicator:', error)
     throw error
@@ -1484,7 +1595,7 @@ export const editCategoryIndicator = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicatorcategory`, {
       method: 'PUT',
@@ -1504,8 +1615,8 @@ export const editCategoryIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateCategoryIndicator:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update category indicator:', err)
     throw err
@@ -1532,8 +1643,8 @@ export const fetchListOfCategoryIndicator = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -1545,7 +1656,7 @@ export const createIndicator = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-indicator`, {
       method: 'POST',
@@ -1565,8 +1676,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG createIndicator:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create indicator:', err)
     throw err
@@ -1592,8 +1703,8 @@ export const fetchIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only indicator array
+
+    return data.data // return only indicator array
   } catch (error) {
     console.error('Error fetching  indicator:', error)
     throw error
@@ -1689,8 +1800,8 @@ export const fetchCountIndicator = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  Indicator Data:', data)
-    
-return data.data // return only indicator array
+
+    return data.data // return only indicator array
   } catch (error) {
     console.error('Error fetching  Indicator:', error)
     throw error
@@ -1702,7 +1813,7 @@ export const editIndicator = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-indicator`, {
       method: 'PUT',
@@ -1722,8 +1833,8 @@ export const editIndicator = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateIndicator:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update indicator:', err)
     throw err
@@ -1736,7 +1847,7 @@ export const createGoalType = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-goal-type`, {
       method: 'POST',
@@ -1756,8 +1867,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG createGoalType:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create GoalType:', err)
     throw err
@@ -1783,8 +1894,8 @@ export const fetchGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  GoalType:', error)
     throw error
@@ -1810,8 +1921,8 @@ export const fetchCountGoalType = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  GoalType Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  GoalType:', error)
     throw error
@@ -1823,7 +1934,7 @@ export const editGoalType = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-goaltype`, {
       method: 'PUT',
@@ -1843,8 +1954,8 @@ export const editGoalType = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateGoalType:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update GoalType:', err)
     throw err
@@ -1870,8 +1981,8 @@ export const fetchListOfGoalType = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -1883,7 +1994,7 @@ export const createEmployeeGoal = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-goal`, {
       method: 'POST',
@@ -1902,8 +2013,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG create employee Goal:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create  employee Goal:', err)
     throw err
@@ -1929,8 +2040,8 @@ export const fetchCountEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee goal Data:', data)
-    
-return data.data // return only GoalType array
+
+    return data.data // return only GoalType array
   } catch (error) {
     console.error('Error fetching  employee goal:', error)
     throw error
@@ -1956,8 +2067,8 @@ export const fetchEmployeeGoal = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only EmployeeGoal array
+
+    return data.data // return only EmployeeGoal array
   } catch (error) {
     console.error('Error fetching  EmployeeGoal:', error)
     throw error
@@ -1968,7 +2079,7 @@ export const editEmployeeGoal = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-employee-goal`, {
       method: 'PUT',
@@ -1988,8 +2099,8 @@ export const editEmployeeGoal = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateEmployeeGoal:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update EmployeeGoal:', err)
     throw err
@@ -2002,7 +2113,7 @@ export const createReviewCycle = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-review-cycle`, {
       method: 'POST',
@@ -2022,8 +2133,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG createReviewCycle:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create ReviewCycle:', err)
     throw err
@@ -2049,8 +2160,8 @@ export const fetchReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only ReviewCycle array
+
+    return data.data // return only ReviewCycle array
   } catch (error) {
     console.error('Error fetching  ReviewCycle:', error)
     throw error
@@ -2076,8 +2187,8 @@ export const fetchCountReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  ReviewCycle Data:', data)
-    
-return data.data // return only ReviewCycle array
+
+    return data.data // return only ReviewCycle array
   } catch (error) {
     console.error('Error fetching  ReviewCycle:', error)
     throw error
@@ -2089,7 +2200,7 @@ export const editReviewCycle = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-    console.log("TODAYDEBUG",formData,payload)
+    console.log("TODAYDEBUG", formData, payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/edit-review-cycle`, {
       method: 'PUT',
@@ -2109,8 +2220,8 @@ export const editReviewCycle = async (formData) => {
     const departmentData = await res.json()
 
     console.log("DEBUG updateReviewCycle:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to update ReviewCycle:', err)
     throw err
@@ -2137,8 +2248,8 @@ export const fetchListOfEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only category indicator array
+
+    return data.data // return only category indicator array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -2164,8 +2275,8 @@ export const fetchCountEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched Count  employee review cycle Data:', data)
-    
-return data.data // return only Employee Review cycle array
+
+    return data.data // return only Employee Review cycle array
   } catch (error) {
     console.error('Error fetching  Employee Review cycle:', error)
     throw error
@@ -2177,7 +2288,7 @@ export const createEmployeeReviewCycle = async (formData) => {
     // Map form fields to backend expected structure
     const payload = formData
 
-console.log("TODAYDEBUG",formData,process.env.API_URL)
+    console.log("TODAYDEBUG", formData, process.env.API_URL)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/create-employee-review-cycle`, {
       method: 'POST',
@@ -2196,8 +2307,8 @@ console.log("TODAYDEBUG",formData,process.env.API_URL)
     const departmentData = await res.json()
 
     console.log("DEBUG create employee review cycle:", departmentData)
-    
-return departmentData
+
+    return departmentData
   } catch (err) {
     console.error('Failed to create  employee review cycle:', err)
     throw err
@@ -2223,8 +2334,8 @@ export const fetchEmployeeReviewCycle = async () => {
     const data = await res.json()
 
     console.log('Fetched category  Data:', data)
-    
-return data.data // return only EmployeeReviewCycle array
+
+    return data.data // return only EmployeeReviewCycle array
   } catch (error) {
     console.error('Error fetching  EmployeeReviewCycle:', error)
     throw error
@@ -2235,7 +2346,7 @@ return data.data // return only EmployeeReviewCycle array
 // 🧠 Fetch single employee review details by ID
 export const fetchEmployeeReviewById = async (id) => {
   try {
-    console.log("POOJAIDS",id)
+    console.log("POOJAIDS", id)
     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-employee-review/${id}`, {
       method: 'GET',
       headers: {
@@ -2268,9 +2379,9 @@ export const fetchEmployeeReviewById = async (id) => {
 
 export const fetchIndicatorDetailsEmployeeReview = async () => {
   try {
-   
 
-    const res = await fetch(`${ process.env.API_URL }/zobiz/fetch-indicator-details-employee-review`, {
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/fetch-indicator-details-employee-review`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -2296,7 +2407,7 @@ export const fetchIndicatorDetailsEmployeeReview = async () => {
 
 export async function fetchDepartmentsByBranch(branchId) {
   try {
-    console.log("TESTDATA",branchId)
+    console.log("TESTDATA", branchId)
     const res = await fetch(`${process.env.API_URL}/zobiz/departments/byBranch/${branchId}`, {
       cache: 'no-store'
     })
@@ -2342,8 +2453,8 @@ export const fetchCountResignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Resignations Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Resignations:', error)
     throw error
@@ -2384,7 +2495,7 @@ export const fetchResignation = async () => {
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2395,18 +2506,18 @@ export const fetchResignation = async () => {
     const data = await res.json()
 
     console.log('Fetched Resignation Data:', data)
-    
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Resignations:', error)
     throw error
   }
 }
 
-export const updateResignation = async (formData) =>  {
+export const updateResignation = async (formData) => {
   try {
 
-    console.log("NPRSTEST",formData)
+    console.log("NPRSTEST", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/update-resignation`, {
       method: 'PUT',
       body: formData
@@ -2445,8 +2556,8 @@ export const fetchCountTermination = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Terminations Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Terminations:', error)
     throw error
@@ -2486,7 +2597,7 @@ export const fetchTermination = async () => {
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2497,8 +2608,8 @@ export const fetchTermination = async () => {
     const data = await res.json()
 
     console.log('Fetched Termination Data:', data)
-   
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Terminations:', error)
     throw error
@@ -2525,8 +2636,8 @@ export const fetchCountWarning = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Warnings Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Warnings:', error)
     throw error
@@ -2536,7 +2647,7 @@ return data.data // return only branch array
 export const createWarning = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-warning`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2567,7 +2678,7 @@ export const fetchWarning = async () => {
       },
       cache: 'no-store' // ensures latest data
     })
-    console.log("DEBUG",res)
+    console.log("DEBUG", res)
 
     if (!res.ok) {
       const errorText = await res.text()
@@ -2578,8 +2689,8 @@ export const fetchWarning = async () => {
     const data = await res.json()
 
     console.log('Fetched Warning Data:', data)
-   
- return { success: true, data: data.data }
+
+    return { success: true, data: data.data }
   } catch (error) {
     console.error('Error fetching Warnings:', error)
     throw error
@@ -2608,18 +2719,18 @@ export const fetchCountTrip = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Trips Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Trips:', error)
     throw error
   }
 }
 
-export const createTrip= async (formData) => {
+export const createTrip = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-trip`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2682,18 +2793,18 @@ export const fetchCountComplaint = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Complaints Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Complaints:', error)
     throw error
   }
 }
 
-export const createComplaint= async (formData) => {
+export const createComplaint = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-complaint`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2756,17 +2867,17 @@ export const fetchCountTransfer = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Transfer Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Transfer:', error)
     throw error
   }
 }
-export const createTransfer= async (formData) => {
+export const createTransfer = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-transfer`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2829,18 +2940,18 @@ export const fetchCountHolidays = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Holidays Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Holidays:', error)
     throw error
   }
 }
 
-export const createHolidays= async (formData) => {
+export const createHolidays = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-holiday`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2904,8 +3015,8 @@ export const fetchCountAnnouncement = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Announcements Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Announcements:', error)
     throw error
@@ -2913,10 +3024,10 @@ return data.data // return only branch array
 }
 
 
-export const createAnnouncements= async (formData) => {
+export const createAnnouncements = async (formData) => {
   try {
     // 🚀 POST multipart/form-data (no JSON.stringify, no Content-Type header)
-    console.log("POOJAFORMDATA",formData)
+    console.log("POOJAFORMDATA", formData)
     const res = await fetch(`${process.env.API_URL}/zobiz/create-announcement`, {
       method: 'POST',
       body: formData, // send raw FormData
@@ -2981,8 +3092,8 @@ export const fetchCountShift = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Shift Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Shift:', error)
     throw error
@@ -2991,7 +3102,7 @@ return data.data // return only branch array
 
 
 
-export  const createShift =async (payload) =>{
+export const createShift = async (payload) => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/create-shift`, {
       method: 'POST',
@@ -3116,8 +3227,8 @@ export const fetchCountAttendancePolicy = async () => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Policy Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Attendance Policy:', error)
     throw error
@@ -3233,15 +3344,15 @@ export const editAttendancePolicy = async (formData) => {
 //Attendance records
 export const fetchCountAttendanceRecord = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchCountAttendanceRecord')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-records`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3255,8 +3366,8 @@ export const fetchCountAttendanceRecord = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Attendance Record Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Attendance Record:', error)
     throw error
@@ -3392,7 +3503,7 @@ export const editAttendanceRecord = async (formData) => {
 export const fetchCountAttendanceRegularization = async (token) => {
   try {
     if (!token) throw new Error('Token missing for fetchCountAttendanceRegularization')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-attendance-regularization`, {
       method: 'GET',
       headers: {
@@ -3543,12 +3654,12 @@ export const updateAttendanceRegularization = async (payload, token) => {
 
 export const fetchCountSalaryComponent = async () => {
   try {
-  
+
     const res = await fetch(`${process.env.API_URL}/zobiz/total-salarycomponent-count`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      
+
       },
       cache: 'no-store'
     })
@@ -3571,7 +3682,7 @@ export const fetchCountSalaryComponent = async () => {
 
 export const createSalaryComponent = async (formData) => {
   try {
-  
+
 
     // 📨 Send POST request to backend API
     const res = await fetch(`${process.env.API_URL}/zobiz/create-salary-component`, {
@@ -3628,8 +3739,8 @@ export const fetchSalaryComponent = async () => {
 
 export const editSararyComponent = async (formData) => {
   try {
-   
-const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, {
+
+    const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -3673,7 +3784,7 @@ const res = await fetch(`${process.env.API_URL}/zobiz/update-salary-component`, 
 //     const data = await res.json()
 
 //     console.log(' Data:', data)
-    
+
 // return data.data 
 //   } catch (error) {
 //     console.error('Error fetching:', error)
@@ -3719,15 +3830,15 @@ export const fetchListOfSalaryComponent = async () => {
 
 export const fetchCountEmployeeSalary = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchCountEmployeeSalary')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-employee-salary`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3741,8 +3852,8 @@ export const fetchCountEmployeeSalary = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Employee Salary Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Emloyee Salary:', error)
     throw error
@@ -3758,13 +3869,13 @@ export const createEmployeeSalary = async (formData, token) => {
       fixedSalary: formData.fixedSalary,
       grossSalary: formData.grossSalary,
       annualSalary: formData.annualSalary,
-      isHraFixed:formData.isHraFixed,
-      hraFixedAmount:formData.hraFixedAmount,
-      isNAPS:formData.isNAPS,
-      isNAPS:formData.isNAPS,
+      isHraFixed: formData.isHraFixed,
+      hraFixedAmount: formData.hraFixedAmount,
+      isNAPS: formData.isNAPS,
+      isNAPS: formData.isNAPS,
       status: formData.status,
       notes: formData.notes,
-      employeeStatus:formData.employeeStatus
+      employeeStatus: formData.employeeStatus
     };
 
     console.log('🟢 Sending Salary Payload:', payload);
@@ -3854,13 +3965,13 @@ export const updateEmployeeSalary = async (payload, token) => {
     console.log('✅ Employee Salary updated successfully:', data)
     // return data
 
-      if (!res.ok) {
+    if (!res.ok) {
       return {
         success: false,
         message: data?.message || "Failed to update employee salary"
       }
     }
-console.log("testdebug",{
+    console.log("testdebug", {
       success: true,
       message: data?.message || "Employee salary updated successfully!"
     })
@@ -3869,7 +3980,7 @@ console.log("testdebug",{
       success: true,
       message: data?.message || "Employee salary updated successfully!"
     }
-   
+
   } catch (error) {
     console.error('❌ Error in updateEmployeeSalary:', error)
     return {
@@ -3883,15 +3994,15 @@ console.log("testdebug",{
 
 export const fetchCountSalaryAdvanceRequest = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-advance-request`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -3905,8 +4016,8 @@ export const fetchCountSalaryAdvanceRequest = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Salary Advance Request Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Salary Advance Request:', error)
     throw error
@@ -3920,7 +4031,7 @@ export const createAdvanceSalaryRequest = async (formData, token) => {
     const payload = {
       employee: formData.employee,
       requestedAmount: formData.requestedAmount,
-       status: formData.status,
+      status: formData.status,
       notes: formData.notes
     };
 
@@ -3958,7 +4069,7 @@ export const createAdvanceSalaryRequest = async (formData, token) => {
 export const updateAdvanceSalaryRequest = async (payload, token) => {
   try {
     if (!token) throw new Error('Token missing for updateSalaryRequest')
-      console.log("DADADADADADA",payload)
+    console.log("DADADADADADA", payload)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/update-advance-request`, {
       method: 'PUT',
@@ -3980,7 +4091,7 @@ export const updateAdvanceSalaryRequest = async (payload, token) => {
     console.log('✅ Employee Salary Advance Request updated successfully:', data)
     // return data
 
-      if (!res.ok) {
+    if (!res.ok) {
       return {
         success: false,
         message: data?.message || "Failed to update employee salary advance request"
@@ -3992,7 +4103,7 @@ export const updateAdvanceSalaryRequest = async (payload, token) => {
       success: true,
       message: data?.message || "Employee salary advance request updated successfully!"
     }
-   
+
   } catch (error) {
     console.error('❌ Error in updateSalaryRequest:', error)
     return {
@@ -4036,12 +4147,12 @@ export const fetchSalaryAdvanceRequest = async (token) => {
 
 export const fetchCountLeaveType = async () => {
   try {
-  
+
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-type`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      
+
       },
       cache: 'no-store'
     })
@@ -4060,7 +4171,7 @@ export const fetchCountLeaveType = async () => {
   }
 }
 
-export  const createLeaveType =async (payload) =>{
+export const createLeaveType = async (payload) => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-type`, {
       method: 'POST',
@@ -4125,7 +4236,7 @@ export const editLeaveType = async (formData) => {
       maxDays: formData.maxDays,
       isPaidStaus: formData.isPaidStaus,
       status: formData.status
-     
+
     };
 
     console.log("🟡 Sending update leave type payload:", payload);
@@ -4156,7 +4267,7 @@ export const editLeaveType = async (formData) => {
 };
 
 
-export const fetchListOfLeaveType= async () => {
+export const fetchListOfLeaveType = async () => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/fetch-list-leave-type`, {
       method: 'GET',
@@ -4175,8 +4286,8 @@ export const fetchListOfLeaveType= async () => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -4188,12 +4299,12 @@ return data.data // return only branch array
 
 export const fetchCountLeavePolicy = async () => {
   try {
-  
+
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-policy`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      
+
       },
       cache: 'no-store'
     })
@@ -4213,7 +4324,7 @@ export const fetchCountLeavePolicy = async () => {
 }
 
 
-export  const createLeavePolicy =async (payload) =>{
+export const createLeavePolicy = async (payload) => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/create-leave-policy`, {
       method: 'POST',
@@ -4272,18 +4383,18 @@ export const editLeavePolicy = async (formData) => {
   try {
     // Prepare payload directly from formData
     const payload = {
-        _id:formData._id,
-        policyName: formData.policyName,
-        description: formData.description,
-        leaveType: formData.leaveType,
-        accuralType: formData.accuralType,
-        accuralRates: formData.accuralRates,
-        carryForwardLimit: formData.carryForwardLimit,
-        minDays: formData.minDays,
-        maxDays: formData.maxDays,
-        isRequired: formData.isRequired,
-        status: formData.status
-     
+      _id: formData._id,
+      policyName: formData.policyName,
+      description: formData.description,
+      leaveType: formData.leaveType,
+      accuralType: formData.accuralType,
+      accuralRates: formData.accuralRates,
+      carryForwardLimit: formData.carryForwardLimit,
+      minDays: formData.minDays,
+      maxDays: formData.maxDays,
+      isRequired: formData.isRequired,
+      status: formData.status
+
     };
 
     console.log("🟡 Sending update leave policy payload:", payload);
@@ -4317,15 +4428,15 @@ export const editLeavePolicy = async (formData) => {
 
 export const fetchCountLeaveApplication = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchAdvanceSalaryRequest')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-application`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4339,8 +4450,8 @@ export const fetchCountLeaveApplication = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Leave Application Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Leave Application:', error)
     throw error
@@ -4357,7 +4468,7 @@ export const createLeaveApplication = async (formData, token) => {
     payload.append('leaveType', formData.leaveType)
     payload.append('startDate', formData.startDate)
     payload.append('endDate', formData.endDate)
-   
+
     payload.append('reason', formData.reason)
     payload.append('status', formData.status)
 
@@ -4492,15 +4603,15 @@ export const fetchLeaveApplication = async (token) => {
 
 export const fetchCountLeaveBalance = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchLeaveBalnce')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-leave-balance`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4514,8 +4625,8 @@ export const fetchCountLeaveBalance = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Leave Balance Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Leave Balance:', error)
     throw error
@@ -4530,7 +4641,7 @@ export const createLeaveBalance = async (formData, token) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // ✅ MUST
-          token:token     // ✅ Better than custom token
+          token: token     // ✅ Better than custom token
         },
         body: JSON.stringify({
           employee: formData.employee,
@@ -4646,7 +4757,7 @@ export const fetchLeaveBalance = async (token) => {
 }
 
 //NAPSNATS
-export const fetchListOfNapsNatsUser= async (status) => {
+export const fetchListOfNapsNatsUser = async (status) => {
   try {
     const res = await fetch(`${process.env.API_URL}/zobiz/list-of-napsnats-user?status=${status}`, {
       method: 'GET',
@@ -4665,8 +4776,8 @@ export const fetchListOfNapsNatsUser= async (status) => {
     const data = await res.json()
 
     console.log(' Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching:', error)
     throw error
@@ -4676,15 +4787,15 @@ return data.data // return only branch array
 
 export const fetchCountNapsNats = async (token) => {
   try {
-   
+
     if (!token) throw new Error('Token missing for fetchNapsNats')
-    console.log("TOKEN",token)
+    console.log("TOKEN", token)
 
     const res = await fetch(`${process.env.API_URL}/zobiz/total-count-naps-nats`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-         'token': token
+        'token': token
       },
       cache: 'no-store' // ensures latest data
     })
@@ -4698,8 +4809,8 @@ export const fetchCountNapsNats = async (token) => {
     const data = await res.json()
 
     console.log('Fetched Count Naps Nats Data:', data)
-    
-return data.data // return only branch array
+
+    return data.data // return only branch array
   } catch (error) {
     console.error('Error fetching Naps Nats:', error)
     throw error
@@ -4714,15 +4825,15 @@ export const createNapsNats = async (formData, token) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // ✅ MUST
-          token:token     // ✅ Better than custom token
+          token: token     // ✅ Better than custom token
         },
         body: JSON.stringify({
           employee: formData.employee,
           napsNatsStatus: formData.napsNatsStatus,
-          deductionForThisMonth:formData.deductionForThisMonth,
+          deductionForThisMonth: formData.deductionForThisMonth,
           amount: formData.amount,
-          status:formData.status
-         
+          status: formData.status
+
         }),
         cache: 'no-store'
       }
